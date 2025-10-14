@@ -3,10 +3,15 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include <cstdlib>
+#include <iostream>
 
 int main()
 {
+	//Setup
 	sf::RenderWindow window(sf::VideoMode(640, 480), "Hello World");
 	sf::CircleShape circle(100, 30);
 	circle.setFillColor(sf::Color::Cyan);
@@ -30,13 +35,41 @@ int main()
 	rect.setOutlineThickness(4.0f);
 	rect.setPosition(300, 10);
 
+	bool mouseReleased = false;
+	bool keyReleased = false;
+
 	while (window.isOpen())
 	{
+		//Handle Events
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyReleased)
+			{
+				if (event.key.code != sf::Keyboard::Escape)
+					continue;
 				window.close();
+				exit(EXIT_SUCCESS);
+			}
+			mouseReleased = false;
+			if (event.type == sf::Event::MouseButtonReleased)
+			{
+				mouseReleased = true;
+			}
+			keyReleased = false;
+			if (event.type == sf::Event::KeyReleased)
+			{
+				keyReleased = true;
+			}
+		}
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && mouseReleased)
+		{
+			std::cout << "Mouse clicked\n";
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && keyReleased)
+		{
+			std::cout << "A pressed\n";
 		}
 		window.clear();
 		window.draw(circle);
@@ -44,5 +77,6 @@ int main()
 		window.draw(rect);
 		window.display();
 	}
+	//Cleanup
 	return (0);
 }
