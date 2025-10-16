@@ -31,6 +31,10 @@ Camera::~Camera()
             nextAnimationTime = currTime + MILLISECONDS_PER_FRAME;
         }
     }
+    if (trauma != 0.0f)
+    {
+        trauma -= recoveryRate;
+    }
 }
 
 void Camera::setPosition(float x, float y, float w, float h)
@@ -65,6 +69,7 @@ void Camera::cameraShake()
         current_center = orig_center;
         current_size = orig_size;
         current_zoom = orig_zoom;
+        current_rotation = orig_rotation;
         current_frame = 0;
     }
     else
@@ -72,9 +77,33 @@ void Camera::cameraShake()
         current_center = ;
         current_size = ;
         current_zoom = ;
+        current_rotation = ;
     }
     camera_.move(current_center);
     camera_.setSize(current_size);
     camera_.zoom(current_zoom);
     window_->setView(camera_);
+}
+/*
+angle = maxAngle * shake * GetPerlinNoise(seed, time, ...);
+offsetX = maxOffset * shake * GetPerlinNoise(seed + 1, time, ...);
+offsetY = maxOffset * shake * GetPerlinNoise(seed + 2, time, ...);
+
+shakyCamera.angle = camera.angle + angle;
+shakyCamera.center = camera.center + Vec2(offsetx, offsetY);
+*/
+void Camera::addTrauma(float amount)
+{
+    if ((trauma + amount) >= 1.0f)
+        trauma = 1.0f;
+    else if ((trauma + amount) < 0.0f)
+        trauma = 0.0f;
+    else
+        trauma += amount;
+}
+
+void Camera::setRecoveryRate(float amount)
+{
+    if (amount > 0.0f)
+        recoveryRate = amount;
 }

@@ -18,13 +18,21 @@ private:
     sf::Vector2f current_center = {0.0f, 0.0f};
     sf::Vector2f orig_size = {100.0f, 100.0f};
     sf::Vector2f current_size = {100.0f, 100.0f};
+    float orig_rotation = 0.0f;
+    float current_rotation = 0.0f;
     float orig_zoom = 1.0f;
     float current_zoom = 1.0f;
+
+    float trauma = 0.0f;
+    float recoveryRate = 0.1f;
+
     bool isShaking = false;
     constexpr static int32_t MILLISECONDS_PER_FRAME = 333;
     int32_t nextAnimationTime = 0;
     size_t max_frames = 120;
     size_t current_frame = 0;
+
+
     void cameraShake();
 public:
     Camera(sf::Clock *clock, sf::RenderWindow *window);
@@ -36,4 +44,6 @@ public:
     void setZoom(float zoom);
     void setMaxFrames(size_t frames);
     void setIsShaking();
+    void addTrauma(float amount);
+    void setRecoveryRate(float amount);
 };
