@@ -4,10 +4,12 @@ Camera::Camera(sf::Clock *clock, sf::RenderWindow *window)
     : window_(window), clock_(clock)
 {
     camera_ = window_->getView();
+    perlinX = getRandomPerlinCoord();
+    perlinY = getRandomPerlinCoord();
 }
 
-Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y, float w, float h, float zoom)
-    : window_(window), clock_(clock), orig_center({x, y}), current_center({x, y}), orig_size({w, h}), current_size({w, h}), orig_zoom(zoom), current_zoom(zoom)
+Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float ym)
+    : window_(window), clock_(clock), orig_center({x, y}), current_center({x, y}), orig_size({w, h})
 {
     camera_ = window_->getView();
 }
@@ -37,16 +39,9 @@ Camera::~Camera()
     }
 }
 
-void Camera::setPosition(float x, float y, float w, float h)
+void Camera::setPosition(float x, float y)
 {
     orig_center = {x, y};
-    orig_size = {w, h};
-}
-
-void Camera::setZoom(float zoom)
-{
-    orig_zoom = zoom;
-    current_zoom = zoom;
 }
 
 void Camera::setMaxFrames(size_t frames)
@@ -67,31 +62,27 @@ void Camera::cameraShake()
     {
         isShaking = false;
         current_center = orig_center;
-        current_size = orig_size;
-        current_zoom = orig_zoom;
         current_rotation = orig_rotation;
         current_frame = 0;
     }
     else
     {
-        current_center = ;
-        current_size = ;
-        current_zoom = ;
-        current_rotation = ;
+       
+        float shake = trauma * trauma; // Currently trauma^2, could try trauma^3
+        float angle = maxAngle * shake * BitmapReader::GetPerlinNoise();
+        float offsetX = maxOffset * shake * BitmapReader::GetPerlinNoise(perlinX);
+        float offsetY = maxOffset * shake * BitmapReader::GetPerlinNoise(perlinY);
+        current_center =  {orig_center.x + offsetX, orig_center.y + offsetY};
+        current_rotation = orig_rotation + angle;
+        perlinX = iteratePerlinCoord(perlinX);
+        perlinY = iteratePerlinCoord(perlinY);
     }
     camera_.move(current_center);
-    camera_.setSize(current_size);
-    camera_.zoom(current_zoom);
+    camera_.setRotation(current_rotation);
+
     window_->setView(camera_);
 }
-/*
-angle = maxAngle * shake * GetPerlinNoise(seed, time, ...);
-offsetX = maxOffset * shake * GetPerlinNoise(seed + 1, time, ...);
-offsetY = maxOffset * shake * GetPerlinNoise(seed + 2, time, ...);
 
-shakyCamera.angle = camera.angle + angle;
-shakyCamera.center = camera.center + Vec2(offsetx, offsetY);
-*/
 void Camera::addTrauma(float amount)
 {
     if ((trauma + amount) >= 1.0f)
@@ -106,4 +97,40 @@ void Camera::setRecoveryRate(float amount)
 {
     if (amount > 0.0f)
         recoveryRate = amount;
+}
+
+sf::Vector2f Camera::getRandomPerlinCoord()
+{
+    unsigned int Width = BitmapReader::GetWidth();
+    unsigned int Height = BitmapReader::GetHeight();
+    float x = static_cast<float>(getRandomClamped(Width));
+    float y = static_cast<float>(getRandomClamped(Height));
+    return (sf::Vector2f{x, y});
+}
+
+sf::Vector2f iteratePerlinCoord(sf::Vector2f &perlinCoord)
+{
+    static unsigned int Width = BitmapReader::GetWidth() - 1;
+    static unsigned int Height = BitmapReader::GetHeight() - 1;
+    sf::Vector2f result = {0.0f, 0.0f};
+    
+    if (static_cast<unsigned int>(perlinCoord.x + pixelJumpValue) > Width)
+    {
+        if (static_cast<unsigned int>(perlinCoord.y + 1) > Height)
+        {
+            result.x = 0.0f;
+            result.y = 0.0f;
+        }
+        else
+        {
+            result.x = 0.0f;
+            result.y = perlinCoord.y + 1;
+        }
+    }
+    else
+    {
+        result.x = perlinCoord.x + pixelJumpValue;
+        result.y = perlinCoord.y;
+    }
+    return (result);
 }
