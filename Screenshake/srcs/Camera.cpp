@@ -92,13 +92,6 @@ void Camera::setRecoveryRate(float amount)
         recoveryRate = amount;
 }
 
-sf::Vector2f Camera::getRandomPerlinCoord()
-{
-    float x = static_cast<float>(getRandomClamped(noiseImgWidth));
-    float y = static_cast<float>(getRandomClamped(noiseImgHeight));
-    return (sf::Vector2f{x, y});
-}
-
 void Camera::savePerlinImageSize()
 {
     noiseImgWidth = static_cast<float>(BitmapReader::Instance.GetWidth());

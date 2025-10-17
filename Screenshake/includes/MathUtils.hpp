@@ -6,10 +6,6 @@
 #include <cmath>
 #include "BitmapReader.hpp"
 
-unsigned int getRandomClamped(unsigned int max) {
-    return (max > 0) ? (std::rand() % (max + 1)) : 0;
-}
-
 float getPerlinNoiseValue(double time, double speedMultiplier)
 {
     static const double step = 0.01;

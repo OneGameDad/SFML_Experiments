@@ -45,7 +45,6 @@ private:
 
     void cameraShake();
     void animateScreenShake();
-    sf::Vector2f getRandomPerlinCoord();
     void savePerlinImageSize();
 public:
     Camera(sf::Clock *clock, sf::RenderWindow *window);
