@@ -63,9 +63,9 @@ void Camera::cameraShake()
     else
     {
         float shake = trauma * trauma; // Currently trauma^2, could try trauma^3
-        float angle = maxAngleOffset * shake * getPerlinNoiseValue(tNoiseOffsetAngle, speedMultiplierX);
-        float x = maxPixelOffset * shake * getPerlinNoiseValue(tNoiseOffsetX, speedMultiplierY);
-        float y = maxPixelOffset * shake * getPerlinNoiseValue(tNoiseOffsetY, speedMultiplierAngle);
+        float angle = maxAngleOffset * shake * (getPerlinNoiseValue(tNoiseOffsetAngle, speedMultiplierX) * 2.0f - 1.0f);
+        float x = maxPixelOffset * shake * (getPerlinNoiseValue(tNoiseOffsetX, speedMultiplierY) * 2.0f - 1.0f);
+        float y = maxPixelOffset * shake * (getPerlinNoiseValue(tNoiseOffsetY, speedMultiplierAngle) * 2.0f - 1.0f);
         
         current_center =  {orig_center.x + x, orig_center.y + y};
         current_rotation = orig_rotation + angle;
