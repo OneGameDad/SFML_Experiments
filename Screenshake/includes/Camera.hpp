@@ -9,6 +9,7 @@
 #include <iostream>
 #include "MathUtils.hpp"
 #include "BitmapReader.hpp"
+#include "data.hpp"
 
 class Camera
 {
@@ -24,23 +25,28 @@ private:
     float current_rotation = 0.0f;
 
     float trauma = 0.0f;
-    float recoveryRate = 0.1f;
+    float traumaBuffer = 0.1f;
+    float recoveryRate = 0.05f;
+    float tNoiseOffsetX = 0.0f;
+    float tNoiseOffsetY = 0.0f;
+    float tNoiseOffsetAngle = 0.0f;
+    float noiseImgWidth = 0.0f;
+    float noiseImgHeight = 0.0f;
 
     bool isShaking = false;
-    constexpr static int32_t MILLISECONDS_PER_FRAME = 333;
-    int32_t nextAnimationTime = 0;
-    size_t max_frames = 120;
-    size_t current_frame = 0;
-    float maxAngle = 20.0f;
-    float maxOffset = 30.0f;
+    float maxAngleOffset = 20.0f;
+    float maxPixelOffset = 30.0f;
 
     sf::Vector2f perlinX = {0.0f, 0.0f};
     sf::Vector2f perlinY = {0.0f, 0.0f};
-    float pixelJumpValue = 4.0f;
+    double speedMultiplierX = 1.0;
+    double speedMultiplierY = 1.5;
+    double speedMultiplierAngle = 2.0;
 
     void cameraShake();
+    void animateScreenShake();
     sf::Vector2f getRandomPerlinCoord();
-    sf::Vector2f iteratePerlinCoord();
+    void savePerlinImageSize();
 public:
     Camera(sf::Clock *clock, sf::RenderWindow *window);
     Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y);
@@ -48,8 +54,8 @@ public:
 
     void Update();
     void setPosition(float x, float y);
-    void setMaxFrames(size_t frames);
-    void setIsShaking();
+    void beginCameraShake();
     void addTrauma(float amount);
     void setRecoveryRate(float amount);
+    
 };

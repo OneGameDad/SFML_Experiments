@@ -6,7 +6,7 @@
 #include <SFML/System/Clock.hpp>
 #include <cstdlib>
 #include <iostream>
-
+#include "data.hpp"
 
 class Eye
 {

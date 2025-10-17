@@ -8,6 +8,7 @@
 #include "Eye.hpp"
 #include "Camera.hpp"
 #include "BitmapReader.hpp"
+#include "data.hpp"
 
 int main()
 {
@@ -15,8 +16,12 @@ int main()
 	{
 		//Setup
 		sf::Clock clock;
+		g_data.setTime(&clock);
 		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
 		window.setFramerateLimit(60);
+		auto &bmp = BitmapReader::Instance(); 
+		bmp.Load("images/noiseTexture.png"); //Must be loaded before camera
+		
 		Camera camera(&clock, &window);
 		sf::Texture texture0;
 		texture0.loadFromFile("images/googly-a.png");
@@ -29,8 +34,7 @@ int main()
 		sf::Texture texture4;
 		texture4.loadFromFile("images/googly-e.png");
 
-		auto &bmp = BitmapReader::Instance();
-		bmp.Load("images/noiseTexture.png");
+		
 
 		Eye eye(&clock);
 		eye.setTextures(texture0);
@@ -42,6 +46,7 @@ int main()
 
 		while (window.isOpen())
 		{
+			g_data.updateTime(&clock);
 			//Handle Events
 			sf::Event event;
 			while (window.pollEvent(event))
@@ -52,7 +57,7 @@ int main()
 					{
 						std::cout << "IsAnimating set to true\n";
 						eye.setIsAnimating();
-						camera.setIsShaking();
+						camera.beginCameraShake();
 					}
 					else if (event.key.code != sf::Keyboard::Escape)
 						continue;
