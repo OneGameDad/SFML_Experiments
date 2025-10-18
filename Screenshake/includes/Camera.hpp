@@ -7,8 +7,7 @@
 #include <SFML/System/Clock.hpp>
 #include <cstdlib>
 #include <iostream>
-#include "MathUtils.hpp"
-#include "BitmapReader.hpp"
+#include "PerlinNoiseGenerator.hpp"
 #include "data.hpp"
 
 class Camera
@@ -27,11 +26,6 @@ private:
     float trauma = 0.0f;
     float traumaBuffer = 0.1f;
     float recoveryRate = 0.05f;
-    float tNoiseOffsetX = 0.0f;
-    float tNoiseOffsetY = 0.0f;
-    float tNoiseOffsetAngle = 0.0f;
-    float noiseImgWidth = 0.0f;
-    float noiseImgHeight = 0.0f;
 
     bool isShaking = false;
     float maxAngleOffset = 20.0f;
@@ -43,9 +37,16 @@ private:
     double speedMultiplierY = 1.5;
     double speedMultiplierAngle = 2.0;
 
+    float tNoiseOffsetXX = 0.0f;
+    float tNoiseOffsetXY = 0.0f;
+    float tNoiseOffsetYX = 0.0f;
+    float tNoiseOffsetYY = 0.0f;
+    float tNoiseOffsetAngleX = 0.0f;
+    float tNoiseOffsetAngleY = 0.0f;
+
     void cameraShake();
     void animateScreenShake();
-    void savePerlinImageSize();
+
 public:
     Camera(sf::Clock *clock, sf::RenderWindow *window);
     Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y);

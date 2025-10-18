@@ -7,7 +7,7 @@
 #include <vector>
 #include "Eye.hpp"
 #include "Camera.hpp"
-#include "BitmapReader.hpp"
+#include "PerlinNoiseGenerator.hpp"
 #include "data.hpp"
 
 int main()
@@ -19,8 +19,8 @@ int main()
 		g_data.setTime(&clock);
 		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
 		window.setFramerateLimit(60);
-		auto &bmp = BitmapReader::Instance(); 
-		bmp.Load("images/noiseTexture.png"); //Must be loaded before camera
+		auto &PNG = PerlinNoiseGenerator::Instance(); 
+		PNG.Load("images/noiseTexture.png"); //Must be loaded before camera
 		
 		Camera camera(&clock, &window);
 		sf::Texture texture0;
@@ -33,8 +33,6 @@ int main()
 		texture3.loadFromFile("images/googly-d.png");
 		sf::Texture texture4;
 		texture4.loadFromFile("images/googly-e.png");
-
-		
 
 		Eye eye(&clock);
 		eye.setTextures(texture0);
