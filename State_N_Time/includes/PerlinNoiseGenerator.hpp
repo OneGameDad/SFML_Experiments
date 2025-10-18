@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cmath>
+#include "data.hpp"
 
 /*NOTE: 1) Make sure the g_data is loaded and set. Then load this before creating and setting other objects, as they may reference it*/
 
@@ -39,8 +40,8 @@ private:
    
 
 public:
-    PerlinNoiseGenerator(const PerlinNoiseGenerator &copy) = delete;
-    PerlinNoiseGenerator& operator=(const PerlinNoiseGenerator &copy) = delete;
+    PerlinNoiseGenerator(const PerlinNoiseGenerator&) = delete;
+    PerlinNoiseGenerator& operator=(const PerlinNoiseGenerator&) = delete;
 
     static PerlinNoiseGenerator &Instance()
     {
