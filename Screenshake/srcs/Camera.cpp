@@ -6,6 +6,9 @@ Camera::Camera(sf::Clock *clock, sf::RenderWindow *window)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
+    xPosAnimator = new PropertyAnimator(speedMultiplierX);
+    yPosAnimator = new PropertyAnimator(speedMultiplierY);
+    angleAnimator = new PropertyAnimator(speedMultiplierAngle);
 }
 
 Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y)
@@ -14,12 +17,18 @@ Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
+    xPosAnimator = new PropertyAnimator(speedMultiplierX);
+    yPosAnimator = new PropertyAnimator(speedMultiplierY);
+    angleAnimator = new PropertyAnimator(speedMultiplierAngle);
 }
 
 Camera::~Camera()
 {
     clock_ = nullptr;
     window_ = nullptr;
+    delete angleAnimator;
+    delete yPosAnimator;
+    delete xPosAnimator;
 }
 
 void Camera::Update()
@@ -46,12 +55,9 @@ void Camera::beginCameraShake()
 {
     if (!isShaking)
     {
-        tNoiseOffsetXX = rand() * 10; //time offset for animating X position
-        tNoiseOffsetXY = rand();
-        tNoiseOffsetYX = 1.0 + rand() * 10; // time offset for animating Y position
-        tNoiseOffsetYY = rand();
-        tNoiseOffsetAngleX = 2.0 + rand() * 10 ; // time offset for animating Angle
-        tNoiseOffsetAngleY = rand();
+        xPosAnimator->reset();
+        yPosAnimator->reset();
+        angleAnimator->reset();
     }
     addTrauma(moreTraumaPlease);
     std::cout << "Trauma Level: " << trauma << std::endl;
@@ -70,9 +76,9 @@ void Camera::cameraShake()
     else
     {
         float shake = trauma * trauma; // Currently trauma^2, could try trauma^3
-        float angle = maxAngleOffset * shake * (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetXX, tNoiseOffsetXY, speedMultiplierX)* 2.0f - 1.0f);
-        float x = maxPixelOffset * shake * (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetYX, tNoiseOffsetYY, speedMultiplierY) * 2.0f - 1.0f);
-        float y = maxPixelOffset * shake * (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetAngleX, tNoiseOffsetAngleY, speedMultiplierAngle) * 2.0f - 1.0f);
+        float angle = maxAngleOffset * shake * angleAnimator->update(g_data.currentTime);
+        float x = maxPixelOffset * shake * xPosAnimator->update(g_data.currentTime);
+        float y = maxPixelOffset * shake * yPosAnimator->update(g_data.currentTime);
         
         current_center =  {orig_center.x + x, orig_center.y + y};
         current_rotation = orig_rotation + angle;

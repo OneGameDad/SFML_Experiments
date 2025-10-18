@@ -9,6 +9,7 @@
 #include <iostream>
 #include "PerlinNoiseGenerator.hpp"
 #include "data.hpp"
+#include "PropertyAnimator.hpp"
 
 class Camera
 {
@@ -36,12 +37,9 @@ private:
     double speedMultiplierY = 15.0;
     double speedMultiplierAngle = 20.0;
 
-    float tNoiseOffsetXX = 0.0f;
-    float tNoiseOffsetXY = 0.0f;
-    float tNoiseOffsetYX = 0.0f;
-    float tNoiseOffsetYY = 0.0f;
-    float tNoiseOffsetAngleX = 0.0f;
-    float tNoiseOffsetAngleY = 0.0f;
+    PropertyAnimator *xPosAnimator;
+    PropertyAnimator *yPosAnimator;
+    PropertyAnimator *angleAnimator;
 
     void cameraShake();
     void animateScreenShake();
