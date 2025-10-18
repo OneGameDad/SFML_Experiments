@@ -19,5 +19,5 @@ public:
     ~PropertyAnimator();
     
     void reset();
-    float update(bool useScaledTime);
+    float update(bool useUnscaledTime);
 };

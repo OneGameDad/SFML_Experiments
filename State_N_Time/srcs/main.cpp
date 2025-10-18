@@ -60,10 +60,10 @@ int main()
 					else if (event.key.code == sf::Keyboard::Enter)
 					{
 						std::cout << "Time Scale: " << GameTime::getInstance().getTimeScale() << std::endl;
-						if (GameTime::getInstance().getTimeScale() == 1.0)
-							GameTime::getInstance().setTimeScale(0.25);
-						else
+						if (GameTime::getInstance().getTimeScale() != 1.0)
 							GameTime::getInstance().setTimeScale(1.0);
+						else
+							GameTime::getInstance().setTimeScale(0.1);
 						std::cout << "Time Scale: " << GameTime::getInstance().getTimeScale() << std::endl;
 					}
 					else if (event.key.code != sf::Keyboard::Escape)

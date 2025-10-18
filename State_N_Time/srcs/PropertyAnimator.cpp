@@ -15,10 +15,10 @@ void PropertyAnimator::reset()
     samplingXOffset = rand();
 }
     
-float PropertyAnimator::update(bool useScaledTime)
+float PropertyAnimator::update(bool useUnscaledTime)
 {
-    if (useScaledTime)
-        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+    if (useUnscaledTime)
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getCurrrentTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
     else
-        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTime() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getCurrentTime() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
 }

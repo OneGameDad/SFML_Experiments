@@ -9,6 +9,10 @@
 #include <iostream>
 #include "PerlinNoiseGenerator.hpp"
 #include "PropertyAnimator.hpp"
+#include <cmath>
+
+#define DECAY_POWER             2.0
+#define DEFAULT_FRAME_DURATION  1.0/60.0
 
 class Camera
 {

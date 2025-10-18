@@ -36,9 +36,9 @@ void Camera::Update()
     {
        cameraShake();
     }
-    if (trauma > 0.0f)
+   if (trauma > 0.0f)
     {
-        trauma -= recoveryRate;
+        trauma = trauma - recoveryRate * (GameTime::getInstance().getDeltaTime() / DEFAULT_FRAME_DURATION);
         if (trauma < 0.0f)
             trauma = 0.0f;
         std::cout << "Trauma Level: " << trauma << std::endl;
@@ -100,6 +100,8 @@ void Camera::addTrauma(float amount)
 
 void Camera::setRecoveryRate(float amount)
 {
-    if (amount > 0.0f)
+    if (amount < 0.01f)
+        recoveryRate = 0.01f;
+    else
         recoveryRate = amount;
 }
