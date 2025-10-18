@@ -3,15 +3,12 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <SFML/System/Clock.hpp>
 #include <cstdlib>
 #include <iostream>
-#include "data.hpp"
 
 class Eye
 {
 private:
-    sf::Clock *clock_;
     sf::Sprite sprite_;
     std::vector<sf::Texture> textures_;
     int currentTextureIndex = 0;
@@ -21,7 +18,7 @@ private:
 
     void incrementTexture();
 public:
-    Eye(sf::Clock *clock);
+    Eye();
     ~Eye();
 
     void setTextures(sf::Texture &texture);

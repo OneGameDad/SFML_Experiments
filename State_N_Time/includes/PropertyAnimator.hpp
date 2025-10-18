@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdlib>
 #include "PerlinNoiseGenerator.hpp"
+#include <SFML/Graphics.hpp>
+#include "GameTime.hpp"
 
 class PropertyAnimator
 {
@@ -17,5 +19,5 @@ public:
     ~PropertyAnimator();
     
     void reset();
-    float update(double t);
+    float update(bool useScaledTime);
 };

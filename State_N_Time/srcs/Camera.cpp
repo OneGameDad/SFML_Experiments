@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
-Camera::Camera(sf::Clock *clock, sf::RenderWindow *window)
-    : window_(window), clock_(clock)
+Camera::Camera(sf::RenderWindow *window)
+    : window_(window)
 {
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
@@ -11,8 +11,8 @@ Camera::Camera(sf::Clock *clock, sf::RenderWindow *window)
     angleAnimator = new PropertyAnimator(speedMultiplierAngle);
 }
 
-Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y)
-    : window_(window), clock_(clock), orig_center({x, y}), current_center({x, y})
+Camera::Camera(sf::RenderWindow *window, float x, float y)
+    : window_(window), orig_center({x, y}), current_center({x, y})
 {
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
@@ -24,7 +24,6 @@ Camera::Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y)
 
 Camera::~Camera()
 {
-    clock_ = nullptr;
     window_ = nullptr;
     delete angleAnimator;
     delete yPosAnimator;
@@ -76,9 +75,9 @@ void Camera::cameraShake()
     else
     {
         float shake = trauma * trauma; // Currently trauma^2, could try trauma^3
-        float angle = maxAngleOffset * shake * angleAnimator->update(g_data.currentTime);
-        float x = maxPixelOffset * shake * xPosAnimator->update(g_data.currentTime);
-        float y = maxPixelOffset * shake * yPosAnimator->update(g_data.currentTime);
+        float angle = maxAngleOffset * shake * angleAnimator->update(false);
+        float x = maxPixelOffset * shake * xPosAnimator->update(false);
+        float y = maxPixelOffset * shake * yPosAnimator->update(false);
         
         current_center =  {orig_center.x + x, orig_center.y + y};
         current_rotation = orig_rotation + angle;

@@ -1,5 +1,5 @@
 #include "PropertyAnimator.hpp"
-#include "SFML/Graphics.hpp"
+
 
 PropertyAnimator::PropertyAnimator(){}
 
@@ -15,7 +15,10 @@ void PropertyAnimator::reset()
     samplingXOffset = rand();
 }
     
-float PropertyAnimator::update(double t)
+float PropertyAnimator::update(bool useScaledTime)
 {
-    return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(t + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+    if (useScaledTime)
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+    else
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTime() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
 }
