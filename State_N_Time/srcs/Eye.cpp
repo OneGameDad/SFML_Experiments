@@ -1,13 +1,8 @@
 #include "Eye.hpp"
 
-Eye::Eye(sf::Clock *clock)
-    : clock_(clock)
-{}
+Eye::Eye(){}
 
-Eye::~Eye()
-{
-    clock_ = nullptr;
-}
+Eye::~Eye(){}
 
 void Eye::setTextures(sf::Texture &texture)
 {
@@ -19,16 +14,10 @@ void Eye::setTextures(sf::Texture &texture)
 {
     if (isAnimating)
     {
-       static auto start = clock_->restart().asMilliseconds();
-        auto now = clock_->getElapsedTime().asMilliseconds();
-        float currTime = now - start;
-        if (currTime >= nextAnimationTime)
-        {
-            incrementTexture();
-            nextAnimationTime = currTime + MILLISECONDS_PER_FRAME;
-        }
+        incrementTexture();
     }
 }
+
 
 void Eye::setPosition(float x, float y)
 {

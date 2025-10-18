@@ -8,14 +8,12 @@
 #include <cstdlib>
 #include <iostream>
 #include "PerlinNoiseGenerator.hpp"
-#include "data.hpp"
 #include "PropertyAnimator.hpp"
 
 class Camera
 {
 private:
     sf::RenderWindow *window_;
-    sf::Clock *clock_;
     sf::View camera_;
     sf::Vector2f orig_center = {0.0f, 0.0f};
     sf::Vector2f current_center = {0.0f, 0.0f};
@@ -45,8 +43,8 @@ private:
     void animateScreenShake();
 
 public:
-    Camera(sf::Clock *clock, sf::RenderWindow *window);
-    Camera(sf::Clock *clock, sf::RenderWindow *window, float x, float y);
+    Camera(sf::RenderWindow *window);
+    Camera(sf::RenderWindow *window, float x, float y);
     ~Camera();
 
     void Update();

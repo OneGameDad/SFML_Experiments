@@ -8,24 +8,21 @@
 #include "Eye.hpp"
 #include "Camera.hpp"
 #include "PerlinNoiseGenerator.hpp"
-#include "data.hpp"
-
-t_data g_data;
+#include "GameTime.hpp"
 
 int main()
 {
 	try
 	{
 		//Setup
-		g_data = {0.0};
-		sf::Clock clock;
-		g_data.setTime(&clock);
+		GameTime::getInstance();
+		GameTime::getInstance().setTime();
 		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
 		window.setFramerateLimit(60);
 		auto &PNG = PerlinNoiseGenerator::Instance(); 
 		PNG.Load("images/noiseTexture.png"); //Must be loaded before camera
 		
-		Camera camera(&clock, &window);
+		Camera camera(&window);
 		sf::Texture texture0;
 		texture0.loadFromFile("images/googly-a.png");
 		sf::Texture texture1;
@@ -37,7 +34,7 @@ int main()
 		sf::Texture texture4;
 		texture4.loadFromFile("images/googly-e.png");
 
-		Eye eye(&clock);
+		Eye eye;
 		eye.setTextures(texture0);
 		eye.setTextures(texture1);
 		eye.setTextures(texture2);
@@ -47,7 +44,7 @@ int main()
 
 		while (window.isOpen())
 		{
-			g_data.updateTime(&clock);
+			GameTime::getInstance().updateTime();
 			//Handle Events
 			sf::Event event;
 			while (window.pollEvent(event))
@@ -59,6 +56,15 @@ int main()
 						std::cout << "IsAnimating set to true\n";
 						//eye.setIsAnimating();
 						camera.beginCameraShake();
+					}
+					else if (event.key.code == sf::Keyboard::Enter)
+					{
+						std::cout << "Time Scale: " << GameTime::getInstance().getTimeScale() << std::endl;
+						if (GameTime::getInstance().getTimeScale() == 1.0)
+							GameTime::getInstance().setTimeScale(0.25);
+						else
+							GameTime::getInstance().setTimeScale(1.0);
+						std::cout << "Time Scale: " << GameTime::getInstance().getTimeScale() << std::endl;
 					}
 					else if (event.key.code != sf::Keyboard::Escape)
 						continue;
