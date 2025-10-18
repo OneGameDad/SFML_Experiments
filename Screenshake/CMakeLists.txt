@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(SpritesTest LANGUAGES CXX)
+project(CameraShake LANGUAGES CXX)
 
 # ------------------------------------------------------------------------------
 # C++ standard setup

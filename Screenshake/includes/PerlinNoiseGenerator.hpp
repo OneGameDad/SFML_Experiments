@@ -37,16 +37,7 @@ private:
         return (GetFloat(x, y));
     }
 
-    float getPerlinNoiseValue(double x, double y, double speedMultiplier)
-    {
-        static const double step = 0.01;
-        // Convert time into x/y pixel coordinates
-        float x = static_cast<float>((x * step * speedMultiplier) % 1.0);
-        float y = static_cast<float>((y * step * speedMultiplier) % 1.0);
-        
-        float val = GetFloatUV(x, y);
-        return (val);
-    }
+   
 
 public:
     PerlinNoiseGenerator(const PerlinNoiseGenerator&) = delete;
@@ -67,19 +58,15 @@ public:
         Height_ = image.getSize().y;
         std::cout << "Loaded image: " << filename << " (" << image.getSize().x << "x" << image.getSize().y << ")" << std::endl;
     }
-
-    float getPerlinXValue(float tNoiseOffsetXX, float tNoiseOffsetXY,float speedMultiplierX)
+    
+    float getPerlinNoiseValue(double x, double y, double speedMultiplier)
     {
-        return (getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetXX, tNoiseOffsetXY, speedMultiplierX) * 2.0f - 1.0f);
-    }
-
-    float getPerlinYValue(float tNoiseOffsetYX, float tNoiseOffsetYY, float speedMultiplierY)
-    {
-        return (getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetYX, tNoiseOffsetYY, speedMultiplierY) * 2.0f - 1.0f);
-    }
-
-    float getPerlinAngleValue(float tNoiseOffsetAngleX, float  tNoiseOffsetAngleY, float speedMultiplierAngle)
-    {
-        return (getPerlinNoiseValue(g_data.currentTime + tNoiseOffsetAngleX, tNoiseOffsetAngleY, speedMultiplierAngle) * 2.0f - 1.0f);
+        static const double step = 0.01;
+        // Convert time into x/y pixel coordinates
+        float u = static_cast<float>(std::fmod(x * step * speedMultiplier, 1.0));
+        float v = static_cast<float>(std::fmod(y * step * speedMultiplier, 1.0));
+        
+        float val = GetFloatUV(u, v);
+        return (val);
     }
 };

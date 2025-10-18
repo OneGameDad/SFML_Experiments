@@ -10,11 +10,14 @@
 #include "PerlinNoiseGenerator.hpp"
 #include "data.hpp"
 
+t_data g_data;
+
 int main()
 {
 	try
 	{
 		//Setup
+		g_data = {0.0};
 		sf::Clock clock;
 		g_data.setTime(&clock);
 		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
@@ -54,7 +57,7 @@ int main()
 					if (event.key.code == sf::Keyboard::Space)
 					{
 						std::cout << "IsAnimating set to true\n";
-						eye.setIsAnimating();
+						//eye.setIsAnimating();
 						camera.beginCameraShake();
 					}
 					else if (event.key.code != sf::Keyboard::Escape)

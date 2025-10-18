@@ -24,18 +24,17 @@ private:
     float current_rotation = 0.0f;
 
     float trauma = 0.0f;
+    float maxTrauma = 10.0f;
+    float moreTraumaPlease = 1.0f;
     float traumaBuffer = 0.1f;
-    float recoveryRate = 0.05f;
+    float recoveryRate = 0.1f;
 
     bool isShaking = false;
-    float maxAngleOffset = 20.0f;
-    float maxPixelOffset = 30.0f;
-
-    sf::Vector2f perlinX = {0.0f, 0.0f};
-    sf::Vector2f perlinY = {0.0f, 0.0f};
-    double speedMultiplierX = 1.0;
-    double speedMultiplierY = 1.5;
-    double speedMultiplierAngle = 2.0;
+    float maxAngleOffset = 90.0f;
+    float maxPixelOffset = 100.0f;
+    double speedMultiplierX = 10.0;
+    double speedMultiplierY = 15.0;
+    double speedMultiplierAngle = 20.0;
 
     float tNoiseOffsetXX = 0.0f;
     float tNoiseOffsetXY = 0.0f;
