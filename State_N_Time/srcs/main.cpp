@@ -17,13 +17,15 @@ int main()
 	try
 	{
 		//Setup
-		GameTime::getInstance().setTime();
+		g_data = {0.0};
+		sf::Clock clock;
+		g_data.setTime(&clock);
 		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
 		window.setFramerateLimit(60);
 		auto &PNG = PerlinNoiseGenerator::Instance(); 
 		PNG.Load("images/noiseTexture.png"); //Must be loaded before camera
 		
-		Camera camera(GameTime::getInstance().getClock(), &window);
+		Camera camera(&clock, &window);
 		sf::Texture texture0;
 		texture0.loadFromFile("images/googly-a.png");
 		sf::Texture texture1;
@@ -35,7 +37,7 @@ int main()
 		sf::Texture texture4;
 		texture4.loadFromFile("images/googly-e.png");
 
-		Eye eye(GameTime::getInstance().getClock());
+		Eye eye(&clock);
 		eye.setTextures(texture0);
 		eye.setTextures(texture1);
 		eye.setTextures(texture2);
@@ -45,7 +47,7 @@ int main()
 
 		while (window.isOpen())
 		{
-			GameTime::getInstance().updateTime();
+			g_data.updateTime(&clock);
 			//Handle Events
 			sf::Event event;
 			while (window.pollEvent(event))
