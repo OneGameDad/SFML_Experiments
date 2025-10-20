@@ -6,9 +6,9 @@ Camera::Camera(sf::RenderWindow *window)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
-    xPosAnimator = new PropertyAnimator(speedMultiplierX);
-    yPosAnimator = new PropertyAnimator(speedMultiplierY);
-    angleAnimator = new PropertyAnimator(speedMultiplierAngle);
+    xPosAnimator = new PerlinAnimator(speedMultiplierX);
+    yPosAnimator = new PerlinAnimator(speedMultiplierY);
+    angleAnimator = new PerlinAnimator(speedMultiplierAngle);
 }
 
 Camera::Camera(sf::RenderWindow *window, float x, float y)
@@ -17,9 +17,9 @@ Camera::Camera(sf::RenderWindow *window, float x, float y)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
-    xPosAnimator = new PropertyAnimator(speedMultiplierX);
-    yPosAnimator = new PropertyAnimator(speedMultiplierY);
-    angleAnimator = new PropertyAnimator(speedMultiplierAngle);
+    xPosAnimator = new PerlinAnimator(speedMultiplierX);
+    yPosAnimator = new PerlinAnimator(speedMultiplierY);
+    angleAnimator = new PerlinAnimator(speedMultiplierAngle);
 }
 
 Camera::~Camera()
@@ -104,4 +104,28 @@ void Camera::setRecoveryRate(float amount)
         recoveryRate = 0.01f;
     else
         recoveryRate = amount;
+}
+
+void Camera::setSpeedMulitplierX(double amount)
+{
+    if (amount < 0.1)
+        speedMultiplierX = 0.1;
+    else
+        speedMultiplierX = amount;
+}
+
+void setSpeedMultiplierY(double amount)
+{
+    if (amount < 0.1)
+        speedMultiplierY = 0.1;
+    else
+        speedMultiplierY = amount;
+}
+
+void setSpeedMultiplierAngle(double amount)
+{
+    if (amount < 0.1)
+        speedMultiplierAngle = 0.1;
+    else
+        speedMultiplierAngle = amount;
 }

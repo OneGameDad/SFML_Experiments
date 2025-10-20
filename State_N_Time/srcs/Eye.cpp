@@ -1,13 +1,28 @@
 #include "Eye.hpp"
 
-Eye::Eye(){}
+Eye::Eye()
+{
+    textureAnimator = new LinearAnimator(textureSpeedMultipliear);
+}
 
-Eye::~Eye(){}
+Eye::~Eye()
+{
+    delete textureAnimator;
+}
 
 void Eye::setTextures(sf::Texture &texture)
 {
     textures_.push_back(texture);
     sprite_.setTexture(textures_.back());
+    frameCount = textures_.size();
+}
+
+void Eye::setDuration(double amount)
+{
+    if (amount < 0.1)
+        duration = 0.1;
+    else
+        duration = amount;
 }
 
  void Eye::Update()
@@ -17,7 +32,6 @@ void Eye::setTextures(sf::Texture &texture)
         incrementTexture();
     }
 }
-
 
 void Eye::setPosition(float x, float y)
 {
@@ -29,12 +43,10 @@ std::vector<sf::Texture> Eye::getTextures() const { return (textures_); }
 
 void Eye::incrementTexture()
 {
-    std::cout << "Current Index: " << currentTextureIndex << std::endl;
-    size_t newIndex = currentTextureIndex + 1;
-    std::cout << "New Index: " << newIndex << std::endl;
-    if (newIndex >= textures_.size())
+    double newIndex = textureAnimator->update(duration, useModulo) *(frameCount - 1);
+    if (newIndex >= 1.0)
     {
-        newIndex = 0;
+        newIndex = 0.0;
         isAnimating = false;
     }
     currentTextureIndex = newIndex;
@@ -45,4 +57,12 @@ void Eye::setIsAnimating()
 {
     if (!isAnimating)
         isAnimating = true;
+}
+
+void Eye::setUseModulo(bool yes)
+{
+    if (yes)
+        useModulo = true;
+    else
+        useModulo = false;
 }

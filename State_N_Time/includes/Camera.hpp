@@ -8,7 +8,8 @@
 #include <cstdlib>
 #include <iostream>
 #include "PerlinNoiseGenerator.hpp"
-#include "PropertyAnimator.hpp"
+#include "APropertyAnimator.hpp"
+#include "PerlinAnimator.hpp"
 #include <cmath>
 
 #define DECAY_POWER             2.0
@@ -39,9 +40,9 @@ private:
     double speedMultiplierY = 15.0;
     double speedMultiplierAngle = 20.0;
 
-    PropertyAnimator *xPosAnimator;
-    PropertyAnimator *yPosAnimator;
-    PropertyAnimator *angleAnimator;
+    APropertyAnimator *xPosAnimator;
+    APropertyAnimator *yPosAnimator;
+    APropertyAnimator *angleAnimator;
 
     void cameraShake();
     void animateScreenShake();
@@ -56,5 +57,7 @@ public:
     void beginCameraShake();
     void addTrauma(float amount);
     void setRecoveryRate(float amount);
-    
+    void setSpeedMulitplierX(double amount);
+    void setSpeedMultiplierY(double amount);
+    void setSpeedMultiplierAngle(double amount);
 };

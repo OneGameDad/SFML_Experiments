@@ -5,8 +5,9 @@
 #include "PerlinNoiseGenerator.hpp"
 #include <SFML/Graphics.hpp>
 #include "GameTime.hpp"
+#include "APropteryAnimator.hpp"
 
-class PropertyAnimator
+class PerlinAnimator: public APropertyAnimator
 {
 private:
     float samplingY;
@@ -14,10 +15,10 @@ private:
     float speedMultiplier;
 
 public:
-    PropertyAnimator();
-    PropertyAnimator(double a_speedMultiplier);
-    ~PropertyAnimator();
+    PerlinAnimator();
+    PerlinAnimator(double a_speedMultiplier);
+    ~PerlinAnimator();
     
-    void reset();
-    float update(bool useUnscaledTime);
+    void    reset();
+    float   update(bool useUnscaledTime);
 };

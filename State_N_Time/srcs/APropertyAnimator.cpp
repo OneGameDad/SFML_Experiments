@@ -1,0 +1,7 @@
+#include "APropertyAnimator.hpp"
+
+APropertyAnimator::APropertyAnimator() : type_("")
+{}
+
+APropertyAnimator::APropertyAnimator(std::string type) : type_(type)
+{}
