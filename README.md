@@ -21,16 +21,17 @@ PerlinNoiseGenerator is a singleton class, used to generate Perlin noise from a 
 A simple test animation to replicate a googly eye, by replacing the texture of a sprite.
 
 ## Roadmap
-[x] 1) Get to grip with the basics
-[x] 2) CMake Compiles
-[x] 3) Create Screenshake
-[x] 4) Create GameState Class
-[] 5) Create Animation system - expand the current PropertyAnimator class
-[] 6) Improved Input system - current means isn't scalable
-[] 7) Create a particle system & pooling system
-~~[] 8) Create an audio system~~
-[] 9) UI
-[] 10) Storylet system (This is just to indulge my interests)
+
+- [x] 1) Get to grip with the basics
+- [x] 2) CMake Compiles
+- [x] 3) Create Screenshake
+- [x] 4) Create GameState Class
+- [] 5) Create Animation system - expand the current PropertyAnimator class
+- [] 6) Improved Input system - current means isn't scalable
+- [] 7) Create a particle system & pooling system
+- ~~[] 8) Create an audio system~~
+- [] 9) UI
+- [] 10) Storylet system (This is just to indulge my interests)
 
 ## Author and acknowledgement
 I'm [Gregory Pellechi](https://github.com/OneGameDad), an experienced Narrative Designer and writer who has been learning to program in C & C++ at Hive Helsinki. I couldn't have done this without my mentor Aki.
