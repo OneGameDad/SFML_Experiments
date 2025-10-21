@@ -18,7 +18,7 @@ void    PerlinAnimator::reset()
 float   PerlinAnimator::update()
 {
     if (useUnscaledTime)
-        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getCurrrentTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
     else
-        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTime() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
+        return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getCurrentTime() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);
 }

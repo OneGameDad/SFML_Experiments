@@ -53,8 +53,11 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Space)
 					{
-						eye.beginAnimating();
-						//camera.beginCameraShake();
+						camera.beginCameraShake();
+					}
+					else if (event.key.code == sf::Keyboard::Tab)
+					{
+						eye.requestGoogly();
 					}
 					else if (event.key.code == sf::Keyboard::Enter)
 					{

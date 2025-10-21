@@ -18,7 +18,7 @@ private:
     double  duration = 1.0f;
     Tweener   *tweener;
     size_t  frameCount = 0;
-    bool    useModulo = false;
+    bool    googlyRequested =  false;
 
     void    incrementTexture();
 public:
@@ -32,4 +32,5 @@ public:
     sf::Sprite  getSprite() const;
     std::vector<sf::Texture> getTextures() const;
     void    beginAnimating();
+    void    requestGoogly();
 };

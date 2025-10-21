@@ -11,6 +11,7 @@
 #include "APropertyAnimator.hpp"
 #include "PerlinAnimator.hpp"
 #include <cmath>
+#include <vector>
 
 #define DECAY_POWER             2.0
 #define DEFAULT_FRAME_DURATION  1.0/60.0
@@ -18,34 +19,37 @@
 class Camera
 {
 private:
-    sf::RenderWindow *window_;
-    sf::View camera_;
-    sf::Vector2f orig_center = {0.0f, 0.0f};
-    sf::Vector2f current_center = {0.0f, 0.0f};
-    sf::Vector2f orig_size = {100.0f, 100.0f};
-    sf::Vector2f current_size = {100.0f, 100.0f};
-    float orig_rotation = 0.0f;
-    float current_rotation = 0.0f;
+    sf::RenderWindow    *window_;
+    sf::View    camera_;
+    sf::Vector2f    orig_center = {0.0f, 0.0f};
+    sf::Vector2f    current_center = {0.0f, 0.0f};
+    sf::Vector2f    orig_size = {100.0f, 100.0f};
+    sf::Vector2f    current_size = {100.0f, 100.0f};
+    float   orig_rotation = 0.0f;
+    float   current_rotation = 0.0f;
 
-    float trauma = 0.0f;
-    float maxTrauma = 10.0f;
-    float moreTraumaPlease = 1.0f;
-    float traumaBuffer = 0.1f;
-    float recoveryRate = 0.1f;
+    float   trauma = 0.0f;
+    float   maxTrauma = 10.0f;
+    float   moreTraumaPlease = 1.5f;
+    float   traumaBuffer = 0.1f;
+    float   recoveryRate = 0.4f;
 
-    bool isShaking = false;
-    float maxAngleOffset = 90.0f;
-    float maxPixelOffset = 100.0f;
-    double speedMultiplierX = 10.0;
-    double speedMultiplierY = 15.0;
-    double speedMultiplierAngle = 20.0;
+    bool    isShaking = false;
+    float   maxAngleOffset = 90.0f;
+    float   maxPixelOffset = 100.0f;
+    double  speedMultiplierX = 100.0;
+    double  speedMultiplierY = 100.0;
+    double  speedMultiplierAngle = 100.0;
 
-    APropertyAnimator *xPosAnimator;
-    APropertyAnimator *yPosAnimator;
-    APropertyAnimator *angleAnimator;
+    APropertyAnimator   *xPosAnimator;
+    APropertyAnimator   *yPosAnimator;
+    APropertyAnimator   *angleAnimator;
 
-    void cameraShake();
-    void animateScreenShake();
+    bool    shakeRequested = false;
+
+    void    cameraShake();
+    void    animateScreenShake();
+    void    recover();
 
 public:
     Camera(sf::RenderWindow *window);
@@ -55,6 +59,7 @@ public:
     void Update();
     void setPosition(float x, float y);
     void beginCameraShake();
+    void requestShake();
     void addTrauma(float amount);
     void setRecoveryRate(float amount);
     void setSpeedMulitplierX(double amount);

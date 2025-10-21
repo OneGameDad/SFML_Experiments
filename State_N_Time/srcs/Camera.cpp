@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 Camera::Camera(sf::RenderWindow *window)
-    : window_(window)
+    : window_(window), shakeRequested(false)
 {
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
@@ -12,7 +12,7 @@ Camera::Camera(sf::RenderWindow *window)
 }
 
 Camera::Camera(sf::RenderWindow *window, float x, float y)
-    : window_(window), orig_center({x, y}), current_center({x, y})
+    : window_(window), orig_center({x, y}), current_center({x, y}), shakeRequested(false)
 {
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
@@ -32,17 +32,16 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+    if (shakeRequested /*|| sf::Keyboard::Space*/)
+    {
+       beginCameraShake();
+       shakeRequested =  false;
+    }
     if (isShaking)
     {
-       cameraShake();
+        cameraShake();
     }
-   if (trauma > 0.0f)
-    {
-        trauma = trauma - recoveryRate * (GameTime::getInstance().getDeltaTime() / DEFAULT_FRAME_DURATION);
-        if (trauma < 0.0f)
-            trauma = 0.0f;
-        std::cout << "Trauma Level: " << trauma << std::endl;
-    }
+    recover();
 }
 
 void Camera::setPosition(float x, float y)
@@ -61,7 +60,19 @@ void Camera::beginCameraShake()
     addTrauma(moreTraumaPlease);
     std::cout << "Trauma Level: " << trauma << std::endl;
     if (!isShaking)
+    {
         isShaking = true;
+        std::cout << "Camera is Shaking\n";
+    }
+}
+
+void Camera::requestShake()
+{
+    if (!shakeRequested)
+    {
+        shakeRequested = true;
+        std::cout << "Camera Shake Requested\n";
+    }
 }
 
 void Camera::cameraShake()
@@ -69,6 +80,7 @@ void Camera::cameraShake()
     if (trauma <= traumaBuffer)
     {
         isShaking = false;
+        std::cout << "Camera is NOT shaking\n";
         current_center = orig_center;
         current_rotation = orig_rotation;
     }
@@ -128,4 +140,17 @@ void Camera::setSpeedMultiplierAngle(double amount)
         speedMultiplierAngle = 0.1;
     else
         speedMultiplierAngle = amount;
+}
+
+void Camera::recover()
+{
+    if (trauma > traumaBuffer)
+    {
+        trauma -= recoveryRate * (GameTime::getInstance().getCurrentTime() / DEFAULT_FRAME_DURATION);
+        if (trauma < 0.0f)
+            trauma = 0.0f;
+        std::cout << "Trauma Level: " << trauma << std::endl;
+    }
+    if (trauma <= traumaBuffer)
+        trauma = 0.0f;
 }

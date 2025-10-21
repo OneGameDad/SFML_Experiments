@@ -27,6 +27,11 @@ void Eye::setDuration(double amount)
 
  void Eye::Update()
 {
+    if (googlyRequested /*|| sf::Keyboard::Tab*/)
+    {
+        beginAnimating();
+        googlyRequested = false;
+    }
     float frame = std::fmod((tweener->update() * frameCount), frameCount);
     currentTextureIndex = (size_t)std::floor(frame);
     sprite_.setTexture(textures_[currentTextureIndex]);
@@ -44,4 +49,10 @@ void    Eye::beginAnimating()
 {
     tweener->reset();
     tweener->play();
+}
+
+void    Eye::requestGoogly()
+{
+    if (!googlyRequested)
+        googlyRequested = true;
 }

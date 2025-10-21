@@ -41,7 +41,7 @@ float    Tweener::update()
         {
             isPlaying = false;
             std::cout << "Tweener isPlaying = False\n";
-            return (start);
+            return (end);
         }
         float t = animator->update();
         float output = lerp(start, end, t);
