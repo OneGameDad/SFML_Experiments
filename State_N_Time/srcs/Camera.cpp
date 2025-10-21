@@ -9,6 +9,7 @@ Camera::Camera(sf::RenderWindow *window)
     xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
     yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
     angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
+    tweener = new Tweener(trauma, 0, recoveryDuration, new LinearAnimator(recoveryDuration, false));
 }
 
 Camera::Camera(sf::RenderWindow *window, float x, float y)
@@ -20,11 +21,13 @@ Camera::Camera(sf::RenderWindow *window, float x, float y)
     xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
     yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
     angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
+    tweener = new Tweener(trauma, 0, recoveryDuration, new LinearAnimator(recoveryDuration, false));
 }
 
 Camera::~Camera()
 {
     window_ = nullptr;
+    delete tweener;
     delete angleAnimator;
     delete yPosAnimator;
     delete xPosAnimator;
@@ -37,6 +40,7 @@ void Camera::Update()
        beginCameraShake();
        shakeRequested =  false;
     }
+    
     if (isShaking)
     {
         cameraShake();
@@ -83,6 +87,7 @@ void Camera::cameraShake()
         std::cout << "Camera is NOT shaking\n";
         current_center = orig_center;
         current_rotation = orig_rotation;
+
     }
     else
     {
@@ -108,14 +113,15 @@ void Camera::addTrauma(float amount)
         trauma = 0.0f;
     else
         trauma += amount;
+    updateTweener();
 }
 
-void Camera::setRecoveryRate(float amount)
+void Camera::setRecoveryDuration(float amount)
 {
     if (amount < 0.01f)
-        recoveryRate = 0.01f;
+        recoveryDuration = 0.01f;
     else
-        recoveryRate = amount;
+        recoveryDuration = amount;
 }
 
 void Camera::setSpeedMulitplierX(double amount)
@@ -144,13 +150,22 @@ void Camera::setSpeedMultiplierAngle(double amount)
 
 void Camera::recover()
 {
-    if (trauma > traumaBuffer)
+    if (trauma >= traumaBuffer)
     {
-        trauma -= recoveryRate * (GameTime::getInstance().getCurrentTime() / DEFAULT_FRAME_DURATION);
-        if (trauma < 0.0f)
+        trauma = tweener->update();
+        if (trauma < traumaBuffer)
             trauma = 0.0f;
         std::cout << "Trauma Level: " << trauma << std::endl;
     }
-    if (trauma <= traumaBuffer)
+    if (trauma < traumaBuffer)
         trauma = 0.0f;
+}
+
+void Camera::updateTweener()
+{
+    tweener->reset();
+    std::cout << "Trauma: " << trauma << " recoveryDuration: " << recoveryDuration << " recoveryDuration * trauma:  " << recoveryDuration * trauma << std::endl;
+    tweener->restart(trauma, 0.0, recoveryDuration * trauma);
+    if (trauma > traumaBuffer)
+        tweener->play();
 }

@@ -10,6 +10,8 @@
 #include "PerlinNoiseGenerator.hpp"
 #include "APropertyAnimator.hpp"
 #include "PerlinAnimator.hpp"
+#include "Tweener.hpp"
+#include "LinearAnimator.hpp"
 #include <cmath>
 #include <vector>
 
@@ -32,7 +34,7 @@ private:
     float   maxTrauma = 10.0f;
     float   moreTraumaPlease = 1.5f;
     float   traumaBuffer = 0.1f;
-    float   recoveryRate = 0.4f;
+    float   recoveryDuration =  (DEFAULT_FRAME_DURATION / 0.6f);
 
     bool    isShaking = false;
     float   maxAngleOffset = 90.0f;
@@ -44,12 +46,14 @@ private:
     APropertyAnimator   *xPosAnimator;
     APropertyAnimator   *yPosAnimator;
     APropertyAnimator   *angleAnimator;
+    Tweener *tweener;
 
     bool    shakeRequested = false;
 
     void    cameraShake();
     void    animateScreenShake();
     void    recover();
+    void    updateTweener();
 
 public:
     Camera(sf::RenderWindow *window);
@@ -61,7 +65,7 @@ public:
     void beginCameraShake();
     void requestShake();
     void addTrauma(float amount);
-    void setRecoveryRate(float amount);
+    void setRecoveryDuration(float amount);
     void setSpeedMulitplierX(double amount);
     void setSpeedMultiplierY(double amount);
     void setSpeedMultiplierAngle(double amount);

@@ -26,4 +26,5 @@ public:
     void    play();
     float   update();
     bool    getIsPlaying() const;
+    void    restart(float a_start, float a_end, float a_duration);
 };

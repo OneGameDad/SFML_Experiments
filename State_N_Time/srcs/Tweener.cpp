@@ -51,3 +51,10 @@ float    Tweener::update()
 }
 
 bool    Tweener::getIsPlaying() const { return (isPlaying); }
+
+void    Tweener::restart(float a_start, float a_end, float a_duration)
+{
+    start = a_start;
+    end = a_end;
+    duration = a_duration;
+}
