@@ -53,7 +53,7 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Space)
 					{
-						eye.setIsAnimating();
+						eye.beginAnimating();
 						//camera.beginCameraShake();
 					}
 					else if (event.key.code == sf::Keyboard::Enter)

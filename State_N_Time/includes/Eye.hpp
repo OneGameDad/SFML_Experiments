@@ -15,8 +15,7 @@ private:
     sf::Sprite  sprite_;
     std::vector<sf::Texture>    textures_;
     int currentTextureIndex = 0;
-    bool    isAnimating = false;
-    double  duration = 0.3f;
+    double  duration = 1.0f;
     Tweener   *tweener;
     size_t  frameCount = 0;
     bool    useModulo = false;
@@ -32,6 +31,5 @@ public:
     void    setPosition(float x, float y);
     sf::Sprite  getSprite() const;
     std::vector<sf::Texture> getTextures() const;
-    void    setIsAnimating();
     void    beginAnimating();
 };
