@@ -12,4 +12,6 @@ public:
     virtual ~APropertyAnimator();
 
     std::string getType() const;
+    virtual void    reset() = 0;
+    virtual float   update() = 0;
 };

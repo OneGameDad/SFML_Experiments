@@ -53,9 +53,8 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Space)
 					{
-						std::cout << "IsAnimating set to true\n";
-						//eye.setIsAnimating();
-						camera.beginCameraShake();
+						eye.setIsAnimating();
+						//camera.beginCameraShake();
 					}
 					else if (event.key.code == sf::Keyboard::Enter)
 					{

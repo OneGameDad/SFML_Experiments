@@ -1,30 +1,29 @@
 #include "LinearAnimator.hpp"
 
-LinearAnimator::LinearAnimator() : APropertyAnimator("Linear"), offset(0.0)
+LinearAnimator::LinearAnimator() : APropertyAnimator("Linear"), currentValue(0.0)
 {}
 
-LinearAnimator::LinearAnimator(double a_speedMultiplier)
-    : APropertyAnimator("Linear"), offset(0.0), speedMultiplier(a_speedMultiplier)
+LinearAnimator::LinearAnimator(double a_duration, bool a_useUnscaledTime)
+    : APropertyAnimator("Linear"), currentValue(0.0), duration(a_duration), useUnscaledTime(a_useUnscaledTime)
 {}
 
 LinearAnimator::~LinearAnimator(){}
 
 void    LinearAnimator::reset()
 {
-    offset = 0.0;
+    currentValue = 0.0;
 }
 
-float   LinearAnimator::update(bool useUnscaledTime, bool useModulo) //TODO Fix calculation
+float   LinearAnimator::update()
 {
-    if (useModulo)
-    {
-        if (useUnscaledTime)
-            return (GameTime::getInstance().getDeltaTimeUnscaled() + offset, speedMultiplier);
-        else
-            return (GameTime::getInstance().getDeltaTime() + offset, speedMultiplier);
-    }
     if (useUnscaledTime)
-        return (GameTime::getInstance().getDeltaTimeUnscaled() + offset, speedMultiplier);
+    {
+        currentValue += GameTime::getInstance().getDeltaTimeUnscaled() * duration;
+        return (currentValue);
+    }
     else
-        return (GameTime::getInstance().getDeltaTime() + offset, speedMultiplier);
+    {
+        currentValue += GameTime::getInstance().getDeltaTime() * duration;
+        return (currentValue);
+    }
 }

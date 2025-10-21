@@ -3,19 +3,20 @@
 #include <cmath>
 #include <cstdlib>
 #include "GameTime.hpp"
-#include "APropteryAnimator.hpp"
+#include "APropertyAnimator.hpp"
 
 class LinearAnimator: public APropertyAnimator
 {
 private:
-    float   offset;
-    float   speedMultiplier;
+    float   currentValue;
+    float   duration;
+    bool    useUnscaledTime =  false;
 
-public:
     LinearAnimator();
-    LinearAnimator(double a_speedMultiplier);
+public:
+    LinearAnimator(double a_duration, bool a_useUnscaledTime);
     ~LinearAnimator();
 
     void    reset();
-    float   update(bool useUnscaledTime, bool useModulo);
+    float   update();
 };

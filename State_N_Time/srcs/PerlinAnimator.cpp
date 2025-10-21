@@ -3,8 +3,8 @@
 PerlinAnimator::PerlinAnimator(): APropertyAnimator("Perlin")
 {}
 
-PerlinAnimator::PerlinAnimator(double a_speedMultiplier)
-    : APropertyAnimator("Perlin"), samplingY(0.0), samplingXOffset(0.0), speedMultiplier(a_speedMultiplier)
+PerlinAnimator::PerlinAnimator(double a_speedMultiplier, bool a_useUnscaledTime)
+    : APropertyAnimator("Perlin"), samplingY(0.0), samplingXOffset(0.0), speedMultiplier(a_speedMultiplier), useUnscaledTime(a_useUnscaledTime)
 {}
 
 PerlinAnimator::~PerlinAnimator(){}
@@ -15,7 +15,7 @@ void    PerlinAnimator::reset()
     samplingY = rand();
 }
 
-float   PerlinAnimator::update(bool useUnscaledTime)
+float   PerlinAnimator::update()
 {
     if (useUnscaledTime)
         return (PerlinNoiseGenerator::Instance().getPerlinNoiseValue(GameTime::getInstance().getDeltaTimeUnscaled() + samplingXOffset, samplingY, speedMultiplier) * 2.0f - 1.0f);

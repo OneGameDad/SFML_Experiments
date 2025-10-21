@@ -6,9 +6,9 @@ Camera::Camera(sf::RenderWindow *window)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
-    xPosAnimator = new PerlinAnimator(speedMultiplierX);
-    yPosAnimator = new PerlinAnimator(speedMultiplierY);
-    angleAnimator = new PerlinAnimator(speedMultiplierAngle);
+    xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
+    yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
+    angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
 }
 
 Camera::Camera(sf::RenderWindow *window, float x, float y)
@@ -17,9 +17,9 @@ Camera::Camera(sf::RenderWindow *window, float x, float y)
     camera_ = window_->getView();
     orig_center = camera_.getCenter();
     orig_rotation = camera_.getRotation();
-    xPosAnimator = new PerlinAnimator(speedMultiplierX);
-    yPosAnimator = new PerlinAnimator(speedMultiplierY);
-    angleAnimator = new PerlinAnimator(speedMultiplierAngle);
+    xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
+    yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
+    angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
 }
 
 Camera::~Camera()
@@ -75,9 +75,9 @@ void Camera::cameraShake()
     else
     {
         float shake = trauma * trauma; // Currently trauma^2, could try trauma^3
-        float angle = maxAngleOffset * shake * angleAnimator->update(false);
-        float x = maxPixelOffset * shake * xPosAnimator->update(false);
-        float y = maxPixelOffset * shake * yPosAnimator->update(false);
+        float angle = maxAngleOffset * shake * angleAnimator->update();
+        float x = maxPixelOffset * shake * xPosAnimator->update();
+        float y = maxPixelOffset * shake * yPosAnimator->update();
         
         current_center =  {orig_center.x + x, orig_center.y + y};
         current_rotation = orig_rotation + angle;
@@ -114,7 +114,7 @@ void Camera::setSpeedMulitplierX(double amount)
         speedMultiplierX = amount;
 }
 
-void setSpeedMultiplierY(double amount)
+void Camera::setSpeedMultiplierY(double amount)
 {
     if (amount < 0.1)
         speedMultiplierY = 0.1;
@@ -122,7 +122,7 @@ void setSpeedMultiplierY(double amount)
         speedMultiplierY = amount;
 }
 
-void setSpeedMultiplierAngle(double amount)
+void Camera::setSpeedMultiplierAngle(double amount)
 {
     if (amount < 0.1)
         speedMultiplierAngle = 0.1;

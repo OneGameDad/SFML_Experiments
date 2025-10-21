@@ -2,12 +2,12 @@
 
 Eye::Eye()
 {
-    textureAnimator = new LinearAnimator(textureSpeedMultipliear);
+    tweener = new Tweener(0.0f, 5.0f, (float)duration, new LinearAnimator(duration, false));
 }
-
+    
 Eye::~Eye()
 {
-    delete textureAnimator;
+    delete tweener;
 }
 
 void Eye::setTextures(sf::Texture &texture)
@@ -43,26 +43,30 @@ std::vector<sf::Texture> Eye::getTextures() const { return (textures_); }
 
 void Eye::incrementTexture()
 {
-    double newIndex = textureAnimator->update(duration, useModulo) *(frameCount - 1);
-    if (newIndex >= 1.0)
+    float frame = tweener->update() * (frameCount - 1);
+    if (/*frame >= frameCount ||*/ !tweener->getIsPlaying())
     {
-        newIndex = 0.0;
+        frame = 0.0f;
         isAnimating = false;
+        std::cout << "Eye isAnimating = False\n";
     }
-    currentTextureIndex = newIndex;
+    currentTextureIndex = (size_t)std::floor(frame);
+    std::cout << "CurrentTextureIndex: " << currentTextureIndex << std::endl;
     sprite_.setTexture(textures_[currentTextureIndex]);
 }
 
 void Eye::setIsAnimating()
 {
     if (!isAnimating)
+    {
         isAnimating = true;
+        std::cout << "Eye isAnimating = true\n";
+        beginAnimating();
+    }
 }
 
-void Eye::setUseModulo(bool yes)
+void    Eye::beginAnimating()
 {
-    if (yes)
-        useModulo = true;
-    else
-        useModulo = false;
+    tweener->reset();
+    tweener->play();
 }
