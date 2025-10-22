@@ -20,6 +20,9 @@ PerlinNoiseGenerator is a singleton class, used to generate Perlin noise from a 
 ### Googly Eye
 A simple test animation to replicate a googly eye, by replacing the texture of a sprite.
 
+### Particle System
+A particle system using sf::VertexArray and sf::Quad to draw particles. Abstracted it to create a fire effect. It needs some refinement and the current textures are too large. But it can have multiple emitters which can follow a target. The fire effect proves it can be do multiple types of effects. This was created using Chat-GPT to help me with the calculations.
+
 ## Roadmap
 
 - [x] 1) Get to grip with the basics
@@ -27,8 +30,8 @@ A simple test animation to replicate a googly eye, by replacing the texture of a
 - [x] 3) Create Screenshake
 - [x] 4) Create GameState Class
 - [X] 5) Create Animation system - expand the current PropertyAnimator class
-- [] 6) Create a particle system & pooling system
-- [] 7) Improved Input system - current means isn't scalable
+- [X] 6) Create a particle system & pooling system
+- ~~[] 7) Improved Input system - current means isn't scalable~~
 - ~~[] 8) Create an audio system~~
 - [] 9) UI
 - [] 10) Storylet system (This is just to indulge my interests)
