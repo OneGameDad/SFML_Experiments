@@ -10,6 +10,7 @@
 #include "PerlinNoiseGenerator.hpp"
 #include "GameTime.hpp"
 #include "ParticleSystem.hpp"
+#include "FireEffect.hpp"
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
 		//Setup
 		GameTime::getInstance();
 		GameTime::getInstance().setTime();
-		sf::RenderWindow window(sf::VideoMode(640, 480), "Camera Shake");
+		sf::RenderWindow window(sf::VideoMode(800, 600), "Particles");
 		window.setFramerateLimit(60);
 		auto &PNG = PerlinNoiseGenerator::Instance(); 
 		PNG.Load("images/noiseTexture.png"); //Must be loaded before camera
@@ -35,17 +36,13 @@ int main()
 		sf::Texture texture4;
 		texture4.loadFromFile("images/googly-e.png");
 
-		sf::Texture partTex;
-		partTex.loadFromFile("images/circle_05.png");
+		sf::Texture flame;
+		flame.loadFromFile("images/flame_05.png");
+		FireEffect fire(50, flame);
+		fire.addEmitter(sf::Vector2f({400,500}));
+		fire.addEmitter(sf::Vector2f({150,150}));
 
-		ParticleSystem particles(2000, partTex);
 
-		// Example "player" object (we’ll just move with mouse)
-		sf::Vector2f playerPosition(400.f, 300.f);
-
-		// Add emitter that follows player
-		particles.clearEmitters();
-		particles.addEmitter(sf::Vector2f{20.0f, 20.0f});
 
 		Eye eye;
 		eye.setTextures(texture0);
@@ -91,18 +88,14 @@ int main()
 					}
 				}
 			}
-			if (!particles.getEmitters().empty())
-			{
-            	sf::Vector2i mouse = sf::Mouse::getPosition(window);
-            	particles.getEmitters()[0].localPosition = sf::Vector2f(mouse);
-        	}
-
-        	particles.update();
+			fire.getEmitters()[0].localPosition = sf::Vector2f(sf::Mouse::getPosition(window));
+			
 			eye.Update();
 			camera.Update();
+			fire.update();
 			window.clear();
 			window.draw(eye.getSprite());
-			window.draw(particles);
+			window.draw(fire);
 			window.display();
 		}
 		//Cleanup

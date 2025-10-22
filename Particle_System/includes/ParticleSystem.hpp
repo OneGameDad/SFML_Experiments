@@ -46,7 +46,7 @@ struct Emitter {
 
 class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
-private:
+protected:
     std::vector<Particle> m_particles;
     sf::VertexArray m_vertices;
     const sf::Texture& m_texture;
@@ -59,12 +59,13 @@ private:
     void   applyScaling(Particle& p);
     void   applyColorVariation(Particle& p);
     void   updateQuad(std::size_t index, const sf::Vector2f& position, const sf::Color& color, float scale, float rotation);
-    void   resetParticle(Particle& p);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual void    resetParticle(Particle& p);
+    virtual void    updateParticle(Particle& p) = 0;
+    virtual void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
     ParticleSystem(size_t count, const sf::Texture& texture);
-    ~ParticleSystem() = default;
+    virtual ~ParticleSystem() = default;
 
     void update();
     void addEmitter(const sf::Vector2f& localPosition);
