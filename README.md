@@ -26,9 +26,9 @@ A simple test animation to replicate a googly eye, by replacing the texture of a
 - [x] 2) CMake Compiles
 - [x] 3) Create Screenshake
 - [x] 4) Create GameState Class
-- [] 5) Create Animation system - expand the current PropertyAnimator class
-- [] 6) Improved Input system - current means isn't scalable
-- [] 7) Create a particle system & pooling system
+- [X] 5) Create Animation system - expand the current PropertyAnimator class
+- [] 6) Create a particle system & pooling system
+- [] 7) Improved Input system - current means isn't scalable
 - ~~[] 8) Create an audio system~~
 - [] 9) UI
 - [] 10) Storylet system (This is just to indulge my interests)
