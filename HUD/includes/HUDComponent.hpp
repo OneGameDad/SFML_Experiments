@@ -10,7 +10,7 @@ protected:
     void    setPosition();
 public:
     HUDComponent();
-    ~HUDComponent();
+    virtual ~HUDComponent();
 
     virtual void    init();
     virtual void    update(float deltaTime);
