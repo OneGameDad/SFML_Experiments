@@ -2,7 +2,8 @@
 
 Game::Game() :
     m_state(State::WAITING),
-    m_pPlayer(std::make_unique<Player>(this))
+    m_pPlayer(std::make_unique<Player>(this)),
+    m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this))
 {}
 
 Game::~Game()
@@ -39,6 +40,7 @@ bool Game::initialize()
 void Game::resetLevel()
 {
     m_pPlayer->initialize();
+    m_pPlayerHealthBar->initialize(*m_pPlayer);
 }
 
 void Game::update(float deltaTime)
@@ -57,7 +59,7 @@ void Game::update(float deltaTime)
         case State::ACTIVE:
         {
             m_pPlayer->update(deltaTime);
-
+            m_pPlayerHealthBar->update(deltaTime);
         }
         break;
     }
@@ -89,6 +91,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 */
     // Draw player.
     m_pPlayer->draw(target, states);
+    m_pPlayerHealthBar->draw(target, states);
 
     //  Draw world.
 /*    for (auto& temp : m_pVampires)
