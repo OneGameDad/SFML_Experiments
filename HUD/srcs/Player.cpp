@@ -14,6 +14,7 @@ bool Player::initialize()
     body.setFillColor(sf::Color::Magenta);
     body.setOrigin({0.0f, 0.0f});
     body.setPosition(getPosition());
+    std::cout << "Player Position: " << getPosition().x << ", " << getPosition().y << " Body Position: " << body.getPosition().x << ", " << body.getPosition().y << std::endl;
     return true;
 }
 

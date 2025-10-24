@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <memory>
+#include <iostream>
 
 class Player;
 class Game;
@@ -19,8 +20,8 @@ private:
     Game*   m_pGame;
     Player* m_pPlayer;
     sf::RectangleShape* rectangle;
-    const float maxWidth = 20.0f;
-    const float maxHeight = 5.0f;
+    const float maxWidth = 100.0f;
+    const float maxHeight = 10.0f;
 public:
     explicit PlayerHealthBar(Game* pGame);
     ~PlayerHealthBar();

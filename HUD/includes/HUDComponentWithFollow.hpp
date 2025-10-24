@@ -8,8 +8,8 @@ class HUDComponentWithFollow: public HUDComponent
 {
 protected:
     sf::Transformable *target;
-    const float offsetX = 25.0f;
-    const float offsetY = 0.0f;
+    const float offsetX = 0.0f;
+    const float offsetY = -20.0f;
 
     sf::Vector2f getTargetPositionAdjusted();
     void followTarget();

@@ -10,10 +10,14 @@ PlayerHealthBar::~PlayerHealthBar()
 }
 
 /*These two do nothing and are not meant to be used - purely to appease the compiler*/
-void    PlayerHealthBar::initialize(){}
+void    PlayerHealthBar::initialize()
+{
+    setPosition(m_pPlayer->getPosition());
+   
+}
 void    PlayerHealthBar::initialize(sf::Vector2f a_position)
 {
-    (void)a_position;
+    setPosition(a_position);
 }
 
 void   PlayerHealthBar::initialize(sf::Transformable& thePlayer)
@@ -21,8 +25,11 @@ void   PlayerHealthBar::initialize(sf::Transformable& thePlayer)
     rectangle = new sf::RectangleShape();
     setQueryTarget(*m_pPlayer);
     setFollowTarget(thePlayer);
+    setPosition(m_pPlayer->getPosition());
     rectangle->setSize({maxWidth, maxHeight});
     rectangle->setFillColor(sf::Color::Red);
+    rectangle->setPosition(getTargetPositionAdjusted());
+    std::cout << "Health Bar Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void    PlayerHealthBar::setQueryTarget(Player& thePlayer)

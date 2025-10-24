@@ -7,6 +7,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include "Game.hpp"
+#include <iostream>
 
 class Game;
 
