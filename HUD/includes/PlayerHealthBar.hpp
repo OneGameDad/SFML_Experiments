@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HUDComponentWithFollow.hpp"
+#include "HUDComponent.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -14,22 +14,27 @@
 class Player;
 class Game;
 
-class PlayerHealthBar: public HUDComponentWithFollow
+class PlayerHealthBar: public HUDComponent
 {
 private:
     Game*   m_pGame;
     Player* m_pPlayer;
-    sf::RectangleShape* rectangle;
+    sf::RectangleShape rectangle;
+    sf::Sprite m_sprite;
+    sf::Texture texture;
+    float playerWidth = 0.0f;
     const float maxWidth = 100.0f;
     const float maxHeight = 10.0f;
+    const float offsetX = 0.0f;
+    const float offsetY = -20.0f;
+
+    sf::Vector2f    adjustPosition();
 public:
     explicit PlayerHealthBar(Game* pGame);
     ~PlayerHealthBar();
     
     void    initialize() override;
-    void    initialize(sf::Transformable& thePlayer) override;
-    void    initialize(sf::Vector2f a_position) override;
-    void    setQueryTarget(Player& thePlayer);
+//    void    setQueryTarget(Player& thePlayer);
     void    update(float deltaTime) override;
     void    draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

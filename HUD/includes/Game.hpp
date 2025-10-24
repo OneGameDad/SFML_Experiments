@@ -9,9 +9,14 @@
 #include "Player.hpp"
 #include "GameTime.hpp"
 #include "PlayerHealthBar.hpp"
+#include "InputHandler.hpp"
 
 class Player;
 class PlayerHealthBar;
+class GameInput;
+
+const int ScreenWidth = 800;
+const int ScreenHeight = 600;
 
 class Game : public sf::Drawable
 {
@@ -35,10 +40,13 @@ public:
 
     Player* getPlayer() const;
 
+    void onKeyPressed(sf::Keyboard::Key key);
+    void onKeyReleased(sf::Keyboard::Key key);
+
 private:
     State m_state;
     std::unique_ptr<Player> m_pPlayer;
     std::unique_ptr<PlayerHealthBar> m_pPlayerHealthBar;
-
+    std::unique_ptr<GameInput> m_pGameInput;
     
 };

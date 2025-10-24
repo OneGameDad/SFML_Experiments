@@ -20,7 +20,7 @@ int main()
 		//Setup
 		GameTime::getInstance();
 		GameTime::getInstance().setTime();
-		sf::RenderWindow window(sf::VideoMode(800, 600), "Particles");
+		sf::RenderWindow window(sf::VideoMode(ScreenWidth, ScreenHeight), "HUD");
 		window.setFramerateLimit(60);
 		auto &PNG = PerlinNoiseGenerator::Instance(); 
 		PNG.Load("images/noiseTexture.png"); //Must be loaded before camera
@@ -59,6 +59,11 @@ int main()
 		eye.setTextures(texture4);
 		eye.setPosition(100, 100);
 */
+		sf::RectangleShape rectangle;
+		rectangle.setSize({100.0f, 20.0f});
+    	rectangle.setOrigin({0.0f, 0.0f});
+   		rectangle.setFillColor(sf::Color::Red);
+    	rectangle.setPosition({100.0f, 100.0f});
 		while (window.isOpen())
 		{
 			GameTime::getInstance().updateTime();
@@ -66,17 +71,33 @@ int main()
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
-				if (event.type == sf::Event::Closed || event.type == sf::Event::KeyReleased)
+				switch(event.type)
+				{
+					case sf::Event::Closed:
+						// "close requested" event: we close the window
+						window.close();
+						break;
+					case sf::Event::KeyPressed:
+						pGame->onKeyPressed(event.key.code);
+						break;
+					case sf::Event::KeyReleased:
+						pGame->onKeyReleased(event.key.code);
+						break;
+					default:
+						break;
+				}
+			}
+/*				if (event.type == sf::Event::Closed || event.type == sf::Event::KeyReleased)
 				{
 					if (event.key.code == sf::Keyboard::Space)
 					{
 						camera.beginCameraShake();
 					}
-/*					else if (event.key.code == sf::Keyboard::Tab)
+					else if (event.key.code == sf::Keyboard::Tab)
 					{
 						eye.requestGoogly();
 					}
-*/					else if (event.key.code == sf::Keyboard::Enter)
+					else if (event.key.code == sf::Keyboard::Enter)
 					{
 						std::cout << "Time Scale: " << GameTime::getInstance().getTimeScale() << std::endl;
 						if (GameTime::getInstance().getTimeScale() != 1.0)
@@ -94,13 +115,15 @@ int main()
 						exit(EXIT_SUCCESS);
 					}
 				}
-			}
+*/	
+
 //			fire.getEmitters()[0].localPosition = sf::Vector2f(sf::Mouse::getPosition(window));
 			pGame->update(GameTime::getInstance().getDeltaTime());
 //			eye.Update();
 			camera.Update();
 //			fire.update();
 			window.clear();
+			window.draw(rectangle);
 			window.draw(*pGame.get());
 //			window.draw(eye.getSprite());
 //			window.draw(fire);

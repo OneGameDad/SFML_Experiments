@@ -4,11 +4,14 @@ Game::Game() :
     m_state(State::WAITING),
     m_pPlayer(std::make_unique<Player>(this)),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this))
-{}
+{
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get());
+    if (!m_pGameInput.get())
+        std::cerr << "No Input Handler in Game!\n";
+}
 
 Game::~Game()
-{
-}
+{}
 
 bool Game::initialize()
 {
@@ -40,29 +43,34 @@ bool Game::initialize()
 void Game::resetLevel()
 {
     m_pPlayer->initialize();
-    m_pPlayerHealthBar->initialize(*m_pPlayer);
+    m_pPlayerHealthBar->initialize();
 }
 
 void Game::update(float deltaTime)
 {
-    switch (m_state)
+    m_pGameInput->update(deltaTime);
+    m_pPlayer->update(deltaTime);
+    m_pPlayerHealthBar->update(deltaTime);
+/*    switch (m_state)
     {
         case State::WAITING:
         {
             if (GameTime::getInstance().getDeltaTime() >= 3.f)
             {
                 m_state = State::ACTIVE;
+                m_pGameInput->update(deltaTime);
             }
         }
         break;
-            
+            a
         case State::ACTIVE:
         {
+            m_pGameInput->update(deltaTime);
             m_pPlayer->update(deltaTime);
             m_pPlayerHealthBar->update(deltaTime);
         }
         break;
-    }
+    }*/
 }
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -89,9 +97,10 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
         target.draw(timerText);
     }
 */
-    // Draw player.
+    // Draw player & healthbad
     m_pPlayer->draw(target, states);
     m_pPlayerHealthBar->draw(target, states);
+    
 
     //  Draw world.
 /*    for (auto& temp : m_pVampires)
@@ -103,4 +112,14 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 Player* Game::getPlayer() const 
 {
     return m_pPlayer.get();
+}
+
+void Game::onKeyPressed(sf::Keyboard::Key key)
+{
+    m_pGameInput->onKeyPressed(key);
+}
+
+void Game::onKeyReleased(sf::Keyboard::Key key)
+{
+    m_pGameInput->onKeyReleased(key);
 }

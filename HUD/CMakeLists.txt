@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Particle_Test LANGUAGES CXX)
+project(HUD_Test LANGUAGES CXX)
 
 # ------------------------------------------------------------------------------
 # C++ standard setup

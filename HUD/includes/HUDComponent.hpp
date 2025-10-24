@@ -13,8 +13,6 @@ public:
     virtual ~HUDComponent() = 0;
 
     virtual void    initialize() = 0;
-    virtual void    initialize(sf::Transformable& transformable) = 0;
-    virtual void    initialize(sf::Vector2f a_position) = 0;
     virtual void    update(float deltaTime) = 0;
     virtual void    draw(sf::RenderTarget &target, sf::RenderStates states) const = 0;
 };
