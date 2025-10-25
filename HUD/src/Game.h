@@ -6,12 +6,14 @@
 #include <memory>
 #include "Constants.h"
 #include "PlayerHealthBar.h"
+#include "Camera.h"
 
 class Player;
 class Game;
 class GameInput;
 class Vampire;
 class PlayerHealthBar;
+class Camera;
 
 namespace sf { class Clock; }
 
@@ -28,7 +30,7 @@ public:
     Game();
     ~Game();
     
-    bool initialise();
+    bool initialise(sf::RenderWindow& window);
     void update(float deltaTime);
     void resetLevel();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -39,6 +41,7 @@ public:
     void onKeyReleased(sf::Keyboard::Key key);
 
     Player* getPlayer() const;
+    Camera* getCamera() const;
     sf::Texture* getPlayerTexture() { return &m_playerTexture; }
     sf::Texture* getVampireTexture() { return &m_vampTexture; }
 
@@ -48,10 +51,11 @@ private:
     std::unique_ptr<Player> m_pPlayer;
     std::unique_ptr<PlayerHealthBar> m_pPlayerHealthBar;
 
+    std::unique_ptr<Camera> m_pCamera;
+
     std::vector<std::unique_ptr<Vampire>> m_pVampires;
 
     State m_state;
-    std::unique_ptr<sf::Clock> m_pClock;
     std::unique_ptr<GameInput> m_pGameInput;
 
     float m_vampireCooldown = 0.0f;

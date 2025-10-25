@@ -2,13 +2,11 @@
 
 Eye::Eye()
 {
-    tweener = new Tweener(0.0f, 5.0f, (float)duration, new LinearAnimator(duration, false));
+    tweener = std::make_unique<Tweener>(0.0f, 5.0f, (float)duration, std::make_unique<LinearAnimator>(duration, false));
 }
     
 Eye::~Eye()
-{
-    delete tweener;
-}
+{}
 
 void Eye::setTextures(sf::Texture &texture)
 {

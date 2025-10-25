@@ -1,41 +1,29 @@
 #include "Camera.h"
 
-Camera::Camera(sf::RenderWindow *window)
-    : window_(window), shakeRequested(false)
-{
-    camera_ = window_->getView();
-    orig_center = camera_.getCenter();
-    orig_rotation = camera_.getRotation();
-    xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
-    yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
-    angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
-    tweener = new Tweener(trauma, 0, recoveryDuration, new LinearAnimator(recoveryDuration, false));
-}
-
-Camera::Camera(sf::RenderWindow *window, float x, float y)
-    : window_(window), orig_center({x, y}), current_center({x, y}), shakeRequested(false)
-{
-    camera_ = window_->getView();
-    orig_center = camera_.getCenter();
-    orig_rotation = camera_.getRotation();
-    xPosAnimator = new PerlinAnimator(speedMultiplierX, false);
-    yPosAnimator = new PerlinAnimator(speedMultiplierY, false);
-    angleAnimator = new PerlinAnimator(speedMultiplierAngle, false);
-    tweener = new Tweener(trauma, 0, recoveryDuration, new LinearAnimator(recoveryDuration, false));
-}
+Camera::Camera(Game* pGame)
+    : m_pGame(pGame), shakeRequested(false)
+{}
 
 Camera::~Camera()
 {
     window_ = nullptr;
-    delete tweener;
-    delete angleAnimator;
-    delete yPosAnimator;
-    delete xPosAnimator;
 }
 
-void Camera::Update()
+void Camera::initialize(sf::RenderWindow& window)
 {
-    if (shakeRequested /*|| sf::Keyboard::Space*/)
+    window_ = &window;
+    camera_ = window_->getView();
+    orig_center = camera_.getCenter();
+    orig_rotation = camera_.getRotation();
+    xPosAnimator = std::make_unique<PerlinAnimator>(speedMultiplierX, false);
+    yPosAnimator = std::make_unique<PerlinAnimator>(speedMultiplierY, false);
+    angleAnimator = std::make_unique<PerlinAnimator>(speedMultiplierAngle, false);
+    tweener = std::make_unique<Tweener>(trauma, 0, recoveryDuration, std::make_unique<LinearAnimator>(recoveryDuration, false));
+}
+
+void Camera::update()
+{
+    if (shakeRequested)
     {
        beginCameraShake();
        shakeRequested =  false;

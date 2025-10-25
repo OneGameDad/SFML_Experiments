@@ -1,16 +1,12 @@
 #include "Tweener.h"
 #include <cmath>
 
-Tweener::Tweener(float a_start, float a_end, float a_duration, APropertyAnimator *a_animator)
-    : start(a_start), end(a_end), duration(a_duration)
-{
-    animator = a_animator;
-}
+Tweener::Tweener(float a_start, float a_end, float a_duration, std::unique_ptr<APropertyAnimator> a_animator)
+    : animator(std::move(a_animator)), start(a_start), end(a_end), duration(a_duration)
+{}
 
 Tweener::~Tweener()
-{
-    delete animator;
-}
+{}
 
 void    Tweener::reset()
 {

@@ -6,11 +6,12 @@
 #include <stdexcept>
 #include <cmath>
 #include <iostream>
+#include <memory>
 
 class Tweener
 {
 private:
-    APropertyAnimator   *animator;
+    std::unique_ptr<APropertyAnimator> animator;
     float   start;
     float   end;
     float   duration;
@@ -19,7 +20,7 @@ private:
     bool    isPlaying = false;
 
 public:
-    Tweener(float a_start, float a_end, float a_duration, APropertyAnimator *a_animator);
+    Tweener(float a_start, float a_end, float a_duration, std::unique_ptr<APropertyAnimator> a_animator);
     ~Tweener();
 
     void    reset();

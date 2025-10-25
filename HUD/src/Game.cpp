@@ -13,20 +13,18 @@
 
 Game::Game() :
     m_state(State::WAITING),
-    m_pClock(std::make_unique<sf::Clock>()),
     m_pPlayer(std::make_unique<Player>(this)),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
+    m_pCamera(std::make_unique<Camera>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f)
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get());
 }
 
-Game::~Game()
-{
-}
+Game::~Game(){}
 
-bool Game::initialise()
+bool Game::initialise(sf::RenderWindow& window)
 {
     /*
         PAY ATTENTION HIVER!
@@ -49,6 +47,9 @@ bool Game::initialise()
         return false;
     }
 
+    //My Code
+    m_pCamera->initialize(window);
+
     resetLevel();
     return true;
 }
@@ -59,7 +60,6 @@ void Game::resetLevel()
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
-    m_pClock->restart();
 }
 
 void Game::update(float deltaTime)
@@ -68,10 +68,9 @@ void Game::update(float deltaTime)
     {
         case State::WAITING:
         {
-            if (m_pClock->getElapsedTime().asSeconds() >= 3.f)
+            if (GameTime::getInstance().getRealTime() >= 3.f)
             {
                 m_state = State::ACTIVE;
-                m_pClock->restart();
             }
         }
         break;
@@ -81,6 +80,7 @@ void Game::update(float deltaTime)
             m_pGameInput->update(deltaTime);
             m_pPlayer->update(deltaTime);
             m_pPlayerHealthBar->update(deltaTime);
+            m_pCamera->update();
 
             vampireSpawner(deltaTime);
             for (auto& temp : m_pVampires)
@@ -129,7 +129,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
         timerText.setFont(m_font);
         timerText.setFillColor(sf::Color::White);
         timerText.setStyle(sf::Text::Bold);
-        timerText.setString(std::to_string((int)m_pClock->getElapsedTime().asSeconds()));
+        timerText.setString(std::to_string((int)GameTime::getInstance().getDeltaTime()));
         timerText.setPosition(sf::Vector2f((ScreenWidth - timerText.getLocalBounds().getSize().x) * 0.5, 20));
         target.draw(timerText);
     }
@@ -161,6 +161,11 @@ void Game::onKeyReleased(sf::Keyboard::Key key)
 Player* Game::getPlayer() const 
 {
     return m_pPlayer.get();
+}
+
+Camera* Game::getCamera() const
+{
+    return (m_pCamera.get());
 }
 
 void Game::vampireSpawner(float deltaTime)

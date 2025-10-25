@@ -14,6 +14,9 @@
 #include "LinearAnimator.h"
 #include <cmath>
 #include <vector>
+#include <memory>
+#include "Game.h"
+#include "InputHandler.h"
 
 #define DECAY_POWER             2.0
 #define DEFAULT_FRAME_DURATION  1.0/60.0
@@ -21,6 +24,7 @@
 class Camera
 {
 private:
+    Game*   m_pGame;
     sf::RenderWindow    *window_;
     sf::View    camera_;
     sf::Vector2f    orig_center = {0.0f, 0.0f};
@@ -43,10 +47,10 @@ private:
     double  speedMultiplierY = 100.0;
     double  speedMultiplierAngle = 100.0;
 
-    APropertyAnimator   *xPosAnimator;
-    APropertyAnimator   *yPosAnimator;
-    APropertyAnimator   *angleAnimator;
-    Tweener *tweener;
+    std::unique_ptr<APropertyAnimator>  xPosAnimator;
+    std::unique_ptr<APropertyAnimator>  yPosAnimator;
+    std::unique_ptr<APropertyAnimator>   angleAnimator;
+    std::unique_ptr<Tweener> tweener;
 
     bool    shakeRequested = false;
 
@@ -56,11 +60,11 @@ private:
     void    updateTweener();
 
 public:
-    Camera(sf::RenderWindow *window);
-    Camera(sf::RenderWindow *window, float x, float y);
+    Camera(Game* pGame);
     ~Camera();
 
-    void Update();
+    void initialize(sf::RenderWindow& window);
+    void update();
     void setPosition(float x, float y);
     void beginCameraShake();
     void requestShake();

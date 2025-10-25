@@ -2,8 +2,8 @@
 #include "Weapon.h"
 #include "Player.h"
 
-GameInput::GameInput(Game* pGame, Player* pPlayer) :
-    m_pGame(pGame), m_pPlayer(pPlayer)
+GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera) :
+    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera)
 {
 
     
@@ -24,6 +24,11 @@ void GameInput::update(float deltaTime)
     if (m_inputData.m_space)
     {
         m_pPlayer->attack();
+    }
+
+    if (m_inputData.m_screenShake)
+    {
+        m_pCamera->requestShake();
     }
 }
 
@@ -53,6 +58,10 @@ void GameInput::onKeyPressed(sf::Keyboard::Key key)
         }
         m_inputData.m_spaceReleased = false;
     }
+    else if (key == sf::Keyboard::Enter)
+    {
+        m_inputData.m_screenShake = true;
+    }
 }
 
 void GameInput::onKeyReleased(sf::Keyboard::Key key)
@@ -77,5 +86,9 @@ void GameInput::onKeyReleased(sf::Keyboard::Key key)
     {
         m_inputData.m_space = false;
         m_inputData.m_spaceReleased = true;
+    }
+    else if (key == sf::Keyboard::Enter)
+    {
+        m_inputData.m_screenShake = false;
     }
 }

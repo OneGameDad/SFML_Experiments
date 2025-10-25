@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     window.setKeyRepeatEnabled(false);
     
     std::unique_ptr<Game> pGame = std::make_unique<Game>();
-    if (!pGame->initialise())
+    if (!pGame->initialise(window))
     {
         std::cerr << "Game Failed to initialise" << std::endl;
         return 1;

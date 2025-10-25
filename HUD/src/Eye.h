@@ -5,6 +5,7 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 #include "APropertyAnimator.h"
 #include "LinearAnimator.h"
 #include "Tweener.h"
@@ -16,7 +17,7 @@ private:
     std::vector<sf::Texture>    textures_;
     int currentTextureIndex = 0;
     double  duration = 1.0f;
-    Tweener   *tweener;
+    std::unique_ptr<Tweener>   tweener;
     size_t  frameCount = 0;
     bool    googlyRequested =  false;
 
