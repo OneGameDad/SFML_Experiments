@@ -21,7 +21,7 @@ void Player::update(float deltaTime)
 {
     (void)deltaTime;
     m_sprite.setPosition(getPosition());
-    std::cout << "Player Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+//    std::cout << "Player Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -51,7 +51,7 @@ void Player::move(InputData inputData, float deltaTime)
     
     sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
     setPosition(std::clamp(getPosition().x, 0.0f, (float)ScreenWidth), getPosition().y);
-    std::cout << "Player Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+//    std::cout << "Player Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 /*    if (m_pWeapon->isActive() == false)
     {
         if (inputData.m_movingLeft == true && inputData.m_movingRight == false)

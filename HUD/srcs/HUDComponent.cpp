@@ -1,3 +1,4 @@
 #include "HUDComponent.hpp"
+#include <iostream>
 
-HUDComponent::~HUDComponent() = default;
+HUDComponent::~HUDComponent(){ std::cout << "HUDComponent Deconstructed\n"; }

@@ -12,7 +12,6 @@ void GameInput::update(float deltaTime)
 {
     if (m_inputData.hasInputs())
     {
-        std::cout << "Input Passed to Player\n";
         m_pPlayer->move(m_inputData, deltaTime);
     }
 

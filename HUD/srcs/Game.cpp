@@ -6,8 +6,6 @@ Game::Game() :
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this))
 {
     m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get());
-    if (!m_pGameInput.get())
-        std::cerr << "No Input Handler in Game!\n";
 }
 
 Game::~Game()
@@ -48,29 +46,26 @@ void Game::resetLevel()
 
 void Game::update(float deltaTime)
 {
-    m_pGameInput->update(deltaTime);
-    m_pPlayer->update(deltaTime);
-    m_pPlayerHealthBar->update(deltaTime);
-/*    switch (m_state)
+    
+    switch (m_state)
     {
+        m_pPlayerHealthBar->update(deltaTime);
         case State::WAITING:
         {
-            if (GameTime::getInstance().getDeltaTime() >= 3.f)
+            if (GameTime::getInstance().getRealTime() >= 3.f)
             {
                 m_state = State::ACTIVE;
                 m_pGameInput->update(deltaTime);
             }
         }
         break;
-            a
         case State::ACTIVE:
         {
             m_pGameInput->update(deltaTime);
             m_pPlayer->update(deltaTime);
-            m_pPlayerHealthBar->update(deltaTime);
         }
         break;
-    }*/
+    }
 }
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const

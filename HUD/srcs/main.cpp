@@ -12,6 +12,7 @@
 #include "ParticleSystem.hpp"
 #include "FireEffect.hpp"
 #include "Player.hpp"
+#include "PlayerHealthBar.hpp"
 
 int main()
 {
@@ -59,11 +60,6 @@ int main()
 		eye.setTextures(texture4);
 		eye.setPosition(100, 100);
 */
-		sf::RectangleShape rectangle;
-		rectangle.setSize({100.0f, 20.0f});
-    	rectangle.setOrigin({0.0f, 0.0f});
-   		rectangle.setFillColor(sf::Color::Red);
-    	rectangle.setPosition({100.0f, 100.0f});
 		while (window.isOpen())
 		{
 			GameTime::getInstance().updateTime();
@@ -123,7 +119,7 @@ int main()
 			camera.Update();
 //			fire.update();
 			window.clear();
-			window.draw(rectangle);
+			window.setView(window.getDefaultView());
 			window.draw(*pGame.get());
 //			window.draw(eye.getSprite());
 //			window.draw(fire);
