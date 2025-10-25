@@ -8,6 +8,7 @@
 // My Code
 #include "GameTime.h"
 #include "Camera.h"
+#include "PerlinNoiseGenerator.h"
 
 #include "ResourceManager.h"
 
@@ -15,6 +16,9 @@ int main(int argc, char* argv[])
 {
     // ResourceManager Must be Instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
+
+    auto &PNG = PerlinNoiseGenerator::Instance(); 
+	PNG.Load("assets/noiseTexture.png"); //Must be loaded before camera
 
     GameTime::getInstance().setTime();
 
