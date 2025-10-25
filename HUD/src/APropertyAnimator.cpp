@@ -1,4 +1,4 @@
-#include "APropertyAnimator.hpp"
+#include "APropertyAnimator.h"
 
 APropertyAnimator::APropertyAnimator() : type_("")
 {}

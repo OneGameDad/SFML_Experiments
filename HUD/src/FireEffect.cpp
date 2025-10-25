@@ -1,4 +1,4 @@
-#include "FireEffect.hpp"
+#include "FireEffect.h"
 
 FireEffect::FireEffect(size_t count, const sf::Texture& texture) : ParticleSystem(count, texture){}
 

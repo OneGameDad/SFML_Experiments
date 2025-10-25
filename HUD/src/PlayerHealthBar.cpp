@@ -1,4 +1,4 @@
-#include "PlayerHealthBar.hpp"
+#include "PlayerHealthBar.h"
 
 PlayerHealthBar::PlayerHealthBar(Game *pGame)
     : m_pGame(pGame), m_pPlayer(m_pGame->getPlayer())

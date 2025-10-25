@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <functional>
-#include "GameTime.hpp"
+#include "GameTime.h"
 
 struct Particle {
     sf::Vector2f position;

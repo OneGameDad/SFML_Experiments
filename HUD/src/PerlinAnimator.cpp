@@ -1,4 +1,4 @@
-#include "PerlinAnimator.hpp"
+#include "PerlinAnimator.h"
 
 PerlinAnimator::PerlinAnimator(): APropertyAnimator("Perlin")
 {}

@@ -5,9 +5,9 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <cstdlib>
 #include <iostream>
-#include "APropertyAnimator.hpp"
-#include "LinearAnimator.hpp"
-#include "Tweener.hpp"
+#include "APropertyAnimator.h"
+#include "LinearAnimator.h"
+#include "Tweener.h"
 
 class Eye
 {

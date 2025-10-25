@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ParticleSystem.hpp"
-#include "GameTime.hpp"
+#include "ParticleSystem.h"
+#include "GameTime.h"
 #include <cstdint>
 #include <SFML/Graphics.hpp>
 

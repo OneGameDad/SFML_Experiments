@@ -15,6 +15,7 @@ Game::Game() :
     m_state(State::WAITING),
     m_pClock(std::make_unique<sf::Clock>()),
     m_pPlayer(std::make_unique<Player>(this)),
+    m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f)
 {
@@ -57,6 +58,7 @@ void Game::resetLevel()
     m_pVampires.clear();
 
     m_pPlayer->initialise();
+    m_pPlayerHealthBar->initialize();
     m_pClock->restart();
 }
 
@@ -78,6 +80,7 @@ void Game::update(float deltaTime)
         {
             m_pGameInput->update(deltaTime);
             m_pPlayer->update(deltaTime);
+            m_pPlayerHealthBar->update(deltaTime);
 
             vampireSpawner(deltaTime);
             for (auto& temp : m_pVampires)
@@ -166,6 +169,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         temp->draw(target, states);
     }
+
+    //Player Health Bar
+    m_pPlayerHealthBar->draw(target, states);
 }
 
 

@@ -1,4 +1,4 @@
-#include "ParticleSystem.hpp"
+#include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem(size_t count, const sf::Texture& texture)
     : m_particles(count), m_vertices(sf::Quads, count * 4), m_texture(texture), m_defaultLifetime(2.0f)

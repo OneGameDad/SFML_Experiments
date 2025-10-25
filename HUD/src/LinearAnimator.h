@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <cstdlib>
-#include "GameTime.hpp"
-#include "APropertyAnimator.hpp"
+#include "GameTime.h"
+#include "APropertyAnimator.h"
 
 class LinearAnimator: public APropertyAnimator
 {

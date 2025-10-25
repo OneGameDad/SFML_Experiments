@@ -1,8 +1,8 @@
 #pragma once
 
-#include "APropertyAnimator.hpp"
-#include "LinearAnimator.hpp"
-#include "GameTime.hpp"
+#include "APropertyAnimator.h"
+#include "LinearAnimator.h"
+#include "GameTime.h"
 #include <stdexcept>
 #include <cmath>
 #include <iostream>

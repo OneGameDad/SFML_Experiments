@@ -2,10 +2,10 @@
 
 #include <cmath>
 #include <cstdlib>
-#include "PerlinNoiseGenerator.hpp"
+#include "PerlinNoiseGenerator.h"
 #include <SFML/Graphics.hpp>
-#include "GameTime.hpp"
-#include "APropertyAnimator.hpp"
+#include "GameTime.h"
+#include "APropertyAnimator.h"
 
 class PerlinAnimator: public APropertyAnimator
 {

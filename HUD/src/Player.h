@@ -19,7 +19,7 @@ class Player : public Rectangle
 {
 public:
     Player(Game* pGame);
-    virtual ~Player() {}
+    virtual ~Player();
     
     bool initialise();
     void move(InputData inputData, float deltaTime);
@@ -32,9 +32,15 @@ public:
 
     Weapon* getWeapon() { return m_pWeapon.get(); }
 
+    float getNormalizedHealth() const;
+    sf::Sprite getSprite() const;
+
 private:
     bool    m_isDead = false;
     eDirection m_direction = LEFT;
     Game*   m_pGame;
     std::unique_ptr<Weapon> m_pWeapon;
+
+    float currentHealth = 0.0f;
+    const float maxHealth = 100.0f;
 };

@@ -5,11 +5,13 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <memory>
 #include "Constants.h"
+#include "PlayerHealthBar.h"
 
 class Player;
 class Game;
 class GameInput;
 class Vampire;
+class PlayerHealthBar;
 
 namespace sf { class Clock; }
 
@@ -44,6 +46,7 @@ public:
 
 private:
     std::unique_ptr<Player> m_pPlayer;
+    std::unique_ptr<PlayerHealthBar> m_pPlayerHealthBar;
 
     std::vector<std::unique_ptr<Vampire>> m_pVampires;
 

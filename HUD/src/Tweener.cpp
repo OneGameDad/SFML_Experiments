@@ -1,4 +1,4 @@
-#include "Tweener.hpp"
+#include "Tweener.h"
 #include <cmath>
 
 Tweener::Tweener(float a_start, float a_end, float a_duration, APropertyAnimator *a_animator)

@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+#include "Camera.h"
 
 Camera::Camera(sf::RenderWindow *window)
     : window_(window), shakeRequested(false)

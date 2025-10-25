@@ -7,11 +7,11 @@
 #include <SFML/System/Clock.hpp>
 #include <cstdlib>
 #include <iostream>
-#include "PerlinNoiseGenerator.hpp"
-#include "APropertyAnimator.hpp"
-#include "PerlinAnimator.hpp"
-#include "Tweener.hpp"
-#include "LinearAnimator.hpp"
+#include "PerlinNoiseGenerator.h"
+#include "APropertyAnimator.h"
+#include "PerlinAnimator.h"
+#include "Tweener.h"
+#include "LinearAnimator.h"
 #include <cmath>
 #include <vector>
 

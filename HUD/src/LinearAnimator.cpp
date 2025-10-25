@@ -1,4 +1,4 @@
-#include "LinearAnimator.hpp"
+#include "LinearAnimator.h"
 
 LinearAnimator::LinearAnimator() : APropertyAnimator("Linear"), currentValue(0.0)
 {}

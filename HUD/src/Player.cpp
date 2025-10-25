@@ -13,6 +13,8 @@ Player::Player(Game* pGame) :
     setOrigin(sf::Vector2f(0.0f, 0.0f));
 }
 
+Player::~Player() = default;
+
 bool Player::initialise()
 {
     m_sprite.setTexture(*m_pGame->getPlayerTexture());
@@ -20,6 +22,7 @@ bool Player::initialise()
     setIsDead(false);
     setPosition(ScreenWidth / 2, ScreenHeight / 2);
     m_sprite.setPosition(getPosition());
+    currentHealth = maxHealth;
     return true;
 }
 
@@ -39,13 +42,13 @@ void Player::move(InputData inputData, float deltaTime)
     sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
     setPosition(std::clamp(getPosition().x, 0.0f, (float)ScreenWidth), getPosition().y);
 
-/*    if (m_pWeapon->isActive() == false)
+    if (m_pWeapon->isActive() == false)
     {
         if (inputData.m_movingLeft == true && inputData.m_movingRight == false)
             m_direction = LEFT;
         else if (inputData.m_movingLeft == false && inputData.m_movingRight == true)
             m_direction = RIGHT;
-    }*/
+    }
 }
 
 void Player::attack()
@@ -69,3 +72,11 @@ void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
     Rectangle::draw(target, states);
     m_pWeapon->draw(target, states);
 }
+
+float Player::getNormalizedHealth() const
+{
+    float normalized = currentHealth / maxHealth;
+    return (normalized);
+}
+
+sf::Sprite Player::getSprite() const { return (m_sprite); }
