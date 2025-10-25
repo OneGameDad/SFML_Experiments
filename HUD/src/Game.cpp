@@ -133,34 +133,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
         timerText.setPosition(sf::Vector2f((ScreenWidth - timerText.getLocalBounds().getSize().x) * 0.5, 20));
         target.draw(timerText);
     }
-     if (m_state == State::WAITING)
-    {
-        const float HBMaxWidth = 200.0f;
-        const float HBMaxHeight = 40.0f;
-        float health = 1.0f; //m_pPlayer->getNormalizedHealth();
-        float currentWidth = HBMaxWidth * health;
-        sf::RectangleShape healthBar;
-        healthBar.setOrigin({0.0f, 0.0f});
-        healthBar.setSize({currentWidth, HBMaxHeight});
-        healthBar.setFillColor(sf::Color::Red);
-        healthBar.setPosition({50.0f, 500.0f});
-        target.draw(healthBar);
-        std::cout << "Drawing HealthBar\n";
-    }
-    else
-    {
-        const float HBMaxWidth = 200.0f;
-        const float HBMaxHeight = 40.0f;
-        float health = 1.0f; //m_pPlayer->getNormalizedHealth();
-        float currentWidth = HBMaxWidth * health;
-        sf::RectangleShape healthBar;
-        healthBar.setOrigin({0.0f, 0.0f});
-        healthBar.setSize({currentWidth, HBMaxHeight});
-        healthBar.setFillColor(sf::Color::Red);
-        healthBar.setPosition({50.0f, 500.0f});
-        target.draw(healthBar);
-        std::cout << "Drawing HealthBar\n";
-    }
+    
     // Draw player.
     m_pPlayer->draw(target, states);
 

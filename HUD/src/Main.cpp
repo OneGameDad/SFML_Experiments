@@ -5,12 +5,18 @@
 #include <memory>
 #include <iostream>
 
+// My Code
+#include "GameTime.h"
+#include "Camera.h"
+
 #include "ResourceManager.h"
 
 int main(int argc, char* argv[])
 {
     // ResourceManager Must be Instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
+
+    GameTime::getInstance().setTime();
 
     sf::RenderWindow window(sf::VideoMode(ScreenWidth, ScreenHeight), "Survive");
     window.setKeyRepeatEnabled(false);
@@ -26,6 +32,7 @@ int main(int argc, char* argv[])
     // run the program as long as the window is open
     while (window.isOpen())
     {
+        GameTime::getInstance().updateTime();
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -47,9 +54,7 @@ int main(int argc, char* argv[])
             }
         }
         
-        sf::Time elapsedTime = clock.getElapsedTime();
-        clock.restart();
-        pGame->update(elapsedTime.asSeconds());
+        pGame->update(GameTime::getInstance().getDeltaTime());
         
         // clear the window with black color
         window.clear(sf::Color::Black);

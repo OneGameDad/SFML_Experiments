@@ -49,12 +49,11 @@ sf::Vector2f PlayerHealthBar::adjustPosition()
 void    PlayerHealthBar::update(float deltaTime)
 {
     (void)deltaTime; //Todo use to animate
-    std::cout << "HEALTH BAR UPDATE\n";
     float health = m_pPlayer->getNormalizedHealth();
     float currentWidth = playerWidth * health;
     
     rectangle->setSize({currentWidth, maxHeight});
-/*    rectangle->setOrigin({0.0f, 0.f});
+    rectangle->setOrigin({0.0f, 0.f});
     
     sf::Vector2f pos = adjustPosition();
     setPosition(pos);
@@ -62,12 +61,10 @@ void    PlayerHealthBar::update(float deltaTime)
     sf::Vector2f playerPos = m_pPlayer->getSprite().getPosition();
     sf::Vector2f barPos = rectangle->getPosition();
     std::cout << "Player: " << playerPos.x << "," << playerPos.y << " | Bar: " << barPos.x << "," << barPos.y << std::endl;
-*/
 }
 
 void    PlayerHealthBar::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     (void)states;
     target.draw(*rectangle);
-//    std::cout << "Drawing HEALTH BAR\n";
 }
