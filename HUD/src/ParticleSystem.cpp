@@ -13,6 +13,17 @@ void ParticleSystem::update()
 {
     float dt = GameTime::getInstance().getDeltaTime();
 
+    if (!isActive)
+        return;
+    // Check elapsed time
+    m_elapsed += dt;
+    if (m_elapsed >= m_duration)
+    {
+        isActive = false;
+        m_elapsed = 0.0f;
+        return;
+    }
+
     // --- Update all emitters ---
     for (auto& emitter : m_emitters)
         emitter.update(dt);
@@ -157,3 +168,10 @@ void ParticleSystem::clearEmitters()
 
 const std::vector<Emitter>& ParticleSystem::getEmitters() const { return (m_emitters); }
 std::vector<Emitter>& ParticleSystem::getEmitters() { return (m_emitters); }
+
+void ParticleSystem::activate(float duration)
+{
+    isActive = true;
+    m_duration = duration;
+    m_elapsed = 0.0f;
+}

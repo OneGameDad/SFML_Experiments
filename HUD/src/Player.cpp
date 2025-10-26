@@ -1,9 +1,5 @@
 #include "Player.h"
-#include "Weapon.h"
-#include "InputHandler.h"
-#include "Constants.h"
-#include <vector>
-#include "Game.h"
+
 
 Player::Player(Game* pGame) :
     Rectangle(sf::Vector2f(PlayerWidth, PlayerHeight)),
@@ -12,7 +8,7 @@ Player::Player(Game* pGame) :
 {
     setOrigin(sf::Vector2f(0.0f, 0.0f));
     part_tex.loadFromFile(ResourceManager::getFilePath("GlowDot.png"));
-    swing = std::make_unique<ParticleSystem>(100, part_tex);
+    swing = std::make_unique<FireEffect>(100, part_tex);
 }
 
 Player::~Player() = default;
@@ -57,6 +53,7 @@ void Player::move(InputData inputData, float deltaTime)
 void Player::attack()
 {
     m_pWeapon->setActive(true);
+    swing->activate(WeaponActiveTime * 2);
 }
 
 void Player::update(float deltaTime)

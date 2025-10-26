@@ -47,10 +47,13 @@ struct Emitter {
 class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 protected:
-    std::vector<Particle> m_particles;
+    std::vector<Particle>   m_particles;
     sf::VertexArray m_vertices;
-    const sf::Texture& m_texture;
-    float m_defaultLifetime;
+    const sf::Texture&  m_texture;
+    float   m_defaultLifetime;
+    float   m_duration = 0.0f;
+    bool    isActive = false;
+    float   m_elapsed = 0.0f;
 
     std::vector<Emitter> m_emitters; // multiple local emitter points
 
@@ -62,6 +65,7 @@ protected:
     virtual void    resetParticle(Particle& p);
     virtual void    updateParticle(Particle& p) = 0;
     virtual void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    bool checkIsActive() const { return (isActive); }
 
 public:
     ParticleSystem(size_t count, const sf::Texture& texture);
@@ -72,5 +76,6 @@ public:
     void clearEmitters();
     const std::vector<Emitter>& getEmitters() const;
     std::vector<Emitter>& getEmitters();
+    void activate(float duration);
 
 };

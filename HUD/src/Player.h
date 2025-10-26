@@ -1,10 +1,15 @@
 #pragma once
 
 #include "Rectangle.h"
-#include "ParticleSystem.h"
 #include "ResourceManager.h"
-
+#include "ParticleSystem.h"
+#include "FireEffect.h"
 #include <memory>
+#include "Weapon.h"
+#include "InputHandler.h"
+#include "Constants.h"
+#include <vector>
+#include "Game.h"
 
 struct InputData;
 
