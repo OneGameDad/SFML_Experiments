@@ -11,6 +11,8 @@ Player::Player(Game* pGame) :
     m_pWeapon(std::make_unique<Weapon>())
 {
     setOrigin(sf::Vector2f(0.0f, 0.0f));
+    part_tex.loadFromFile(ResourceManager::getFilePath("GlowDot.png"));
+    swing = std::make_unique<ParticleSystem>(100, part_tex);
 }
 
 Player::~Player() = default;
@@ -23,6 +25,7 @@ bool Player::initialise()
     setPosition(ScreenWidth / 2, ScreenHeight / 2);
     m_sprite.setPosition(getPosition());
     currentHealth = maxHealth;
+    swing->addEmitter(getWeapon()->getPosition());
     return true;
 }
 
@@ -64,13 +67,16 @@ void Player::update(float deltaTime)
     m_pWeapon->setPosition(sf::Vector2f(
         getCenter().x - (m_direction == LEFT ? weaponSize.x : 0.0f),
         getCenter().y - weaponSize.y / 2.0f));
+    swing->getEmitters()[0].localPosition = m_pWeapon->getPosition();
     m_pWeapon->update(deltaTime);
+    swing->update();
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     Rectangle::draw(target, states);
     m_pWeapon->draw(target, states);
+    target.draw(*swing, states);
 }
 
 float Player::getNormalizedHealth() const

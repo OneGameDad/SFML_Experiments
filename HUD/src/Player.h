@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Rectangle.h"
+#include "ParticleSystem.h"
+#include "ResourceManager.h"
 
 #include <memory>
 
@@ -40,6 +42,8 @@ private:
     eDirection m_direction = LEFT;
     Game*   m_pGame;
     std::unique_ptr<Weapon> m_pWeapon;
+    sf::Texture part_tex;
+    std::unique_ptr<ParticleSystem> swing;
 
     float currentHealth = 0.0f;
     const float maxHealth = 100.0f;
