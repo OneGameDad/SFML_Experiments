@@ -9,12 +9,16 @@
 #include "APropertyAnimator.h"
 #include "LinearAnimator.h"
 #include "Tweener.h"
+#include "Game.h"
+#include "Rectangle.h"
 
-class Eye
+class Game;
+
+class Eye: public Rectangle
 {
 private:
-    sf::Sprite  sprite_;
-    std::vector<sf::Texture>    textures_;
+    Game* m_pGame;
+    std::vector<std::unique_ptr<sf::Texture>>*   textures;
     int currentTextureIndex = 0;
     double  duration = 1.0f;
     std::unique_ptr<Tweener>   tweener;
@@ -23,15 +27,14 @@ private:
 
     void    incrementTexture();
 public:
-    Eye();
-    ~Eye();
+    Eye(Game* pGame);
+    virtual ~Eye();
 
-    void    setTextures(sf::Texture &texture);
+    void    initialize();
     void    setDuration(double amount);
-    void    Update();
+    void    update();
     void    setPosition(float x, float y);
-    sf::Sprite  getSprite() const;
-    std::vector<sf::Texture> getTextures() const;
     void    beginAnimating();
     void    requestGoogly();
+    
 };

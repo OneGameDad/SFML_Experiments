@@ -1,19 +1,13 @@
 #include "Eye.h"
 
-Eye::Eye()
+Eye::Eye(Game* pGame)
+    : Rectangle(sf::Vector2f(100.0f, 100.0f)), m_pGame(pGame)
 {
     tweener = std::make_unique<Tweener>(0.0f, 5.0f, (float)duration, std::make_unique<LinearAnimator>(duration, false));
+    textures = m_pGame->getEyeTextures();
 }
     
-Eye::~Eye()
-{}
-
-void Eye::setTextures(sf::Texture &texture)
-{
-    textures_.push_back(texture);
-    sprite_.setTexture(textures_.back());
-    frameCount = textures_.size();
-}
+Eye::~Eye() = default;
 
 void Eye::setDuration(double amount)
 {
@@ -23,25 +17,32 @@ void Eye::setDuration(double amount)
         duration = amount;
 }
 
- void Eye::Update()
+ void Eye::update()
 {
-    if (googlyRequested /*|| sf::Keyboard::Tab*/)
+    if (googlyRequested)
     {
         beginAnimating();
         googlyRequested = false;
     }
     float frame = std::fmod((tweener->update() * frameCount), frameCount);
     currentTextureIndex = (size_t)std::floor(frame);
-    sprite_.setTexture(textures_[currentTextureIndex]);
+    m_sprite.setTexture(*(*textures)[currentTextureIndex]);
+}
+
+void Eye::initialize()
+{
+    m_sprite.setTexture(*(*textures)[0]);
+    m_sprite.setPosition({100.0f, 100.0f});
+    sf::Vector2u texSize = (*textures)[0]->getSize();
+    float targetWidth = 25.0f;
+    float scale = targetWidth / texSize.x;
+    m_sprite.setScale({scale, scale});
 }
 
 void Eye::setPosition(float x, float y)
 {
-    sprite_.setPosition({x, y});
+    m_sprite.setPosition({x, y});
 }
-
-sf::Sprite Eye::getSprite() const { return (sprite_); }
-std::vector<sf::Texture> Eye::getTextures() const { return (textures_); }
 
 void    Eye::beginAnimating()
 {

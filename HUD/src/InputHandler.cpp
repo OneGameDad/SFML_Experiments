@@ -1,18 +1,13 @@
 #include "InputHandler.h"
 #include "Weapon.h"
 #include "Player.h"
+#include "Eye.h"
 
-GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera) :
-    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera)
-{
+GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera, Eye* pEye) :
+    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera), m_pEye(pEye)
+{}
 
-    
-}
-
-GameInput::~GameInput()
-{
-    
-}
+GameInput::~GameInput(){}
 
 void GameInput::update(float deltaTime)
 {
@@ -29,6 +24,11 @@ void GameInput::update(float deltaTime)
     if (m_inputData.m_screenShake)
     {
         m_pCamera->requestShake();
+    }
+
+    if (m_inputData.m_googlyEye)
+    {
+        m_pEye->requestGoogly();
     }
 }
 
@@ -62,6 +62,10 @@ void GameInput::onKeyPressed(sf::Keyboard::Key key)
     {
         m_inputData.m_screenShake = true;
     }
+    else if (key == sf::Keyboard::Tab)
+    {
+        m_inputData.m_googlyEye = true;
+    }
 }
 
 void GameInput::onKeyReleased(sf::Keyboard::Key key)
@@ -90,5 +94,9 @@ void GameInput::onKeyReleased(sf::Keyboard::Key key)
     else if (key == sf::Keyboard::Enter)
     {
         m_inputData.m_screenShake = false;
+    }
+    else if (key == sf::Keyboard::Tab)
+    {
+        m_inputData.m_googlyEye = false;
     }
 }

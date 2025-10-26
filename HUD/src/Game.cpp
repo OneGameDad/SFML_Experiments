@@ -16,10 +16,11 @@ Game::Game() :
     m_pPlayer(std::make_unique<Player>(this)),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
     m_pCamera(std::make_unique<Camera>(this)),
+    m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f)
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
 }
 
 Game::~Game(){}
@@ -46,7 +47,16 @@ bool Game::initialise(sf::RenderWindow& window)
         std::cerr << "Unable to load texture" << std::endl;
         return false;
     }
-
+    for (const std::string& filename : { "googly-a.png", "googly-b.png", "googly-c.png", "googly-d.png", "googly-e.png" })
+    {
+        auto tex = std::make_unique<sf::Texture>();
+        if (tex->loadFromFile(ResourceManager::getFilePath(filename))) {
+            m_eyeTextures.push_back(std::move(tex));
+        } else {
+            std::cerr << "Failed to load " << filename << "\n";
+        }
+    }
+    
     //My Code
     m_pCamera->initialize(window);
 
@@ -60,6 +70,8 @@ void Game::resetLevel()
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
+
+    m_pEye->initialize();
 }
 
 void Game::update(float deltaTime)
@@ -81,6 +93,7 @@ void Game::update(float deltaTime)
             m_pPlayer->update(deltaTime);
             m_pPlayerHealthBar->update(deltaTime);
             m_pCamera->update();
+            m_pEye->update();
 
             vampireSpawner(deltaTime);
             for (auto& temp : m_pVampires)
@@ -145,6 +158,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     //Player Health Bar
     m_pPlayerHealthBar->draw(target, states);
+
+    //Googly Eye
+    m_pEye->draw(target, states);
 }
 
 
