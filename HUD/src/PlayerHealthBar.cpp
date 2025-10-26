@@ -6,7 +6,6 @@ PlayerHealthBar::PlayerHealthBar(Game *pGame)
     try
     {
         rectangle = std::make_unique<sf::RectangleShape>();
-        std::cout << "Rectangle Size X: " << rectangle->getSize().x << ", Y: " << rectangle->getSize().y << std::endl;
     }
     catch (const std::bad_alloc& e)
     {
@@ -14,27 +13,19 @@ PlayerHealthBar::PlayerHealthBar(Game *pGame)
     }
 }
 
-PlayerHealthBar::~PlayerHealthBar()
-{ 
-    std::cout << "PlayerHealthBar destroyed\n";
-}
+PlayerHealthBar::~PlayerHealthBar(){}
 
 void    PlayerHealthBar::initialize()
 {
-    std::cout << "HEALTH BAR INITILIZING...\n";
     sf::Vector2f playerPos = m_pPlayer->getPosition();
     sf::Vector2f spritePos = m_pPlayer->getSprite().getPosition();
-    std::cout << "Player Position: " << playerPos.x << ", " << playerPos.y << std::endl;
-    std::cout << "Sprite Position: " << spritePos.x << ", " << spritePos.y << std::endl;
     this->setPosition(adjustPosition());
     playerScale = m_pPlayer->getSprite().getScale().x;
     playerWidth = m_pPlayer->getSprite().getLocalBounds().width * playerScale;
     rectangle->setSize({playerWidth, maxHeight});
-    std::cout << "Rectangle Size X: " << rectangle->getSize().x << ", Y: " << rectangle->getSize().y << std::endl;
     rectangle->setOrigin({0.0f, 0.0f});
     rectangle->setFillColor(sf::Color::Red);
     rectangle->setPosition(getPosition());
-    std::cout << "Health Bar Position: " << getPosition().x << ", " << getPosition().y << std::endl; 
 }
 
 sf::Vector2f PlayerHealthBar::adjustPosition()
@@ -60,7 +51,6 @@ void    PlayerHealthBar::update(float deltaTime)
     rectangle->setPosition(getPosition());
     sf::Vector2f playerPos = m_pPlayer->getSprite().getPosition();
     sf::Vector2f barPos = rectangle->getPosition();
-    std::cout << "Player: " << playerPos.x << "," << playerPos.y << " | Bar: " << barPos.x << "," << barPos.y << std::endl;
 }
 
 void    PlayerHealthBar::draw(sf::RenderTarget& target, sf::RenderStates states) const

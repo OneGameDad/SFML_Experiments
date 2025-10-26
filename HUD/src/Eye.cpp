@@ -5,6 +5,7 @@ Eye::Eye(Game* pGame)
 {
     tweener = std::make_unique<Tweener>(0.0f, 5.0f, (float)duration, std::make_unique<LinearAnimator>(duration, false));
     textures = m_pGame->getEyeTextures();
+    frameCount = textures->size();
 }
     
 Eye::~Eye() = default;
@@ -17,7 +18,7 @@ void Eye::setDuration(double amount)
         duration = amount;
 }
 
- void Eye::update()
+void Eye::update()
 {
     if (googlyRequested)
     {
@@ -37,6 +38,7 @@ void Eye::initialize()
     float targetWidth = 25.0f;
     float scale = targetWidth / texSize.x;
     m_sprite.setScale({scale, scale});
+    frameCount = textures->size();
 }
 
 void Eye::setPosition(float x, float y)

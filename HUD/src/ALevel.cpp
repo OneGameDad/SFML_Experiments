@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Rectangle.h"
 #include "Vampire.h"
-
+/*
 ALevel::ALevel() :
     m_state(State::WAITING),
     m_pPlayer(std::make_unique<Player>(this)),
@@ -27,10 +27,10 @@ ALevel::~ALevel() = default;
 
 bool ALevel::initialise(sf::RenderWindow& window)
 {
-    /*
-        PAY ATTENTION HIVER!
-            If you want to load any assets (fonts, textures) please use the pattern shown below
-    */
+    
+    //    PAY ATTENTION HIVER!
+    //        If you want to load any assets (fonts, textures) please use the pattern shown below
+    
 
     if (!m_font.loadFromFile(ResourceManager::getFilePath("Lavigne.ttf")))
     {
@@ -215,4 +215,4 @@ void ALevel::vampireSpawner(float deltaTime)
         m_nextVampireCooldown -= 0.1f;
     }
     m_vampireCooldown = m_nextVampireCooldown;
-}
+}*/

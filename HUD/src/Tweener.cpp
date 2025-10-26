@@ -31,12 +31,11 @@ float    Tweener::update()
 {
     if (isPlaying)
     {
+        std::cout << "Tweener Updating\n";
         currentTime += GameTime::getInstance().getDeltaTime();
-        std::cout << "Duration: " << duration << " CurrentTime: " << currentTime << std::endl;
         if (currentTime >= duration)
         {
             isPlaying = false;
-            std::cout << "Tweener isPlaying = False\n";
             return (end);
         }
         float t = animator->update();

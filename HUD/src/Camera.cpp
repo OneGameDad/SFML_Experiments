@@ -152,7 +152,6 @@ void Camera::recover()
 void Camera::updateTweener()
 {
     tweener->reset();
-    std::cout << "Trauma: " << trauma << " recoveryDuration: " << recoveryDuration << " recoveryDuration * trauma:  " << recoveryDuration * trauma << std::endl;
     tweener->restart(trauma, 0.0, recoveryDuration * trauma);
     if (trauma > traumaBuffer)
         tweener->play();
