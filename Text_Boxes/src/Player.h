@@ -11,6 +11,7 @@
 #include <vector>
 #include "Game.h"
 #include "WeaponTextBox.h"
+#include "Constants.h"
 
 struct InputData;
 

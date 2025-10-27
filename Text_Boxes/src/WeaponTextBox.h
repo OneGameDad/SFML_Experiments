@@ -13,6 +13,7 @@ public:
     WeaponTextBox(sf::Font& pFont, Player* pPlayer);
     ~WeaponTextBox();
 
-    virtual void    initialize(float a_duration) override;
-    virtual void    update(float deltaTime) override;
+    void    initialize() override;
+    void    update(float deltaTime) override;
+    void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

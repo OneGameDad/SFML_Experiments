@@ -5,7 +5,7 @@
 class Weapon : public Rectangle
 {
 public:
-    Weapon(sf::Font& pFont);
+    Weapon();
     virtual ~Weapon() {}
 
     void setActive(bool isActive);

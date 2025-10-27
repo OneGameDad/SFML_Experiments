@@ -5,12 +5,11 @@ ATextBox::ATextBox(sf::Font& pFont)
     m_pFont = &pFont;
 }
 
-ATextBox::~ATextBox(){}
+ATextBox::~ATextBox() = default;
 
-void ATextBox::initialize(float a_duration)
+void ATextBox::initialize()
 {
     setPosition(0.0f, 0.0f);
-    duration = a_duration;
     text.setFont(*m_pFont);
     text.setString(content);
     text.setFillColor(sf::Color::White);
@@ -58,4 +57,12 @@ void    ATextBox::setTextOffsets(float x, float y)
 {
     offsetX = x;
     offsetY = y;
+}
+
+void    ATextBox::setDuration(float a_duration)
+{
+    if (a_duration < 0.0f)
+        duration = 0.0f;
+    else
+        duration = a_duration;
 }

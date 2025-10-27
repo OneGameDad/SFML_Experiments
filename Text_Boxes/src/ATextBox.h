@@ -22,10 +22,11 @@ public:
     ATextBox(sf::Font& pFont);
     virtual ~ATextBox();
 
-    virtual void    initialize(float a_duration);
+    virtual void    initialize() override;
     virtual void    update(float deltaTime);
     virtual void    activate();
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     virtual void    setString(const std::string &str);
     virtual void    setTextOffsets(float x, float y);
+    void            setDuration(float a_duration);
 };

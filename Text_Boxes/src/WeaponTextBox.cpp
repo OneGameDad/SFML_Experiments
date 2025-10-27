@@ -4,16 +4,16 @@ WeaponTextBox::WeaponTextBox(sf::Font& pFont, Player* pPlayer)
     : ATextBox(pFont), m_pPlayer(pPlayer)
 {}
 
-WeaponTextBox::~WeaponTextBox(){};
+WeaponTextBox::~WeaponTextBox() = default;
 
-void    WeaponTextBox::initialize(float a_duration)
+void    WeaponTextBox::initialize()
 {
     setPosition(m_pPlayer->getWeapon()->getPosition());
-    duration = a_duration;
     text.setFont(*m_pFont);
     text.setString(content);
     text.setFillColor(sf::Color::White);
-    text.setPosition(getPosition().x + offsetX, getPosition().y + offsetY);
+    sf::Vector2f size = m_pPlayer->getWeapon()->getSize();
+    text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
     text.setStyle(sf::Text::Italic);
     text.setCharacterSize(charSize);
 }
@@ -21,7 +21,8 @@ void    WeaponTextBox::initialize(float a_duration)
 void    WeaponTextBox::update(float deltaTime)
 {
     setPosition(m_pPlayer->getWeapon()->getPosition());
-    text.setPosition(getPosition());
+    sf::Vector2f size = m_pPlayer->getWeapon()->getSize();
+    text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
     if (isActive)
     {
         elapsed += deltaTime;
@@ -32,4 +33,9 @@ void    WeaponTextBox::update(float deltaTime)
             return;
         }
     }
+}
+
+void    WeaponTextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(text, states);
 }

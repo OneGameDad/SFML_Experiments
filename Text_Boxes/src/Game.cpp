@@ -13,7 +13,7 @@
 
 Game::Game() :
     m_state(State::WAITING),
-    m_pPlayer(std::make_unique<Player>(this)),
+    m_pPlayer(std::make_unique<Player>(this, getFont())),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
     m_pCamera(std::make_unique<Camera>(this)),
     m_pEye(std::make_unique<Eye>(this)),

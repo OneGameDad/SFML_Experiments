@@ -5,7 +5,7 @@ Player::Player(Game* pGame, sf::Font& pFont) :
     Rectangle(sf::Vector2f(PlayerWidth, PlayerHeight)),
     m_pGame(pGame),
     m_pWeapon(std::make_unique<Weapon>()),
-    m_pWeaponEffect(std::make_unique<WeaponTextBox>(pFont))
+    m_pWeaponEffect(std::make_unique<WeaponTextBox>(pFont, this))
 {
     setOrigin(sf::Vector2f(0.0f, 0.0f));
 }
@@ -20,9 +20,10 @@ bool Player::initialise()
     setPosition(ScreenWidth / 2, ScreenHeight / 2);
     m_sprite.setPosition(getPosition());
     currentHealth = maxHealth;
-    m_pWeaponEffect->initialize(WeaponActiveTime);
+    m_pWeaponEffect->initialize();
+    m_pWeaponEffect->setDuration(WeaponActiveTime);
     m_pWeaponEffect->setString("*swish*");
-    m_pWeaponEffect->setTextOffsets(0.0f, -20.0f);
+    m_pWeaponEffect->setTextOffsets(0.0f, -15.0f);
     return true;
 }
 
@@ -73,7 +74,8 @@ void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     Rectangle::draw(target, states);
     m_pWeapon->draw(target, states);
-    m_pWeaponEffect->draw(target, states);
+    if (m_pWeapon->isActive())
+        m_pWeaponEffect->draw(target, states);
 }
 
 float Player::getNormalizedHealth() const
