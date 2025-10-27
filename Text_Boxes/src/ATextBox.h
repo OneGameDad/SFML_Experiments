@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <string>
+#include <exception>
 
 class ATextBox: public HUDComponent
 {
@@ -18,6 +19,10 @@ protected:
 
     float offsetX = 0.0f;
     float offsetY = 0.0f;
+
+    size_t lineLength = 24;
+    std::string wrapText(const std::string &str);
+
 public:
     ATextBox(sf::Font& pFont);
     virtual ~ATextBox();
@@ -29,4 +34,5 @@ public:
     virtual void    setString(const std::string &str);
     virtual void    setTextOffsets(float x, float y);
     void            setDuration(float a_duration);
+    void            setLineLength(size_t num);
 };
