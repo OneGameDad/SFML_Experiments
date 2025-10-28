@@ -1,5 +1,8 @@
 #pragma once
 
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics.hpp>
 #include "ATextBox.h"
 #include "AProjectile.h"
 

@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include "Rectangle.h"
 #include "ProjectileTextBox.h"
+#include "Game.h"
 
 /* TODO:
     Projectile spawning and setting velocity/direction/path
@@ -18,16 +19,27 @@
 class AProjectile: public Rectangle
 {
 protected:
-    float lifetime = 0.0f;
-    float health = 0.0f;
-    float velocity = 0.0f;
-    float direction = 0.0f;
+    Game*   m_pGame;
+    float   lifetime = 0.0f;
+    float   health = 0.0f;
+    float   velocity = 0.0f;
+    float   direction = 0.0f;
+    bool    isActive = false;
+
+    float   projWidth = 5.0f;
+    float   projHeight = 5.0f;
+    sf::Vector2f startPos = {0.0f, 0.0f};
+
     e_collibable collidable_type = PROJECTILE;
 
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
+
+    void    reset();
+    void    damage(Rectangle* pOther);
 public:
-    AProjectile(sf::Vector2f a_size, sf::Vector2f a_position, sf::Font* pFont);
+    AProjectile(Game* pGame);
     ~AProjectile();
 
-    void damage(Rectangle* pOther);
+    void    update(float deltaTime);
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
