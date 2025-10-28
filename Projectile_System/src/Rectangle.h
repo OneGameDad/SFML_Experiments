@@ -4,6 +4,15 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics.hpp>
 
+enum e_collibable
+{
+    RECT,
+    PLAYER,
+    VAMPIRE,
+    PROJECTILE,
+    OTHER
+}
+
 class Rectangle : public sf::Drawable, public sf::Transformable
 {
 public:
