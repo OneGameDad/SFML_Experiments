@@ -34,6 +34,7 @@ void ATextBox::update(float deltaTime)
 */
 }
 
+// Draws Text without Wrapping it
 void ATextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (isActive)

@@ -12,6 +12,8 @@ class StoryletReader
 private:
     std::map<std::string, std::string> storylets;
     bool    isFileLoaded = false;
+    std::string delimiter = "\\t";
+
     StoryletReader() = default;
     ~StoryletReader() = default;
 
@@ -27,16 +29,18 @@ private:
             if (line.empty())
                 continue;
             
-                std::istringstream ss(line);
-                std::string key;
-                std::string value;
-                
-                if (std::getline(ss, key, '\t') && std::getline(ss, value))
-                {
-                    storylets[key] = value;
-                }
-                else
-                    throw std::runtime_error("Invalid line format (expected: key\\tvalue): " + line);
+            std::string key;
+            std::string value;
+            
+            size_t pos = line.find(delimiter);
+            if (pos != std::string::npos)
+            {
+                key = line.substr(0, pos);
+                value = line.substr(pos + delimiter.length());
+                storylets[key] = value;
+            }
+            else 
+                throw std::runtime_error("Invalid line format (expected: key\\tvalue): " + line);
         }
         isFileLoaded = true;
     }

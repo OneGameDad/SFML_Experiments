@@ -9,7 +9,7 @@
 #include "GameTime.h"
 #include "Camera.h"
 #include "PerlinNoiseGenerator.h"
-
+#include "StoryletReader.h"
 #include "ResourceManager.h"
 
 int main(int argc, char* argv[])
@@ -19,7 +19,8 @@ int main(int argc, char* argv[])
 
     auto &PNG = PerlinNoiseGenerator::Instance(); 
 	PNG.Load("assets/noiseTexture.png"); //Must be loaded before camera
-
+    StoryletReader::getInstance();
+    
     GameTime::getInstance().setTime();
 
     sf::RenderWindow window(sf::VideoMode(ScreenWidth, ScreenHeight), "Survive");

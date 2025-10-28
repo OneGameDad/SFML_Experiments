@@ -59,7 +59,8 @@ bool Game::initialise(sf::RenderWindow& window)
     
     //My Code
     m_pCamera->initialize(window);
-
+    
+    m_tutorial = std::make_unique<StoryletBox>(m_font, StoryletReader::getInstance().getValue("ID_WAIT"));
     resetLevel();
     return true;
 }
@@ -70,8 +71,10 @@ void Game::resetLevel()
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
+    
 
     m_pEye->initialize();
+    m_tutorial->initialize();
 }
 
 void Game::update(float deltaTime)
@@ -83,6 +86,7 @@ void Game::update(float deltaTime)
             if (GameTime::getInstance().getRealTime() >= 3.f)
             {
                 m_state = State::ACTIVE;
+                m_tutorial->update(StoryletReader::getInstance().getValue("ID_PLAY"));
             }
         }
         break;
@@ -104,6 +108,7 @@ void Game::update(float deltaTime)
             if (m_pPlayer->isDead())
             {
                 m_state = State::WAITING;
+                m_tutorial->update(StoryletReader::getInstance().getValue("ID_WAIT"));
                 resetLevel();
             }
         }
@@ -161,6 +166,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     //Googly Eye
     m_pEye->draw(target, states);
+
+    //Draw Storylet
+    m_tutorial->draw(target, states);
 }
 
 

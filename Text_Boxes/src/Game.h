@@ -10,6 +10,8 @@
 #include "PlayerHealthBar.h"
 #include "Camera.h"
 #include "Eye.h"
+#include "StoryletBox.h"
+#include "StoryletReader.h"
 
 class Player;
 class Game;
@@ -18,8 +20,7 @@ class Vampire;
 class PlayerHealthBar;
 class Camera;
 class Eye;
-
-namespace sf { class Clock; }
+class StoryletBox;
 
 class Game : public sf::Drawable
 {
@@ -73,4 +74,5 @@ private:
     sf::Texture m_vampTexture;
     sf::Texture m_playerTexture;
     std::vector<std::unique_ptr<sf::Texture>> m_eyeTextures;
+    std::unique_ptr<StoryletBox> m_tutorial;
 };
