@@ -74,7 +74,7 @@ void Game::resetLevel()
     
 
     m_pEye->initialize();
-    m_tutorial->initialize();
+    m_tutorial->initialize({300.0f, 100.0f}, 24);
 }
 
 void Game::update(float deltaTime)
@@ -83,10 +83,12 @@ void Game::update(float deltaTime)
     {
         case State::WAITING:
         {
-            if (GameTime::getInstance().getRealTime() >= 3.f)
+            elapsed += deltaTime;
+            if (elapsed >= 3.f)
             {
                 m_state = State::ACTIVE;
                 m_tutorial->update(StoryletReader::getInstance().getValue("ID_PLAY"));
+                elapsed = 0.0f;
             }
         }
         break;
@@ -130,8 +132,10 @@ void Game::update(float deltaTime)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    //Draw Storylet
+    m_tutorial->draw(target, states);
     //  Draw texts.
-    if (m_state == State::WAITING)
+/*    if (m_state == State::WAITING)
     {
         sf::Text startText;
         startText.setFont(m_font);
@@ -151,7 +155,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
         timerText.setPosition(sf::Vector2f((ScreenWidth - timerText.getLocalBounds().getSize().x) * 0.5, 20));
         target.draw(timerText);
     }
-    
+*/    
     // Draw player.
     m_pPlayer->draw(target, states);
 
@@ -167,8 +171,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     //Googly Eye
     m_pEye->draw(target, states);
 
-    //Draw Storylet
-    m_tutorial->draw(target, states);
+    
 }
 
 

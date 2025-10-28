@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ATextBox.h"
+#include <iostream>
 
 class StoryletBox: public ATextBox
 {
@@ -16,4 +17,5 @@ public:
     virtual void    update(const std::string& str);
     virtual void    activate() override;
     virtual void    deactivate();
+    virtual void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
