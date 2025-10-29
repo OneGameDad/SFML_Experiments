@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <cmath>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include "Rectangle.h"
@@ -15,6 +16,7 @@
 */
 
 #define END_EFFECT_DURATION 0.25f
+#define PI 3.14159265f
 
 class AProjectile: public Rectangle
 {
@@ -34,12 +36,17 @@ protected:
 
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
 
-    void    reset();
+    
     void    damage(Rectangle* pOther);
+    void    reset();
+    void    move(float deltaTime);
 public:
     AProjectile(Game* pGame);
     ~AProjectile();
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
+    void    deactivate();
+    bool    getIsActive() { return (isActive); }
 };

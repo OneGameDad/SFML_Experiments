@@ -54,6 +54,8 @@ public:
     void vampireSpawner(float deltaTime);
 
     sf::Font& getFont() { return (m_font); }
+    std::vector<std::unique_ptr<Vampire>>* getVampies() { return (&m_pVampires); }
+    
 private:
     std::unique_ptr<Player> m_pPlayer;
     std::unique_ptr<PlayerHealthBar> m_pPlayerHealthBar;

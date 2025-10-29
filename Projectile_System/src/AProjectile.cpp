@@ -6,3 +6,67 @@ AProjectile::AProjectile(Game* pGame)
 
 AProjectile::~AProjectile(){}
 
+void    AProjectile::update(float deltaTime)
+{
+    if (!isActive)
+        return;
+    lifetime -= deltaTime;
+    move(deltaTime);
+    if (/*TODO Bounds check*/)
+    {
+        deactivate();
+    }
+    for (auto& vampire: m_pGame->getVampies())
+    {
+        if (collidesWith(vampire))
+        {
+            damage(vampire);
+            deactivate();
+            return();
+        }
+    }
+    if (lifetime <= 0.0f)
+    {
+        deactivate();
+    }
+}
+
+void    AProjectile::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    if (isActive)
+        target->draw(m_sprite, states);
+}
+
+void    AProjectile::activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction)
+{
+    setPosition(a_position);
+    sprite.setPosition(getPosition());
+    lifetime = a_lifetime;
+    a_velocity = a_velocity;
+    direction = a_direction;
+    isActive = true;
+}
+
+void    AProjectile::deactivate()
+{
+    isActive = false;
+    lifetime = 0.0f;
+    health = 0.0f;
+    velocity = 0.0f;
+    direction = 0.0f;
+    sf::Vector2f startPos = {0.0f, 0.0f};
+}
+
+void    AProjectile::reset()
+{
+    
+}
+
+void    AProjectile::move(float deltaTime)
+{
+    float radians = direction * PI / 180.f;
+    position.x += velocity * std::cos(radians) * deltaTime;
+    position.y += velocity * std::sin(radians) * deltaTime;
+    sprite.setPosition(getPosition());
+    sprite.setRotation(direction);
+}
