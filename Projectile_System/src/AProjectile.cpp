@@ -10,39 +10,32 @@ void    AProjectile::update(float deltaTime)
 {
     if (state == INACTIVE)
         return;
-    else if (state == ACTIVE)
+    else if (state == SPAWNING)
+    {
+        updateCollisions();
+        setFlying();
+        return ();
+    }
+    else if (state == FLYING)
     {
         lifetime -= deltaTime;
-        uodateMovement(deltaTime);
-        if (/*TODO Bounds check*/)
-        {
-            deactivate();
-        }
-        for (auto& vampire: m_pGame->getVampies())
-        {
-            if (collidesWith(vampire))
-            {
-                m_collisionEffect->initialize();
-                m_collisionEffect->setString("*explosion*");
-                damage(vampire);
-                return();
-            }
-        }
+        updateMovement(deltaTime);
+        updateCollisions();
         if (lifetime <= 0.0f)
         {
-            deactivate();
+            disarm();
         }
     }
     else if (state == DYING)
     {
-
+        dying(deltaTime);
     }
 }
 
 
 void    AProjectile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if (state == ACTIVE)
+    if (state == SPAWNING || state == FLYING || state == RICHOCETING)
     {
         target->draw(m_sprite, states);   
     }
@@ -60,7 +53,7 @@ void    AProjectile::activate(sf::Vector2f a_posiition, float a_lifetime, float 
     lifetime = a_lifetime;
     a_velocity = a_velocity;
     direction = a_direction;
-    isActive = true;
+    state = SPAWNING;
 }
 
 void    AProjectile::deactivate()
@@ -70,7 +63,7 @@ void    AProjectile::deactivate()
 
 void    AProjectile::reset()
 {
-    isActive = false;
+    state = INACTIVE;
     lifetime = 0.0f;
     health = 0.0f;
     velocity = 0.0f;
@@ -87,8 +80,55 @@ void    AProjectile::updateMovement(float deltaTime)
     sprite.setRotation(direction);
 }
 
+void    AProjectile::updateCollisions()
+{
+    for (auto& box: m_pGame->getBoundingBoxes())
+    {
+        if (collidesWith(box))
+        {
+            disarm();
+            return();
+        }
+    }
+    for (auto& vampire: m_pGame->getVampies())
+    {
+        if (collidesWith(vampire))
+        {
+            damage(vampire);
+            explode();
+            return();
+        }
+    }
+}
+
+void    AProjectile::explode()
+{
+    m_collisionEffect->initialize();
+    m_collisionEffect->setString(explosion);
+    state = DYING;
+}
+
 void    AProjectile::damage(Vampire* pOther)
 {
     pOther->setIsKilled();
+}
+
+void    AProjectile::dying(float deltaTime)
+{
+    death_rattle -= deltaTime;
+    if (death_rattle <= 0.0f)
+        deactivate();
+}
+
+void    AProjectile::setFlying()
+{
+    if (state == SPAWNING)
+        state = FLYING;
+}
+
+void    AProjectile::disarm()
+{
+    m_collisionEffect->initialize();
+    m_collisionEffect->setString(disarming);
     state = DYING;
 }

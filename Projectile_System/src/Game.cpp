@@ -18,7 +18,8 @@ Game::Game() :
     m_pCamera(std::make_unique<Camera>(this)),
     m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
-    m_nextVampireCooldown(2.0f)
+    m_nextVampireCooldown(2.0f),
+    projPool(std::make_unique<ProjectileManager>(this));
 {
     m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
 }
@@ -59,10 +60,19 @@ bool Game::initialise(sf::RenderWindow& window)
     
     //My Code
     m_pCamera->initialize(window);
-    
+    createBoundingBoxes();
     m_tutorial = std::make_unique<StoryletBox>(m_font, StoryletReader::getInstance().getValue("ID_WAIT"));
     resetLevel();
     return true;
+}
+
+void Game::createBoundingBoxes()
+{
+    boundingBoxes.reserve(4);
+    boundingBoxes.emplace_back(std::make_unique<Rectangle>({ScreenWidth, boundingBoxThickness}, {0.0f, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<Rectangle>({boundingBoxThickness, ScreenHeight}, {0.0f, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<Rectangle>({boundingBoxThickness, ScreenHeight}, {ScreenWidth - boundingBoxThickness, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<Rectangle>({ScreenWidth, boundingBoxThickness}, {0.0f, ScreenHeight - boundingBoxThickness}));
 }
 
 void Game::resetLevel()
@@ -71,10 +81,10 @@ void Game::resetLevel()
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
-    
 
     m_pEye->initialize();
     m_tutorial->initialize({300.0f, 100.0f}, 24);
+    projPool->initialise();
 }
 
 void Game::update(float deltaTime)

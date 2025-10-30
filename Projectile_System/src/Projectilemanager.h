@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <limits>
 #include "AProjectile.h"
 #include "Game.h"
 
@@ -19,6 +20,7 @@ private:
     float elapsed = 0.0f;
     static const size_t maxPoolSize = 50;
 
+    size_t getUseableProjectile();
 public:
     ProjectileManager(Game* pGame);
     ~ProjectileManager();
@@ -26,5 +28,5 @@ public:
     bool initialise();
     void update(float deltaTime);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void launch(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
+    void spawn(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
 };

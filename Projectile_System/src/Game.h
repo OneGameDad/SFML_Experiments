@@ -12,6 +12,7 @@
 #include "Eye.h"
 #include "StoryletBox.h"
 #include "StoryletReader.h"
+#include "ProjectileManager.h"
 
 class Player;
 class Game;
@@ -21,6 +22,7 @@ class PlayerHealthBar;
 class Camera;
 class Eye;
 class StoryletBox;
+class ProjectileManager;
 
 class Game : public sf::Drawable
 {
@@ -55,6 +57,8 @@ public:
 
     sf::Font& getFont() { return (m_font); }
     std::vector<std::unique_ptr<Vampire>>* getVampies() { return (&m_pVampires); }
+    std::vector<std::unique_pr<Rectangle>>* getBoundingBoxes{ return (&boundingBoxes); }
+    ProjectileManager& getProjectileManager() { return (&projPool); } 
     
 private:
     std::unique_ptr<Player> m_pPlayer;
@@ -64,6 +68,9 @@ private:
     std::unique_ptr<Eye> m_pEye;
 
     std::vector<std::unique_ptr<Vampire>> m_pVampires;
+
+    const float boundingBoxThickness = 10.0f;
+    std::vector<std::unique_ptr<Rectangle>> boundingBoxes;
 
     State m_state;
     std::unique_ptr<GameInput> m_pGameInput;
@@ -78,4 +85,8 @@ private:
     sf::Texture m_playerTexture;
     std::vector<std::unique_ptr<sf::Texture>> m_eyeTextures;
     std::unique_ptr<StoryletBox> m_tutorial;
+
+    std::unique_ptr<ProjectileManager> projPool;
+
+    void    createBoundingBoxes();
 };
