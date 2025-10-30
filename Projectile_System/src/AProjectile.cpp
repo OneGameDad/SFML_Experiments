@@ -8,37 +8,53 @@ AProjectile::~AProjectile(){}
 
 void    AProjectile::update(float deltaTime)
 {
-    if (!isActive)
+    if (state == INACTIVE)
         return;
-    lifetime -= deltaTime;
-    move(deltaTime);
-    if (/*TODO Bounds check*/)
+    else if (state == ACTIVE)
     {
-        deactivate();
-    }
-    for (auto& vampire: m_pGame->getVampies())
-    {
-        if (collidesWith(vampire))
+        lifetime -= deltaTime;
+        uodateMovement(deltaTime);
+        if (/*TODO Bounds check*/)
         {
-            damage(vampire);
             deactivate();
-            return();
+        }
+        for (auto& vampire: m_pGame->getVampies())
+        {
+            if (collidesWith(vampire))
+            {
+                m_collisionEffect->initialize();
+                m_collisionEffect->setString("*explosion*");
+                damage(vampire);
+                return();
+            }
+        }
+        if (lifetime <= 0.0f)
+        {
+            deactivate();
         }
     }
-    if (lifetime <= 0.0f)
+    else if (state == DYING)
     {
-        deactivate();
+
     }
 }
 
+
 void    AProjectile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if (isActive)
-        target->draw(m_sprite, states);
+    if (state == ACTIVE)
+    {
+        target->draw(m_sprite, states);   
+    }
+    else if (state == DYING)
+    {
+        target->draw(m_collisionEffect, states);
+    }
 }
 
 void    AProjectile::activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction)
 {
+    reset();
     setPosition(a_position);
     sprite.setPosition(getPosition());
     lifetime = a_lifetime;
@@ -49,6 +65,11 @@ void    AProjectile::activate(sf::Vector2f a_posiition, float a_lifetime, float 
 
 void    AProjectile::deactivate()
 {
+    state = INACTIVE;
+}
+
+void    AProjectile::reset()
+{
     isActive = false;
     lifetime = 0.0f;
     health = 0.0f;
@@ -57,16 +78,17 @@ void    AProjectile::deactivate()
     sf::Vector2f startPos = {0.0f, 0.0f};
 }
 
-void    AProjectile::reset()
-{
-    
-}
-
-void    AProjectile::move(float deltaTime)
+void    AProjectile::updateMovement(float deltaTime)
 {
     float radians = direction * PI / 180.f;
     position.x += velocity * std::cos(radians) * deltaTime;
     position.y += velocity * std::sin(radians) * deltaTime;
     sprite.setPosition(getPosition());
     sprite.setRotation(direction);
+}
+
+void    AProjectile::damage(Vampire* pOther)
+{
+    pOther->setIsKilled();
+    state = DYING;
 }

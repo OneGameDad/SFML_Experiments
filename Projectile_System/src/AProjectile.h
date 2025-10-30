@@ -7,6 +7,7 @@
 #include "Rectangle.h"
 #include "ProjectileTextBox.h"
 #include "Game.h"
+#include "Vampire.h"
 
 /* TODO:
     Projectile spawning and setting velocity/direction/path
@@ -14,6 +15,14 @@
     Collision events
     Collision matrix
 */
+
+enum e_proj_states
+{
+    INACTIVE,
+    SPAWNING,
+    FLYING,
+    DYING,
+}
 
 #define END_EFFECT_DURATION 0.25f
 #define PI 3.14159265f
@@ -26,7 +35,7 @@ protected:
     float   health = 0.0f;
     float   velocity = 0.0f;
     float   direction = 0.0f;
-    bool    isActive = false;
+    e_proj_states state = INACTIVE;
 
     float   projWidth = 5.0f;
     float   projHeight = 5.0f;
@@ -37,9 +46,9 @@ protected:
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
 
     
-    void    damage(Rectangle* pOther);
+    void    damage(Vampire* pOther);
     void    reset();
-    void    move(float deltaTime);
+    void    updateMovement(float deltaTime);
 public:
     AProjectile(Game* pGame);
     ~AProjectile();
@@ -48,5 +57,5 @@ public:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
     void    deactivate();
-    bool    getIsActive() { return (isActive); }
+    e_proj_states    getState() { return (state); }
 };
