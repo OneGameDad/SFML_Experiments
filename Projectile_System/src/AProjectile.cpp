@@ -1,10 +1,13 @@
 #include "AProjectile.h"
 
 AProjectile::AProjectile(Game* pGame, sf::Texture *a_texture)
-    : Rectangle(sf::Vector2f{projWidth, projHeight}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
+    : Rectangle(sf::Vector2f{10.0f, 10.0f}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
 {
     m_sprite.setTexture(*a_texture);
-    m_sprite.setScale({0.2f, 0.2f});
+    m_sprite.setScale({0.025f, 0.025f});
+//    auto textureSize = m_sprite.getTexture()->getSize();
+//    sf::Vector2f size (static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
+//    setSize(size);
     m_sprite.setColor(sf::Color::Magenta);
 }
 
@@ -55,10 +58,10 @@ void    AProjectile::activate(sf::Vector2f a_position, float a_lifetime, float a
     setPosition(a_position);
     m_sprite.setPosition(getPosition());
     lifetime = a_lifetime;
-    a_velocity = a_velocity;
+    velocity = a_velocity;
     direction = a_direction;
     state = SPAWNING;
-    std::cout << "Project Spawned at: " << getPosition().x << ", " << getPosition().y << std::endl;
+    std::cout << "Projectile Spawned at: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void    AProjectile::deactivate()
@@ -74,15 +77,22 @@ void    AProjectile::reset()
     velocity = 0.0f;
     direction = 0.0f;
     sf::Vector2f startPos = {0.0f, 0.0f};
+    death_rattle = DYING_TIME;
 }
 
 void    AProjectile::updateMovement(float deltaTime)
 {
+    std::cout << "Velocity: " << velocity << std::endl;
     float radians = direction * PI / 180.f;
-    float x = getPosition().x + velocity * std::cos(radians) * deltaTime;
-    float y = getPosition().y + velocity * std::sin(radians) * deltaTime;
-    m_sprite.setPosition({x, y});
+    float dx = velocity * std::cos(radians) * deltaTime;
+    float dy = velocity * std::sin(radians) * deltaTime;
+    std::cout << "DX: " << dx << " DY: " << dy << std::endl;
+    Rectangle::move(sf::Vector2f(dx, dy));
+    m_sprite.setPosition(getPosition().x, getPosition().y);
+    //m_sprite.move(dx, dy);  // moves relative to current position
     m_sprite.setRotation(direction);
+
+    //std::cout << "Projectile Pos: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void    AProjectile::updateCollisions()
@@ -101,6 +111,8 @@ void    AProjectile::updateCollisions()
         {
             damage(vampire.get());
             explode();
+            m_pGame->getCamera()->addTrauma(0.5f);
+            m_pGame->getCamera()->requestShake();
             return;
         }
     }
@@ -128,11 +140,15 @@ void    AProjectile::dying(float deltaTime)
 void    AProjectile::setFlying()
 {
     if (state == SPAWNING)
+    {
         state = FLYING;
+        std::cout << "PROJECTILE FLYING\n";
+    }
 }
 
 void    AProjectile::disarm()
 {
+    std::cout << "PROJECTILE DISARMING\n";
     m_collisionEffect->initialize();
     m_collisionEffect->setString(disarming);
     state = DYING;

@@ -43,8 +43,6 @@ protected:
     float   death_rattle = DYING_TIME;
     e_proj_states state = INACTIVE;
 
-    float   projWidth = 5.0f;
-    float   projHeight = 5.0f;
     sf::Vector2f startPos = {0.0f, 0.0f};
 
 

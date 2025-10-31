@@ -104,14 +104,15 @@ void Player::fire()
 {
     if (firedProjectile)
         return;
-    float a_lifetime = 10.0f;
-    float a_velocity = 10.0f;
+    float a_lifetime = 5.0f;
+    float a_velocity = 20.0f;
     float a_direction = 0.0f;
     sf::Vector2f a_position;
     if (m_direction == LEFT)
     {
         a_position.x = getPosition().x + -10;
         a_position.y = getPosition().y + 50;
+        a_direction = 180.0f;
     }
     else
     {
