@@ -58,8 +58,8 @@ void    AProjectile::activate(sf::Vector2f a_position, float a_lifetime, float a
     setPosition(a_position);
     m_sprite.setPosition(getPosition());
     lifetime = a_lifetime;
-    velocity = a_velocity;
-    direction = a_direction;
+    speed = a_velocity;
+    angle = a_direction;
     state = SPAWNING;
     std::cout << "Projectile Spawned at: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
@@ -74,25 +74,20 @@ void    AProjectile::reset()
     state = INACTIVE;
     lifetime = 0.0f;
     health = 0.0f;
-    velocity = 0.0f;
-    direction = 0.0f;
+    speed = 0.0f;
+    angle = 0.0f;
     sf::Vector2f startPos = {0.0f, 0.0f};
     death_rattle = DYING_TIME;
 }
 
 void    AProjectile::updateMovement(float deltaTime)
 {
-    std::cout << "Velocity: " << velocity << std::endl;
-    float radians = direction * PI / 180.f;
-    float dx = velocity * std::cos(radians) * deltaTime;
-    float dy = velocity * std::sin(radians) * deltaTime;
-    std::cout << "DX: " << dx << " DY: " << dy << std::endl;
+    float radians = angle * PI / 180.f;
+    float dx = speed * std::cos(radians) * deltaTime;
+    float dy = speed * std::sin(radians) * deltaTime;
     Rectangle::move(sf::Vector2f(dx, dy));
     m_sprite.setPosition(getPosition().x, getPosition().y);
-    //m_sprite.move(dx, dy);  // moves relative to current position
-    m_sprite.setRotation(direction);
-
-    //std::cout << "Projectile Pos: " << getPosition().x << ", " << getPosition().y << std::endl;
+    m_sprite.setRotation(angle);
 }
 
 void    AProjectile::updateCollisions()

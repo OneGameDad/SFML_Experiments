@@ -38,8 +38,8 @@ protected:
     Game*   m_pGame;
     float   lifetime = 0.0f;
     float   health = 0.0f;
-    float   velocity = 0.0f;
-    float   direction = 0.0f;
+    float   speed = 0.0f;
+    float   angle = 0.0f;
     float   death_rattle = DYING_TIME;
     e_proj_states state = INACTIVE;
 
@@ -65,7 +65,7 @@ public:
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
+    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_speed, float a_angle);
     void    deactivate();
     void    setFlying();
     e_proj_states    getState() const { return (state); }

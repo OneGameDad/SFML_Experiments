@@ -36,12 +36,12 @@ void ProjectileManager::draw(sf::RenderTarget &target, sf::RenderStates states) 
         projectile->draw(target, states);    
 }
 
-void ProjectileManager::spawn(sf::Vector2f a_position, float a_lifetime, float a_velocity, float a_direction)
+void ProjectileManager::spawn(sf::Vector2f a_position, float a_lifetime, float a_speed, float a_angle)
 {
    size_t projectile = getUseableProjectile();
    if (pool[projectile]->getState() != INACTIVE)
         pool[projectile]->deactivate();
-    pool[projectile]->activate(a_position, a_lifetime, a_velocity, a_direction);
+    pool[projectile]->activate(a_position, a_lifetime, a_speed, a_angle);
 }
 
 size_t ProjectileManager::getUseableProjectile()

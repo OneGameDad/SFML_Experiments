@@ -105,14 +105,14 @@ void Player::fire()
     if (firedProjectile)
         return;
     float a_lifetime = 5.0f;
-    float a_velocity = 20.0f;
-    float a_direction = 0.0f;
+    float a_speed = 20.0f;
+    float a_angle = 0.0f;
     sf::Vector2f a_position;
     if (m_direction == LEFT)
     {
         a_position.x = getPosition().x + -10;
         a_position.y = getPosition().y + 50;
-        a_direction = 180.0f;
+        a_angle = 180.0f;
     }
     else
     {
@@ -121,6 +121,6 @@ void Player::fire()
         a_position.x = getPosition().x + static_cast<float>(spriteSize.x) + 10;
         a_position.y = getPosition().y + 50;
     }
-    m_pGame->getProjectileManager().spawn(a_position, a_lifetime, a_velocity, a_direction);
+    m_pGame->getProjectileManager().spawn(a_position, a_lifetime, a_speed, a_angle);
     firedProjectile = true;
 }
