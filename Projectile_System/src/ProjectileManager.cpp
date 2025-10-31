@@ -2,9 +2,7 @@
 
 ProjectileManager::ProjectileManager(Game* pGame)
     : m_pGame(pGame)
-{
-    m_Font = m_pGame->getFont();
-}
+{}
 
 ProjectileManager::~ProjectileManager()
 {
@@ -14,11 +12,13 @@ ProjectileManager::~ProjectileManager()
 
 bool ProjectileManager::initialise()
 {
-    pool->reserve(maxPoolSize);
+    texture.loadFromFile(ResourceManager::getFilePath("square_whole.png"));
+    pool.reserve(maxPoolSize);
     for (size_t i = 0; i < maxPoolSize; i++)
     {
-        pool.emplace_back(std::make_unique<AProjectile>(m_Font));
+        pool.emplace_back(std::make_unique<AProjectile>(m_pGame, &texture));
     }
+    return true;
 }
 
 void ProjectileManager::update(float deltaTime)

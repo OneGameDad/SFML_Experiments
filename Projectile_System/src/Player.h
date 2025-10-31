@@ -2,8 +2,6 @@
 
 #include "Rectangle.h"
 #include "ResourceManager.h"
-#include "ParticleSystem.h"
-#include "FireEffect.h"
 #include <memory>
 #include "Weapon.h"
 #include "InputHandler.h"
@@ -18,6 +16,8 @@ struct InputData;
 class Game;
 class Weapon;
 class WeaponTextBox;
+
+#define COOLDOWN 3.5f
 
 enum eDirection
 {
@@ -45,6 +45,8 @@ public:
     float getNormalizedHealth() const;
     sf::Sprite getSprite() const;
 
+    void fire();
+
 private:
     bool    m_isDead = false;
     eDirection m_direction = LEFT;
@@ -54,4 +56,9 @@ private:
 
     float currentHealth = 0.0f;
     const float maxHealth = 100.0f;
+
+    bool    firedProjectile = false;
+    float   fireCooldown = 3.5f;
+    float   elapsed = 0.0f;
+    void    updateGun(float deltaTime);
 };

@@ -68,6 +68,20 @@ void Player::update(float deltaTime)
         getCenter().y - weaponSize.y / 2.0f));
     m_pWeapon->update(deltaTime);
     m_pWeaponEffect->update(deltaTime);
+    updateGun(deltaTime);
+}    
+
+void Player::updateGun(float deltaTime)
+{
+    if (firedProjectile)
+    {
+        elapsed += deltaTime;
+        if (elapsed >= fireCooldown)
+        {
+            firedProjectile =  false;
+            elapsed = 0.0f;
+        }
+    }
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -85,3 +99,27 @@ float Player::getNormalizedHealth() const
 }
 
 sf::Sprite Player::getSprite() const { return (m_sprite); }
+
+void Player::fire()
+{
+    if (firedProjectile)
+        return;
+    float a_lifetime = 10.0f;
+    float a_velocity = 10.0f;
+    float a_direction = 0.0f;
+    sf::Vector2f a_position;
+    if (m_direction == LEFT)
+    {
+        a_position.x = getPosition().x + -10;
+        a_position.y = getPosition().y + 50;
+    }
+    else
+    {
+        auto textureSize = m_sprite.getTexture()->getSize();
+        sf::Vector2f spriteSize = {static_cast<float>(textureSize.x), static_cast<float>(textureSize.y)};
+        a_position.x = getPosition().x + static_cast<float>(spriteSize.x) + 10;
+        a_position.y = getPosition().y + 50;
+    }
+    m_pGame->getProjectileManager().spawn(a_position, a_lifetime, a_velocity, a_direction);
+    firedProjectile = true;
+}

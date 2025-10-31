@@ -2,13 +2,13 @@
 
 #include <memory>
 #include <cmath>
+#include <iostream>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include "Rectangle.h"
 #include "ProjectileTextBox.h"
 #include "Game.h"
 #include "Vampire.h"
-
 
 /* TODO:
     Projectile spawning and setting velocity/direction/path
@@ -24,11 +24,13 @@ enum e_proj_states
     FLYING,
     RICHOCETING,
     DYING,
-}
+};
 
 #define END_EFFECT_DURATION 0.25f
 #define PI 3.14159265f
 #define DYING_TIME 3.5f
+
+class ProjectileTextBox;
 
 class AProjectile: public Rectangle
 {
@@ -45,7 +47,8 @@ protected:
     float   projHeight = 5.0f;
     sf::Vector2f startPos = {0.0f, 0.0f};
 
-    e_collibable collidable_type = PROJECTILE;
+
+    e_collidable collidable_type = PROJECTILE;
 
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
     std::string explosion = "*explosion*";
@@ -59,7 +62,7 @@ protected:
     void    disarm();
     void    explode();
 public:
-    AProjectile(Game* pGame);
+    AProjectile(Game* pGame, sf::Texture *a_texture);
     ~AProjectile();
 
     void    update(float deltaTime);
@@ -69,4 +72,5 @@ public:
     void    setFlying();
     e_proj_states    getState() const { return (state); }
     float   getLifetime() const { return (lifetime); }
+    sf::Sprite getSprite() const { return (m_sprite); }
 };

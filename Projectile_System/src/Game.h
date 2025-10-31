@@ -13,6 +13,7 @@
 #include "StoryletBox.h"
 #include "StoryletReader.h"
 #include "ProjectileManager.h"
+#include "BoundingBox.h"
 
 class Player;
 class Game;
@@ -57,8 +58,8 @@ public:
 
     sf::Font& getFont() { return (m_font); }
     std::vector<std::unique_ptr<Vampire>>* getVampies() { return (&m_pVampires); }
-    std::vector<std::unique_pr<Rectangle>>* getBoundingBoxes{ return (&boundingBoxes); }
-    ProjectileManager& getProjectileManager() { return (&projPool); } 
+    std::vector<std::unique_ptr<BoundingBox>>* getBoundingBoxes() { return (&boundingBoxes); }
+    ProjectileManager& getProjectileManager() { return (*projPool); } 
     
 private:
     std::unique_ptr<Player> m_pPlayer;
@@ -70,7 +71,7 @@ private:
     std::vector<std::unique_ptr<Vampire>> m_pVampires;
 
     const float boundingBoxThickness = 10.0f;
-    std::vector<std::unique_ptr<Rectangle>> boundingBoxes;
+    std::vector<std::unique_ptr<BoundingBox>> boundingBoxes;
 
     State m_state;
     std::unique_ptr<GameInput> m_pGameInput;

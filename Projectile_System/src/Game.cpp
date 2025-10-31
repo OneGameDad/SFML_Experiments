@@ -19,7 +19,7 @@ Game::Game() :
     m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f),
-    projPool(std::make_unique<ProjectileManager>(this));
+    projPool(std::make_unique<ProjectileManager>(this))
 {
     m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
 }
@@ -69,10 +69,10 @@ bool Game::initialise(sf::RenderWindow& window)
 void Game::createBoundingBoxes()
 {
     boundingBoxes.reserve(4);
-    boundingBoxes.emplace_back(std::make_unique<Rectangle>({ScreenWidth, boundingBoxThickness}, {0.0f, 0.0f}));
-    boundingBoxes.emplace_back(std::make_unique<Rectangle>({boundingBoxThickness, ScreenHeight}, {0.0f, 0.0f}));
-    boundingBoxes.emplace_back(std::make_unique<Rectangle>({boundingBoxThickness, ScreenHeight}, {ScreenWidth - boundingBoxThickness, 0.0f}));
-    boundingBoxes.emplace_back(std::make_unique<Rectangle>({ScreenWidth, boundingBoxThickness}, {0.0f, ScreenHeight - boundingBoxThickness}));
+    boundingBoxes.emplace_back(std::make_unique<BoundingBox>(sf::Vector2f {ScreenWidth, boundingBoxThickness}, sf::Vector2f {0.0f, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<BoundingBox>(sf::Vector2f {boundingBoxThickness, ScreenHeight}, sf::Vector2f {0.0f, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<BoundingBox>(sf::Vector2f {boundingBoxThickness, ScreenHeight}, sf::Vector2f {ScreenWidth - boundingBoxThickness, 0.0f}));
+    boundingBoxes.emplace_back(std::make_unique<BoundingBox>(sf::Vector2f {ScreenWidth, boundingBoxThickness}, sf::Vector2f {0.0f, ScreenHeight - boundingBoxThickness}));
 }
 
 void Game::resetLevel()
@@ -117,6 +117,8 @@ void Game::update(float deltaTime)
                 temp->update(deltaTime);
             }
 
+            projPool->update(deltaTime);
+
             if (m_pPlayer->isDead())
             {
                 m_state = State::WAITING;
@@ -144,28 +146,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     //Draw Storylet
     m_tutorial->draw(target, states);
-    //  Draw texts.
-/*    if (m_state == State::WAITING)
-    {
-        sf::Text startText;
-        startText.setFont(m_font);
-        startText.setString("Game Start!");
-        startText.setFillColor(sf::Color::White);
-        startText.setPosition(80.0f, 80.0f);
-        startText.setStyle(sf::Text::Bold);
-        target.draw(startText);
-    }
-    else
-    {
-        sf::Text timerText;
-        timerText.setFont(m_font);
-        timerText.setFillColor(sf::Color::White);
-        timerText.setStyle(sf::Text::Bold);
-        timerText.setString(std::to_string((int)GameTime::getInstance().getDeltaTime()));
-        timerText.setPosition(sf::Vector2f((ScreenWidth - timerText.getLocalBounds().getSize().x) * 0.5, 20));
-        target.draw(timerText);
-    }
-*/    
+   
     // Draw player.
     m_pPlayer->draw(target, states);
 
@@ -174,6 +155,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         temp->draw(target, states);
     }
+
+    //Draw projectiles
+    projPool->draw(target, states);
 
     //Player Health Bar
     m_pPlayerHealthBar->draw(target, states);

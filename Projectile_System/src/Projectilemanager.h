@@ -20,6 +20,8 @@ private:
     float elapsed = 0.0f;
     static const size_t maxPoolSize = 50;
 
+    sf::Texture texture;
+
     size_t getUseableProjectile();
 public:
     ProjectileManager(Game* pGame);

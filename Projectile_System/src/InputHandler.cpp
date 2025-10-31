@@ -30,6 +30,11 @@ void GameInput::update(float deltaTime)
     {
         m_pEye->requestGoogly();
     }
+    
+    if (m_inputData.m_fireProjectile)
+    {
+        m_pPlayer->fire();
+    }
 }
 
 void GameInput::onKeyPressed(sf::Keyboard::Key key)
@@ -66,6 +71,10 @@ void GameInput::onKeyPressed(sf::Keyboard::Key key)
     {
         m_inputData.m_googlyEye = true;
     }
+    else if (key == sf::Keyboard::G)
+    {
+        m_inputData.m_fireProjectile = true;
+    }
 }
 
 void GameInput::onKeyReleased(sf::Keyboard::Key key)
@@ -98,5 +107,9 @@ void GameInput::onKeyReleased(sf::Keyboard::Key key)
     else if (key == sf::Keyboard::Tab)
     {
         m_inputData.m_googlyEye = false;
+    }
+    else if (key == sf::Keyboard::G)
+    {
+        m_inputData.m_fireProjectile = false;
     }
 }

@@ -19,8 +19,9 @@ struct InputData
     bool m_spaceReleased = true;
     bool m_screenShake = false;
     bool m_googlyEye = false;
+    bool m_fireProjectile = false;
 
-    bool hasInputs() { return m_movingUp || m_movingDown || m_movingLeft || m_movingRight || m_space || m_screenShake || m_googlyEye; }
+    bool hasInputs() { return m_movingUp || m_movingDown || m_movingLeft || m_movingRight || m_space || m_screenShake || m_googlyEye || m_fireProjectile; }
 };
 
 class GameInput

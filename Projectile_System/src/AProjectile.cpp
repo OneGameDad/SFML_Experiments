@@ -1,8 +1,12 @@
 #include "AProjectile.h"
 
-AProjectile::AProjectile(Game* pGame)
+AProjectile::AProjectile(Game* pGame, sf::Texture *a_texture)
     : Rectangle(sf::Vector2f{projWidth, projHeight}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
-{}
+{
+    m_sprite.setTexture(*a_texture);
+    m_sprite.setScale({0.2f, 0.2f});
+    m_sprite.setColor(sf::Color::Magenta);
+}
 
 AProjectile::~AProjectile(){}
 
@@ -14,7 +18,7 @@ void    AProjectile::update(float deltaTime)
     {
         updateCollisions();
         setFlying();
-        return ();
+        return;
     }
     else if (state == FLYING)
     {
@@ -37,23 +41,24 @@ void    AProjectile::draw(sf::RenderTarget& target, sf::RenderStates states) con
 {
     if (state == SPAWNING || state == FLYING || state == RICHOCETING)
     {
-        target->draw(m_sprite, states);   
+        target.draw(m_sprite, states);   
     }
     else if (state == DYING)
     {
-        target->draw(m_collisionEffect, states);
+        target.draw(*m_collisionEffect, states);
     }
 }
 
-void    AProjectile::activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction)
+void    AProjectile::activate(sf::Vector2f a_position, float a_lifetime, float a_velocity, float a_direction)
 {
     reset();
     setPosition(a_position);
-    sprite.setPosition(getPosition());
+    m_sprite.setPosition(getPosition());
     lifetime = a_lifetime;
     a_velocity = a_velocity;
     direction = a_direction;
     state = SPAWNING;
+    std::cout << "Project Spawned at: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void    AProjectile::deactivate()
@@ -74,29 +79,29 @@ void    AProjectile::reset()
 void    AProjectile::updateMovement(float deltaTime)
 {
     float radians = direction * PI / 180.f;
-    position.x += velocity * std::cos(radians) * deltaTime;
-    position.y += velocity * std::sin(radians) * deltaTime;
-    sprite.setPosition(getPosition());
-    sprite.setRotation(direction);
+    float x = getPosition().x + velocity * std::cos(radians) * deltaTime;
+    float y = getPosition().y + velocity * std::sin(radians) * deltaTime;
+    m_sprite.setPosition({x, y});
+    m_sprite.setRotation(direction);
 }
 
 void    AProjectile::updateCollisions()
 {
-    for (auto& box: m_pGame->getBoundingBoxes())
+    for (auto& box: *m_pGame->getBoundingBoxes())
     {
-        if (collidesWith(box))
+        if (collidesWith(box.get()))
         {
             disarm();
-            return();
+            return;
         }
     }
-    for (auto& vampire: m_pGame->getVampies())
+    for (auto& vampire: *m_pGame->getVampies())
     {
-        if (collidesWith(vampire))
+        if (collidesWith(vampire.get()))
         {
-            damage(vampire);
+            damage(vampire.get());
             explode();
-            return();
+            return;
         }
     }
 }
@@ -110,7 +115,7 @@ void    AProjectile::explode()
 
 void    AProjectile::damage(Vampire* pOther)
 {
-    pOther->setIsKilled();
+    pOther->setIsKilled(true);
 }
 
 void    AProjectile::dying(float deltaTime)

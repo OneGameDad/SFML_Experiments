@@ -1,6 +1,6 @@
 #include "ProjectileTextBox.h"
 
-ProjectileTextBox::ProjectileTextBox(sf::Font& pFont, Projectile* pProjectile, float a_duration) 
+ProjectileTextBox::ProjectileTextBox(sf::Font& pFont, AProjectile* pProjectile, float a_duration) 
     : ATextBox(pFont), m_pProjectile(pProjectile), duration(a_duration)
 {}
 
@@ -8,11 +8,12 @@ ProjectileTextBox::~ProjectileTextBox() = default;
 
 void    ProjectileTextBox::initialize()
 {
-    setPosition(m_pProjectile->getProjectile()->getPosition());
+    setPosition(m_pProjectile->getSprite().getPosition());
     text.setFont(*m_pFont);
     text.setString(content);
     text.setFillColor(sf::Color::White);
-    sf::Vector2f size = m_pProjectile->getProjectile()->getSize();
+    auto textureSize = m_pProjectile->getSprite().getTexture()->getSize();
+    sf::Vector2f size (static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
     text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
     text.setStyle(sf::Text::Italic);
     text.setCharacterSize(charSize);
@@ -20,8 +21,9 @@ void    ProjectileTextBox::initialize()
 
 void    ProjectileTextBox::update(float deltaTime)
 {
-    setPosition(m_pProjectile->getProjectile()->getPosition());
-    sf::Vector2f size = m_pProjectile->getProjectile()->getSize();
+    setPosition(m_pProjectile->getSprite().getPosition());
+    auto textureSize = m_pProjectile->getSprite().getTexture()->getSize();
+    sf::Vector2f size (static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
     text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
     if (isActive)
     {
