@@ -42,6 +42,18 @@ Storylets are small atomic stories, for the purposes of demonstrating my narrati
 
 StoryletReader is a singleton that automatically loads a file called storylets.txt (found in the assets folder) via the ResourceManager system provided by Supercell. Each line is a single storylet, which are stored in a map. The key is the first part of the line, with the value delimited by "\t". These can be set in TextBoxes by calling the StoryletReader.
 
+### Projectile System
+This is a the basics of a repeatable system for projectiles. It utilizes AProjectile for the projectile class and ProjectileManager, the class BoundingBox was also created to set a limit for how far the projectiles would travel.
+
+#### AProjectile
+This is derived from the Rectangle Class provided by Supercell, as such uses the same method for collision detection for both the BoundingBox and the Vampire. Currently the projectiles travel in a straight line, but would be easy enough to modify with gravity and other variables.
+
+#### ProjectileManager
+This is a manager that utlizes a vector for the pool. Upon initialization it constructs all of the objects within it. It is also used for spawning them and cleaning them up. I chose to pool rather than construct and deconstruct objects because it's standard practice in game development, and just smart in terms of system calls and optimizations.
+
+#### BoundingBox
+A simple derived class from the Rectangle Class provided by Supercell, it is meant to set limits for objects that check collisions.
+
 ## Roadmap
 
 - [x] 1) Get to grip with the basics
@@ -55,7 +67,9 @@ StoryletReader is a singleton that automatically loads a file called storylets.t
 - [X] 9) UI
 - ~~[X] 10) Update Game to use ALevels~~
 - [X] 11) Storylet system (This is just to indulge my interests)
-- [] 12) Projectile system - Moving objects that can collidge and damage other objects
+- [X] 12) Projectile system - Moving objects that can collidge and damage other objects
+- [] 13) Map system - Terrain and the ability to move from one screen to another
+- [X] 14) Reorganize Repo - Cleaned things up for ease of use and visibility
 
 ## Removed Features
 These features have been removed for one reason or another
