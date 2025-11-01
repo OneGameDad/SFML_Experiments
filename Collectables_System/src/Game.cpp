@@ -19,7 +19,8 @@ Game::Game() :
     m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f),
-    projPool(std::make_unique<ProjectileManager>(this))
+    projPool(std::make_unique<ProjectileManager>(this)),
+    collPool(std::make_unique<CollectiblesManager>(this))
 {
     m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
 }
@@ -85,6 +86,7 @@ void Game::resetLevel()
     m_pEye->initialize();
     m_tutorial->initialize({300.0f, 100.0f}, 24);
     projPool->initialise();
+    collPool->initialise();
 }
 
 void Game::update(float deltaTime)
@@ -118,6 +120,7 @@ void Game::update(float deltaTime)
             }
 
             projPool->update(deltaTime);
+            collPool->update(deltaTime);
 
             if (m_pPlayer->isDead())
             {
@@ -158,6 +161,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     //Draw projectiles
     projPool->draw(target, states);
+
+    //Draw collectibles
+    collPool->draw(target, states);
 
     //Player Health Bar
     m_pPlayerHealthBar->draw(target, states);

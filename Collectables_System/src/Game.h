@@ -14,6 +14,7 @@
 #include "StoryletReader.h"
 #include "ProjectileManager.h"
 #include "BoundingBox.h"
+#include "CollectiblesManager.h"
 
 class Player;
 class Game;
@@ -24,6 +25,7 @@ class Camera;
 class Eye;
 class StoryletBox;
 class ProjectileManager;
+class CollectiblesManager;
 
 class Game : public sf::Drawable
 {
@@ -60,6 +62,7 @@ public:
     std::vector<std::unique_ptr<Vampire>>* getVampies() { return (&m_pVampires); }
     std::vector<std::unique_ptr<BoundingBox>>* getBoundingBoxes() { return (&boundingBoxes); }
     ProjectileManager& getProjectileManager() { return (*projPool); } 
+    CollectiblesManager& getCollectiblesManager() { return (*collPool); }
     
 private:
     std::unique_ptr<Player> m_pPlayer;
@@ -89,5 +92,6 @@ private:
 
     std::unique_ptr<ProjectileManager> projPool;
 
+    std::unique_ptr<CollectiblesManager> collPool;
     void    createBoundingBoxes();
 };

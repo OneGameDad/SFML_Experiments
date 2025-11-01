@@ -39,3 +39,9 @@ void Vampire::update(float deltaTime)
     sf::Transformable::move(direction);
     m_sprite.setPosition(getPosition());
 }
+
+void Vampire::setIsKilled(bool isKilled)
+{
+    m_isKilled = isKilled;
+    m_pGame->getCollectiblesManager().spawn(getPosition(), 5.0f);
+}

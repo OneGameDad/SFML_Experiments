@@ -11,18 +11,18 @@
 
 enum e_coll_states
 {
-    INACTIVE,
-    ACTIVE
+    WAITING,
+    PLACED
 };
 
-class ProjectileTextBox;
+class Player;
 
-class AProjectile: public Rectangle
+class ACollectible: public Rectangle
 {
 protected:
     Game*   m_pGame;
     float   lifetime = 0.0f;
-    e_coll_states state = INACTIVE;
+    e_coll_states state = WAITING;
 
     sf::Vector2f startPos = {0.0f, 0.0f};
 
@@ -34,12 +34,12 @@ protected:
     void    updateCollisions();
 
 public:
-    AProjectile(Game* pGame, sf::Texture *a_texture);
-    ~AProjectile();
+    ACollectible(Game* pGame, sf::Texture *a_texture);
+    ~ACollectible();
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
+    void    activate(sf::Vector2f a_posiition, float a_lifetime);
     void    deactivate();
     e_coll_states    getState() const { return (state); }
     float   getLifetime() const { return (lifetime); }

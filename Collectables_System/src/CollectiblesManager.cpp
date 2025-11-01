@@ -23,7 +23,6 @@ bool CollectiblesManager::initialise()
 
 void CollectiblesManager::update(float deltaTime)
 {
-    /*TODO set the number of active Collectibles*/
     for (auto& Collectible: pool)
     {   
         Collectible->update(deltaTime);
@@ -36,12 +35,12 @@ void CollectiblesManager::draw(sf::RenderTarget &target, sf::RenderStates states
         Collectible->draw(target, states);    
 }
 
-void CollectiblesManager::spawn(sf::Vector2f a_position, float a_lifetime, float a_velocity, float a_direction)
+void CollectiblesManager::spawn(sf::Vector2f a_position, float a_lifetime)
 {
    size_t Collectible = getUseableCollectible();
-   if (pool[Collectible]->getState() != INACTIVE)
+   if (pool[Collectible]->getState() != WAITING)
         pool[Collectible]->deactivate();
-    pool[Collectible]->activate(a_position, a_lifetime, a_velocity, a_direction);
+    pool[Collectible]->activate(a_position, a_lifetime);
 }
 
 size_t CollectiblesManager::getUseableCollectible()
@@ -51,7 +50,7 @@ size_t CollectiblesManager::getUseableCollectible()
     float shortestLifeTime = std::numeric_limits<float>::max();
     for (size_t i = 0; i < pool.size(); i++)
     {
-        if (pool[i]->getState() == INACTIVE)
+        if (pool[i]->getState() == WAITING)
         {
             Collectible = i;
             return (Collectible);

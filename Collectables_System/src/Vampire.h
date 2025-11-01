@@ -3,6 +3,7 @@
 #include "Rectangle.h"
 
 class Game;
+class Player;
 
 class Vampire : public Rectangle
 {
@@ -12,7 +13,7 @@ public:
     
     void update(float deltaTime);
 
-    void setIsKilled(bool isKilled) { m_isKilled = isKilled; }
+    void setIsKilled(bool isKilled); 
     bool isKilled() { return m_isKilled; }
 
 private:

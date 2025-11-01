@@ -20,11 +20,11 @@ private:
 
     size_t getUseableCollectible();
 public:
-    CollectiblesManagerGame* pGame);
+    CollectiblesManager(Game* pGame);
     ~CollectiblesManager();
 
     bool initialise();
     void update(float deltaTime);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void spawn(sf::Vector2f a_posiition, float a_lifetime, float a_velocity, float a_direction);
+    void spawn(sf::Vector2f a_posiition, float a_lifetime);
 };
