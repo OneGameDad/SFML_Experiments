@@ -53,9 +53,10 @@ void    ACollectible::reset()
 
 void    ACollectible::updateCollisions()
 {
-    if (collidesWith(m_pGame->getPlayer()))
+    Player* pPlayer = m_pGame->getPlayer();
+    if (collidesWith(pPlayer))
     {
-        beCollected(m_pGame->getPlayer());
+        beCollected(pPlayer);
         deactivate();
     }
 }
