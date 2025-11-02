@@ -155,3 +155,11 @@ void Player::drainEnergy()
     float energyDelta = -slowMotionEnergyCostPerSecond * GameTime::getInstance().getDeltaTimeUnscaled();
     currentEnergy = std::max(0.0f, currentEnergy + energyDelta);
 }
+
+void Player:: heal(float num)
+{
+    if (currentHealth + num > maxHealth)
+        currentHealth = maxHealth;
+    else
+        currentHealth += num;
+}

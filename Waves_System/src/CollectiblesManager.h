@@ -26,5 +26,5 @@ public:
     bool initialise();
     void update(float deltaTime);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void spawn(sf::Vector2f a_posiition, float a_lifetime);
+    void spawn(sf::Vector2f a_posiition, float a_lifetime, e_coll_types a_kind);
 };

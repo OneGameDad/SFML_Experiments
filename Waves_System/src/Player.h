@@ -44,6 +44,7 @@ public:
     Weapon* getWeapon() { return m_pWeapon.get(); }
 
     float getNormalizedHealth() const;
+    void heal(float num);
     sf::Sprite getSprite() const;
 
     void fire();

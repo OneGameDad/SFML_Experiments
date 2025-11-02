@@ -17,6 +17,12 @@ enum e_coll_states
     COLLECTED
 };
 
+enum e_coll_types
+{
+    HEALING,
+    ENERGIZING
+}
+
 class Player;
 class CollectibleTextBox;
 
@@ -26,6 +32,7 @@ protected:
     Game*   m_pGame;
     float   lifetime = 0.0f;
     e_coll_states state = WAITING;
+    e_coll_types kind = ENERGIZING;
 
     sf::Vector2f startPos = {0.0f, 0.0f};
 
@@ -46,7 +53,7 @@ public:
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void    activate(sf::Vector2f a_posiition, float a_lifetime);
+    void    activate(sf::Vector2f a_posiition, float a_lifetime, e_coll_types a_kind);
     void    deactivate();
     e_coll_states    getState() const { return (state); }
     float   getLifetime() const { return (lifetime); }

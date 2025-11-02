@@ -41,12 +41,17 @@ void    ACollectible::draw(sf::RenderTarget& target, sf::RenderStates states) co
     }
 }
 
-void    ACollectible::activate(sf::Vector2f a_position, float a_lifetime)
+void    ACollectible::activate(sf::Vector2f a_position, float a_lifetime, e_coll_types a_kind)
 {
     reset();
     setPosition(a_position);
     m_sprite.setPosition(getPosition());
     lifetime = a_lifetime;
+    kind  = a_kind;
+    if (kind == ENERGIZING)
+        m_sprite.setColor(sf::Color::Yellow);
+    else if (kind == HEALING)
+        m_sprite.setColor(sf::Color::Red);
     state = PLACED;
 }
 
@@ -59,6 +64,8 @@ void    ACollectible::reset()
 {
     deactivate();
     lifetime = 0.0f;
+    kind = ENERGIZING;
+    m_sprite.setColor(sf::Color::Cyan);
     sf::Vector2f startPos = {0.0f, 0.0f};
 }
 
@@ -75,7 +82,17 @@ void    ACollectible::updateCollisions()
 
 void    ACollectible::beCollected(Player* pPlayer)
 {
-    pPlayer->addEnergy(1);   
+    switch (kind)
+    {
+        case ENERGIZING:
+            pPlayer->addEnergy(1);
+            break;
+        case HEALING:
+            pPlayer->heal(2.0f);
+            break;
+        default:
+            break;  
+    }  
 }
 
 void    ACollectible::setupTextBox()

@@ -35,12 +35,12 @@ void CollectiblesManager::draw(sf::RenderTarget &target, sf::RenderStates states
         Collectible->draw(target, states);    
 }
 
-void CollectiblesManager::spawn(sf::Vector2f a_position, float a_lifetime)
+void CollectiblesManager::spawn(sf::Vector2f a_position, float a_lifetime, e_coll_types a_kind)
 {
    size_t Collectible = getUseableCollectible();
    if (pool[Collectible]->getState() != WAITING)
         pool[Collectible]->deactivate();
-    pool[Collectible]->activate(a_position, a_lifetime);
+    pool[Collectible]->activate(a_position, a_lifetime, a_kind);
 }
 
 size_t CollectiblesManager::getUseableCollectible()

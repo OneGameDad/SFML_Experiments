@@ -43,5 +43,5 @@ void Vampire::update(float deltaTime)
 void Vampire::setIsKilled(bool isKilled)
 {
     m_isKilled = isKilled;
-    m_pGame->getCollectiblesManager().spawn(getPosition(), 5.0f);
+    m_pGame->getCollectiblesManager().spawn(getPosition(), 5.0f, HEALING);
 }
