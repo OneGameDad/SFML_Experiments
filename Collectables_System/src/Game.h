@@ -15,6 +15,7 @@
 #include "ProjectileManager.h"
 #include "BoundingBox.h"
 #include "CollectiblesManager.h"
+#include "SlowMotion.h"
 
 class Player;
 class Game;
@@ -26,6 +27,7 @@ class Eye;
 class StoryletBox;
 class ProjectileManager;
 class CollectiblesManager;
+class SlowMotion;
 
 class Game : public sf::Drawable
 {
@@ -94,4 +96,6 @@ private:
 
     std::unique_ptr<CollectiblesManager> collPool;
     void    createBoundingBoxes();
+
+    std::unique_ptr<SlowMotion> timeCtrl;
 };

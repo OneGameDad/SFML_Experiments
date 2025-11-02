@@ -20,9 +20,10 @@ Game::Game() :
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f),
     projPool(std::make_unique<ProjectileManager>(this)),
-    collPool(std::make_unique<CollectiblesManager>(this))
+    collPool(std::make_unique<CollectiblesManager>(this)),
+    timeCtrl(std::make_unique<SlowMotion>(this))
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get(), timeCtrl.get());
 }
 
 Game::~Game(){}
@@ -121,6 +122,7 @@ void Game::update(float deltaTime)
 
             projPool->update(deltaTime);
             collPool->update(deltaTime);
+            timeCtrl->update(); //Uses the GameTime internally
 
             if (m_pPlayer->isDead())
             {
