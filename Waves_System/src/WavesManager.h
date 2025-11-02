@@ -23,15 +23,21 @@ private:
     size_t m_spawnCount = 0;
     float elapsed = 0.0f;
 
-    sf::Vector2f topSpawnPos = {ScreenWidth, 0.0f};
+    sf::Vector2f topSpawnPos = {ScreenWidth, 50.0f + 20.0f};
+    sf::Vector2f topTerrainPos = {ScreenWidth, 50.0f};
     sf::Vector2f midSpawnPos = {ScreenWidth, ScreenHeight / 2};
-    sf::Vector2f bottomSpawnPos = {ScreenWidth, ScreenHeight};
+    sf::Vector2f midTerrainPos = {ScreenWidth, (ScreenHeight / 2) + 20.0f};
+    sf::Vector2f bottomSpawnPos = {ScreenWidth, ScreenHeight + 20.0f};
+    sf::Vector2f bottomTerrainPos = {ScreenWidth, ScreenHeight};
 
     const float fixedAngle = 90.0f;
     const float projectileSpeed = 10.0f;
     const float enemySpeed = 10.0f;
     const float terrainSpeed = 10.0f;
 
+    void spawnTerrain();
+    void spawnEnemies();
+    void spawnCollectibles();
     void spawnWave(sf::Vector2f a_position, float a_speed, float a_angle);
 public:
     WavesManager(Game* pGame);

@@ -98,14 +98,23 @@ void    Enemy::updateCollisions()
             return;
         }
     }
-        Player* pPlayer = m_pGame->getPlayer();
-        if (collidesWith(pPlayer))
+    Player* pPlayer = m_pGame->getPlayer();
+    if (collidesWith(pPlayer))
+    {
+        pPlayer->takeDamage(2);
+        explode();
+        m_pGame->getCamera()->addTrauma(0.25f);
+        m_pGame->getCamera()->requestShake();
+        return;
+    }
+    }
+    ProjectileManager* pProjectiles = m_pGame->getProjectileManager();
+    for (auto& projectile: pProjectiles->getProjectilePool())
+    {
+        if (collidesWith(projectile.get()))
         {
-            pPlayer->takeDamage(2);
             explode();
-            m_pGame->getCamera()->addTrauma(0.25f);
-            m_pGame->getCamera()->requestShake();
-            return;
+            m_pGame->getCollectiblesManager()->spawn(getPosition(), spawnLifetime, spawnType);
         }
     }
 }

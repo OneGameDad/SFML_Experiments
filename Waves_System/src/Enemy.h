@@ -39,6 +39,8 @@ protected:
     sf::Vector2f startPos = {0.0f, 0.0f};
 
     e_collidable collidable_type = ENEMY;
+    e_coll_types spawnType = HEALING;
+    float   spawnLifetime = 3.5f;
 
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
     std::string explosion = "*HAVE AT YE*";

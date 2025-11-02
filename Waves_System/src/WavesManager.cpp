@@ -35,3 +35,18 @@ void WavesManager::spawnWave(sf::Vector2f a_position, float a_speed, float a_ang
 {
 
 }
+
+void WavesManager::spawnTerrain()
+{
+
+}
+
+void WavesManager::spawnEnemies()
+{
+
+}
+
+void WavesManager::spawnCollectibles()
+{
+    
+}
