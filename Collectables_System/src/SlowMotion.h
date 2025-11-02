@@ -10,7 +10,6 @@ class SlowMotion
 {
 private:
     Game* m_pGame;
-    GameTime* clock;
     const float regularTime = 1.0f;
     float   slowTime = 0.1f;
     bool    isActive = false;
@@ -19,10 +18,10 @@ private:
 
     void    reset();
 public:
-    SlowMotion();
+    SlowMotion(Game* pGame);
     ~SlowMotion();
 
     void    activate();
     void    deactivate();
     void    update();
-}
+};

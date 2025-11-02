@@ -79,6 +79,7 @@ void Game::createBoundingBoxes()
 
 void Game::resetLevel()
 {
+    GameTime::getInstance().restart();
     m_pVampires.clear();
 
     m_pPlayer->initialise();
@@ -108,8 +109,8 @@ void Game::update(float deltaTime)
             
         case State::ACTIVE:
         {
-            m_pGameInput->update(deltaTime);
-            m_pPlayer->update(deltaTime);
+            m_pGameInput->update(GameTime::getInstance().getDeltaTimeUnscaled());
+            m_pPlayer->update(GameTime::getInstance().getDeltaTimeUnscaled());
             m_pPlayerHealthBar->update(deltaTime);
             m_pCamera->update();
             m_pEye->update();

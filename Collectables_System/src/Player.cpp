@@ -24,21 +24,22 @@ bool Player::initialise()
     m_pWeaponEffect->setDuration(WeaponActiveTime);
     m_pWeaponEffect->setString("*swish*");
     m_pWeaponEffect->setTextOffsets(0.0f, -15.0f);
+    experiencePoints = 0;
     return true;
 }
 
-void Player::move(InputData inputData, float deltaTime)
+void Player::move(InputData inputData, float deltaTimeUnscaled)
 {
     float xSpeed = 0.0f;
     float ySpeed = 0.0f;
     
     xSpeed -= inputData.m_movingLeft * PlayerSpeed;
     xSpeed += inputData.m_movingRight * PlayerSpeed;
-    xSpeed *= deltaTime;
+    xSpeed *= deltaTimeUnscaled;
 
     ySpeed -= inputData.m_movingUp * PlayerSpeed;
     ySpeed += inputData.m_movingDown * PlayerSpeed;
-    ySpeed *= deltaTime;
+    ySpeed *= deltaTimeUnscaled;
     
     sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
     setPosition(std::clamp(getPosition().x, 0.0f, (float)ScreenWidth), getPosition().y);
@@ -58,7 +59,7 @@ void Player::attack()
     m_pWeaponEffect->activate();
 }
 
-void Player::update(float deltaTime)
+void Player::update(float deltaTimeUnscaled)
 {
     sf::Vector2f weaponSize = m_pWeapon->getSize();
 
@@ -66,9 +67,9 @@ void Player::update(float deltaTime)
     m_pWeapon->setPosition(sf::Vector2f(
         getCenter().x - (m_direction == LEFT ? weaponSize.x : 0.0f),
         getCenter().y - weaponSize.y / 2.0f));
-    m_pWeapon->update(deltaTime);
-    m_pWeaponEffect->update(deltaTime);
-    updateGun(deltaTime);
+    m_pWeapon->update(deltaTimeUnscaled);
+    m_pWeaponEffect->update(deltaTimeUnscaled);
+    updateGun(deltaTimeUnscaled);
 }    
 
 void Player::updateGun(float deltaTime)

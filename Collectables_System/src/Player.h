@@ -61,7 +61,7 @@ private:
     bool    firedProjectile = false;
     float   fireCooldown = 3.5f;
     float   elapsed = 0.0f;
-    void    updateGun(float deltaTime);
+    void    updateGun(float deltaTimeUnScaled);
     
     size_t experiencePoints = 0;
 };

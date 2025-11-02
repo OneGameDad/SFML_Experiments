@@ -46,6 +46,11 @@ public:
         timeScale = t;
     }
 
+    void    restart()
+    {
+        setTime();
+    };
+
     double getCurrentTime() const { return (currentTime); }
     double getCurrrentTimeUnscaled() const { return (currentTimeUnscaled); }
     double getDeltaTime() const { return (deltaTime); }

@@ -58,7 +58,6 @@ void    AProjectile::activate(sf::Vector2f a_position, float a_lifetime, float a
     speed = a_velocity;
     angle = a_direction;
     state = SPAWNING;
-    std::cout << "Projectile Spawned at: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 void    AProjectile::deactivate()
@@ -134,13 +133,11 @@ void    AProjectile::setFlying()
     if (state == SPAWNING)
     {
         state = FLYING;
-        std::cout << "PROJECTILE FLYING\n";
     }
 }
 
 void    AProjectile::disarm()
 {
-    std::cout << "PROJECTILE DISARMING\n";
     m_collisionEffect->initialize();
     m_collisionEffect->setString(disarming);
     state = DYING;

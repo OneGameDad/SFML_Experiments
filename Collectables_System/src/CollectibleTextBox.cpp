@@ -1,6 +1,6 @@
 #include "CollectibleTextBox.h"
 
-CollectibleTextBox::CollectibleTextBox(sf::Font& pFont, Collectible* pCollectible, float a_duration) 
+CollectibleTextBox::CollectibleTextBox(sf::Font& pFont, ACollectible* pCollectible, float a_duration) 
     : ATextBox(pFont), m_pCollectible(pCollectible), duration(a_duration)
 {}
 
@@ -12,21 +12,17 @@ void    CollectibleTextBox::initialize()
     text.setFont(*m_pFont);
     text.setString(content);
     text.setFillColor(sf::Color::White);
-    auto textureSize = m_pCollectible->getSprite().getTexture()->getSize();
-    sf::Vector2f size (static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
-    text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
+    text.setPosition(getPosition());
     text.setStyle(sf::Text::Italic);
     text.setCharacterSize(charSize);
+    std::cout << "Text Box Initialized\n";
 }
 
 void    CollectibleTextBox::update(float deltaTime)
 {
-    setPosition(m_pCollectible->getSprite().getPosition());
-    auto textureSize = m_pCollectible->getSprite().getTexture()->getSize();
-    sf::Vector2f size (static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
-    text.setPosition(getPosition().x + (size.x / 2.0f), getPosition().y + offsetY);
     if (isActive)
     {
+        std::cout << "Text Box Active\n";
         elapsed += deltaTime;
         if (elapsed >= duration)
         {
@@ -38,9 +34,6 @@ void    CollectibleTextBox::update(float deltaTime)
 }
 
 void    CollectibleTextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    if (isActive)
-    {    
+{   
         target.draw(text, states);
-    }
 }

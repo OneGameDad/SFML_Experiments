@@ -1,25 +1,25 @@
 #include "SlowMotion.h"
 
 SlowMotion::SlowMotion(Game* pGame)
-    : m_pGame(pGame), clock(*GameTime::getInstance())
+    : m_pGame(pGame)
 {}
 
 SlowMotion::~SlowMotion(){}
 
 void    SlowMotion::reset()
 {
-    if (clock->getTimeScale() != regularTime || isActive == true)
+    if (GameTime::getInstance().getTimeScale() != regularTime || isActive == true)
     {    
-        clock->setTimeScale(regularTime);
+        GameTime::getInstance().setTimeScale(regularTime);
         isActive = false;
     }
 }
 
 void    SlowMotion::activate()
 {
-    if (clock->getTimeScale() != slowTime || isActive == false)
+    if (GameTime::getInstance().getTimeScale() != slowTime || isActive == false)
     {
-        clock->setTimeScale(slowTime);
+        GameTime::getInstance().setTimeScale(slowTime);
         isActive = true;
     }
 }
@@ -33,7 +33,7 @@ void    SlowMotion::update()
 {
     if (isActive)
     {
-        elapsed += clock->getDeltaTimeUnscaled();
+        elapsed += GameTime::getInstance().getDeltaTimeUnscaled();
         if (elapsed >= duration)
         {
             reset();

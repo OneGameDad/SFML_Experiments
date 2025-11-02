@@ -17,14 +17,14 @@ void    ACollectible::update(float deltaTime)
     {
         lifetime -= deltaTime;
         updateCollisions();
-        if (lifetime <= 0.0f)
+        if (lifetime <= 0.0f && state == PLACED)
             state = WAITING;
     }
-    else if (state == COLLECTED)
+    if (state == COLLECTED)
     {
         m_collectedEffect->update(deltaTime);
         if (!m_collectedEffect->getIsActive())
-            state = WAITING;
+            deactivate();
     }
 }
 
@@ -67,10 +67,9 @@ void    ACollectible::updateCollisions()
     Player* pPlayer = m_pGame->getPlayer();
     if (collidesWith(pPlayer))
     {
-        std::cout << "Collided with Player\n";
+        state = COLLECTED;
         beCollected(pPlayer);
         setupTextBox();
-        deactivate();
     }
 }
 
@@ -81,7 +80,8 @@ void    ACollectible::beCollected(Player* pOther)
 
 void    ACollectible::setupTextBox()
 {
-    state = COLLECTED;
     m_collectedEffect->initialize();
     m_collectedEffect->setString(collectionStr);
+    m_collectedEffect->activate();
+    std::cout << "Collected\n";
 }

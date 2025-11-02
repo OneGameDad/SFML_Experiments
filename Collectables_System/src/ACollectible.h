@@ -18,6 +18,7 @@ enum e_coll_states
 };
 
 class Player;
+class CollectibleTextBox;
 
 class ACollectible: public Rectangle
 {
