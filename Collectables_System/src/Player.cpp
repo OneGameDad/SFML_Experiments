@@ -24,7 +24,8 @@ bool Player::initialise()
     m_pWeaponEffect->setDuration(WeaponActiveTime);
     m_pWeaponEffect->setString("*swish*");
     m_pWeaponEffect->setTextOffsets(0.0f, -15.0f);
-    experiencePoints = 0;
+    currentEnergy = 5.0f;
+    currentHealth = 100.0f;
     return true;
 }
 
@@ -103,7 +104,7 @@ sf::Sprite Player::getSprite() const { return (m_sprite); }
 
 void Player::fire()
 {
-    if (firedProjectile)
+    if (firedProjectile || currentEnergy == 0)
         return;
     float a_lifetime = 5.0f;
     float a_speed = 20.0f;
@@ -123,11 +124,34 @@ void Player::fire()
         a_position.y = getPosition().y + 50;
     }
     m_pGame->getProjectileManager().spawn(a_position, a_lifetime, a_speed, a_angle);
+    currentEnergy -= 1.0f;
     firedProjectile = true;
 }
 
-void Player::addXP(size_t num)
+void Player::addEnergy(size_t num)
 {
-    experiencePoints += num;
-    std::cout << "XP Total: " << experiencePoints << std::endl;
+    if (currentEnergy < maxEnergy)
+    {
+        currentEnergy += num;
+        std::cout << "Energy Added, Total: " << currentEnergy << std::endl;
+    }
+}
+
+float Player::getNormalizedEnergy() const
+{
+    float normalized = currentEnergy / maxEnergy;
+    return (normalized);
+}
+
+void Player::takeDamage(float num)
+{
+    currentHealth -= num;
+    if (currentHealth <= 0.0f)
+        setIsDead(true);
+}
+
+void Player::drainEnergy()
+{
+    float energyDelta = -slowMotionEnergyCostPerSecond * GameTime::getInstance().getDeltaTimeUnscaled();
+    currentEnergy = std::max(0.0f, currentEnergy + energyDelta);
 }

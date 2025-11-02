@@ -15,6 +15,7 @@ Game::Game() :
     m_state(State::WAITING),
     m_pPlayer(std::make_unique<Player>(this, getFont())),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
+    m_pEnergyBar(std::make_unique<EnergyBar>(this)),
     m_pCamera(std::make_unique<Camera>(this)),
     m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
@@ -84,6 +85,7 @@ void Game::resetLevel()
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
+    m_pEnergyBar->initialize();
 
     m_pEye->initialize();
     m_tutorial->initialize({300.0f, 100.0f}, 24);
@@ -111,7 +113,8 @@ void Game::update(float deltaTime)
         {
             m_pGameInput->update(GameTime::getInstance().getDeltaTimeUnscaled());
             m_pPlayer->update(GameTime::getInstance().getDeltaTimeUnscaled());
-            m_pPlayerHealthBar->update(deltaTime);
+            m_pPlayerHealthBar->update(GameTime::getInstance().getDeltaTimeUnscaled());
+            m_pEnergyBar->update(GameTime::getInstance().getDeltaTimeUnscaled());
             m_pCamera->update();
             m_pEye->update();
 
@@ -168,8 +171,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     //Draw collectibles
     collPool->draw(target, states);
 
-    //Player Health Bar
+    //Player Health & Energy Bar
     m_pPlayerHealthBar->draw(target, states);
+    m_pEnergyBar->draw(target, states);
 
     //Googly Eye
     m_pEye->draw(target, states);

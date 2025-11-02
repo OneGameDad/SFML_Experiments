@@ -22,7 +22,6 @@ void    CollectibleTextBox::update(float deltaTime)
 {
     if (isActive)
     {
-        std::cout << "Text Box Active\n";
         elapsed += deltaTime;
         if (elapsed >= duration)
         {

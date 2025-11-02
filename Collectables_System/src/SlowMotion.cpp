@@ -17,7 +17,7 @@ void    SlowMotion::reset()
 
 void    SlowMotion::activate()
 {
-    if (GameTime::getInstance().getTimeScale() != slowTime || isActive == false)
+    if ((m_pGame->getPlayer()->getNormalizedEnergy() > 0.0f) && (GameTime::getInstance().getTimeScale() != slowTime || isActive == false))
     {
         GameTime::getInstance().setTimeScale(slowTime);
         isActive = true;
@@ -34,6 +34,7 @@ void    SlowMotion::update()
     if (isActive)
     {
         elapsed += GameTime::getInstance().getDeltaTimeUnscaled();
+        m_pGame->getPlayer()->drainEnergy();
         if (elapsed >= duration)
         {
             reset();

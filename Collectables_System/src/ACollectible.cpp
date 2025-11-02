@@ -73,9 +73,9 @@ void    ACollectible::updateCollisions()
     }
 }
 
-void    ACollectible::beCollected(Player* pOther)
+void    ACollectible::beCollected(Player* pPlayer)
 {
-    pOther->addXP(2);   
+    pPlayer->addEnergy(1);   
 }
 
 void    ACollectible::setupTextBox()

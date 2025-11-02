@@ -16,6 +16,7 @@
 #include "BoundingBox.h"
 #include "CollectiblesManager.h"
 #include "SlowMotion.h"
+#include "EnergyBar.h"
 
 class Player;
 class Game;
@@ -28,6 +29,7 @@ class StoryletBox;
 class ProjectileManager;
 class CollectiblesManager;
 class SlowMotion;
+class EnergyBar;
 
 class Game : public sf::Drawable
 {
@@ -69,6 +71,7 @@ public:
 private:
     std::unique_ptr<Player> m_pPlayer;
     std::unique_ptr<PlayerHealthBar> m_pPlayerHealthBar;
+    std::unique_ptr<EnergyBar> m_pEnergyBar;
 
     std::unique_ptr<Camera> m_pCamera;
     std::unique_ptr<Eye> m_pEye;
