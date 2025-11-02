@@ -1,11 +1,13 @@
 #pragma once
-
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
 #include <vector>
+#include <iostream>
 #include "Constants.h"
 #include "PlayerHealthBar.h"
 #include "Camera.h"
@@ -19,11 +21,15 @@
 #include "EnergyBar.h"
 #include "EnemyManager.h"
 #include "WavesManager.h"
+#include "TerrainManager.h"
+#include "ResourceManager.h"
+#include "InputHandler.h"
+#include "Player.h"
+#include "Rectangle.h"
 
 class Player;
 class Game;
 class GameInput;
-class Vampire;
 class PlayerHealthBar;
 class Camera;
 class Eye;
@@ -34,6 +40,7 @@ class SlowMotion;
 class EnergyBar;
 class WavesManager;
 class EnemyManager;
+class TerrainManager;
 
 class Game : public sf::Drawable
 {
@@ -68,7 +75,12 @@ public:
     std::vector<std::unique_ptr<BoundingBox>>* getBoundingBoxes() { return (&boundingBoxes); }
     ProjectileManager& getProjectileManager() { return (*projPool); } 
     CollectiblesManager& getCollectiblesManager() { return (*collPool); }
-    EnemyManager& getEnemyManager() { return (*EnemyPool); }
+    EnemyManager& getEnemyManager() { return (*enemyPool); }
+    TerrainManager& getTerrainManager() { return (*terrPool); }
+    CollectiblesManager* getCollectiblesManagerPtr() { return (collPool.get()); }
+    EnemyManager* getEnemyManagerPtr() { return (enemyPool.get()); }
+    TerrainManager* getTerrainManagerPtr() { return (terrPool.get()); }
+    ProjectileManager* getProjectileManagerPtr() { return (projPool.get()); }
     
 private:
     std::unique_ptr<Player> m_pPlayer;
@@ -98,5 +110,9 @@ private:
 
     std::unique_ptr<SlowMotion> timeCtrl;
 
+    std::unique_ptr<TerrainManager> terrPool;
+
     std::unique_ptr<WavesManager> wavesController;
+
+    float elapsed = 0.0f;
 };

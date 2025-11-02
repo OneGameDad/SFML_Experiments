@@ -7,17 +7,21 @@
 #include "CollectiblesManager.h"
 #include "EnemyManager.h"
 #include "Game.h"
+#include "TerrainManager.h"
 
 class AProjectile;
 class Game;
+class CollectiblesManager;
+class EnemyManager;
+class TerrainManager;
 
 class WavesManager  : public sf::Drawable
 {
 private:
     Game* m_pGame;
-    std::vector<std::unique_ptr<CollectiblesManager>>* m_pCollectiblesManager;
-    std::vector<std::unique_ptr<EnemyManager>>* m_pEnemyManager;
-//    std::vector<std::unique_ptr</*TODO*/>>* m_pTerrainManager;
+    CollectiblesManager* m_pCollectiblesManager = nullptr;
+    EnemyManager* m_pEnemyManager = nullptr;
+    TerrainManager* m_pTerrainManager = nullptr;
     float m_WavesCooldown = 0.0f;
     float m_nextWavesCooldown = 2.0f;
     size_t m_spawnCount = 0;

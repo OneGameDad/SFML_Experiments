@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy(Game* pGame, sf::Texture *a_texture)
-    : Rectangle(sf::Vector2f{VampireWidth, VampireHeight}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
+    : Rectangle(sf::Vector2f{VampireWidth, VampireHeight}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<EnemyTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
 {
     m_sprite.setTexture(*a_texture);
     m_sprite.setScale({2.0f, 2.0f});
@@ -107,14 +107,13 @@ void    Enemy::updateCollisions()
         m_pGame->getCamera()->requestShake();
         return;
     }
-    }
-    ProjectileManager* pProjectiles = m_pGame->getProjectileManager();
-    for (auto& projectile: pProjectiles->getProjectilePool())
+    ProjectileManager& pProjectiles = m_pGame->getProjectileManager();
+    for (auto& projectile: pProjectiles.getProjectilePool())
     {
         if (collidesWith(projectile.get()))
         {
             explode();
-            m_pGame->getCollectiblesManager()->spawn(getPosition(), spawnLifetime, spawnType);
+            m_pGame->getCollectiblesManager().spawn(getPosition(), spawnLifetime, spawnType);
         }
     }
 }

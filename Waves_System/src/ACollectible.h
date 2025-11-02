@@ -9,19 +9,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "CollectibleTextBox.h"
-
-enum e_coll_states
-{
-    WAITING,
-    PLACED,
-    COLLECTED
-};
-
-enum e_coll_types
-{
-    HEALING,
-    ENERGIZING
-}
+#include "Constants.h"
 
 class Player;
 class CollectibleTextBox;

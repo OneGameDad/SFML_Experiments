@@ -156,3 +156,8 @@ void Camera::updateTweener()
     if (trauma > traumaBuffer)
         tweener->play();
 }
+
+sf::Vector2u Camera::getSize()
+{
+    return (window_->getSize());
+}

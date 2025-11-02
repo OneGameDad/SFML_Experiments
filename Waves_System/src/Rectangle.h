@@ -11,6 +11,7 @@ enum e_collidable
     ENEMY,
     PROJECTILE,
     COLLECTIBLE,
+    TERRAIN,
     OTHER
 };
 

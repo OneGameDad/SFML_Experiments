@@ -1,14 +1,11 @@
 #pragma once
 
 #include <SFML/Window/Keyboard.hpp>
-#include "Camera.h"
-#include "Eye.h"
 #include "SlowMotion.h"
 
 class Player;
 class Game;
-class Camera;
-class Eye;
+class SlowMotion;
 
 struct InputData
 {
@@ -16,21 +13,20 @@ struct InputData
     bool m_movingDown = false;
     bool m_movingLeft = false;
     bool m_movingRight = false;
-    bool m_space = false;
-    bool m_spaceReleased = true;
     bool m_screenShake = false;
     bool m_googlyEye = false;
     bool m_fireProjectile = false;
     bool m_slowTime = false;
     bool m_speedTime = false;
+    bool m_jumpKeyReleasedInThisFrame = false;
 
-    bool hasInputs() { return m_movingUp || m_movingDown || m_movingLeft || m_movingRight || m_space || m_screenShake || m_googlyEye || m_fireProjectile || m_slowTime || m_speedTime; }
+    bool hasInputs() { return m_movingUp || m_movingDown || m_movingLeft || m_movingRight || m_screenShake || m_googlyEye || m_fireProjectile || m_slowTime || m_speedTime || m_jumpKeyReleasedInThisFrame; }
 };
 
 class GameInput
 {
 public:
-    GameInput(Game* pGame, Player* pPlayer, Camera* pCamera, Eye* pEye, SlowMotion* pSlowMotion);
+    GameInput(Game* pGame, Player* pPlayer, SlowMotion* pSlowMotion);
     ~GameInput();
     
     void update(float deltaTime);
@@ -42,7 +38,5 @@ private:
     InputData m_inputData;
     Game* m_pGame;
     Player* m_pPlayer;
-    Camera* m_pCamera;
-    Eye* m_pEye;
     SlowMotion * m_pSlowMotion;
 };

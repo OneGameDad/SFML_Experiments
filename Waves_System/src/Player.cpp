@@ -3,9 +3,7 @@
 
 Player::Player(Game* pGame, sf::Font& pFont) :
     Rectangle(sf::Vector2f(PlayerWidth, PlayerHeight)),
-    m_pGame(pGame),
-    m_pWeapon(std::make_unique<Weapon>()),
-    m_pWeaponEffect(std::make_unique<WeaponTextBox>(pFont, this))
+    m_pGame(pGame)
 {
     setOrigin(sf::Vector2f(0.0f, 0.0f));
 }
@@ -20,10 +18,6 @@ bool Player::initialise()
     setPosition(ScreenWidth / 2, ScreenHeight / 2);
     m_sprite.setPosition(getPosition());
     currentHealth = maxHealth;
-    m_pWeaponEffect->initialize();
-    m_pWeaponEffect->setDuration(WeaponActiveTime);
-    m_pWeaponEffect->setString("*swish*");
-    m_pWeaponEffect->setTextOffsets(0.0f, -15.0f);
     currentEnergy = 5.0f;
     currentHealth = 100.0f;
     return true;
@@ -34,42 +28,37 @@ void Player::move(InputData inputData, float deltaTimeUnscaled)
     float xSpeed = 0.0f;
     float ySpeed = 0.0f;
     
-    xSpeed -= inputData.m_movingLeft * PlayerSpeed;
-    xSpeed += inputData.m_movingRight * PlayerSpeed;
-    xSpeed *= deltaTimeUnscaled;
-
-    ySpeed -= inputData.m_movingUp * PlayerSpeed;
-    ySpeed += inputData.m_movingDown * PlayerSpeed;
-    ySpeed *= deltaTimeUnscaled;
-    
-    sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
-    setPosition(std::clamp(getPosition().x, 0.0f, (float)ScreenWidth), getPosition().y);
-
-    if (m_pWeapon->isActive() == false)
+    if (onGround)
     {
-        if (inputData.m_movingLeft == true && inputData.m_movingRight == false)
-            m_direction = LEFT;
-        else if (inputData.m_movingLeft == false && inputData.m_movingRight == true)
-            m_direction = RIGHT;
+        ySpeed = 0.0f;
     }
-}
+    else
+    {
+        ySpeed += gravity * deltaTimeUnscaled;
+        if (inputData.m_movingDown)
+        {
+            ySpeed += dropBoost * deltaTimeUnscaled;
+        }
+    }
 
-void Player::attack()
-{
-    m_pWeapon->setActive(true);
-    m_pWeaponEffect->activate();
+    if (inputData.m_jumpKeyReleasedInThisFrame)
+    {
+        ySpeed = maxYSpeed;
+    }
+
+    sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
+
+    sf::Vector2u cameraSize = m_pGame->getCamera()->getSize();
+    float xPos = std::clamp(getPosition().x, 0.0f, (float)cameraSize.x);
+    float yPos = std::clamp(getPosition().y, 0.0f, (float)cameraSize.y);
+    setPosition(xPos, yPos);
 }
 
 void Player::update(float deltaTimeUnscaled)
 {
-    sf::Vector2f weaponSize = m_pWeapon->getSize();
-
+    setOffGround();
+    updateCollisions();
     m_sprite.setPosition(getPosition());
-    m_pWeapon->setPosition(sf::Vector2f(
-        getCenter().x - (m_direction == LEFT ? weaponSize.x : 0.0f),
-        getCenter().y - weaponSize.y / 2.0f));
-    m_pWeapon->update(deltaTimeUnscaled);
-    m_pWeaponEffect->update(deltaTimeUnscaled);
     updateGun(deltaTimeUnscaled);
 }    
 
@@ -89,9 +78,6 @@ void Player::updateGun(float deltaTime)
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     Rectangle::draw(target, states);
-    m_pWeapon->draw(target, states);
-    if (m_pWeapon->isActive())
-        m_pWeaponEffect->draw(target, states);
 }
 
 float Player::getNormalizedHealth() const
@@ -162,4 +148,31 @@ void Player:: heal(float num)
         currentHealth = maxHealth;
     else
         currentHealth += num;
+}
+
+void Player::updateCollisions()
+{
+    TerrainManager& terrPool = m_pGame->getTerrainManager();
+    for (auto& terrain: terrPool.getPool())
+    {
+        if (collidesWith(terrain.get()))
+        {
+            setOnGround();
+            return;
+        }
+        else
+            setOffGround();       
+    }
+}
+
+void Player::setOnGround()
+{
+    if (!onGround)
+        onGround = true;
+}
+
+void Player::setOffGround()
+{
+    if (onGround)
+        onGround = false;
 }

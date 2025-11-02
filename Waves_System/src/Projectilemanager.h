@@ -31,5 +31,5 @@ public:
     void update(float deltaTime);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void spawn(sf::Vector2f a_position, float a_lifetime, float a_velocity, float a_direction);
-    std::vector<std::unique_ptr<AProjectile>>* getProjectilePool() { return (*pool); }
+    std::vector<std::unique_ptr<AProjectile>>& getProjectilePool() { return (pool); }
 };

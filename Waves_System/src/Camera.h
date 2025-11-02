@@ -75,4 +75,5 @@ public:
     void setSpeedMulitplierX(double amount);
     void setSpeedMultiplierY(double amount);
     void setSpeedMultiplierAngle(double amount);
+    sf::Vector2u getSize();
 };

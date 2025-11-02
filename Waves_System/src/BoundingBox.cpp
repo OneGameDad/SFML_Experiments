@@ -5,6 +5,7 @@ BoundingBox::BoundingBox(sf::Vector2f a_size, sf::Vector2f a_position)
 {
     setSize(a_size);
     setPosition(a_position);
+    setColor(sf::Color::Blue);
 }
 
 BoundingBox::~BoundingBox() {}

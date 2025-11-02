@@ -8,13 +8,14 @@
 #include "Rectangle.h"
 #include "ProjectileTextBox.h"
 #include "Game.h"
-#include "Enemy.h"
 #include "Constants.h"
 
-class ProjectileTextBox;
-class Enemy;
 
-class AProjectile: public Rectangle
+#define PI 3.14159265f
+
+class ProjectileTextBox;
+
+class Terrain: public Rectangle
 {
 protected:
     Game*   m_pGame;
@@ -22,35 +23,28 @@ protected:
     float   health = 0.0f;
     float   speed = 0.0f;
     float   angle = 0.0f;
-    float   death_rattle = DYING_TIME;
-    e_proj_states state = INACTIVE;
+
+    const float terrainWidth = 150.0f;
+    const float terrainHeight = 50.0f;
+    e_terr_states state = INVIS;
 
     sf::Vector2f startPos = {0.0f, 0.0f};
 
+    e_collidable collidable_type = TERRAIN;
 
-    e_collidable collidable_type = PROJECTILE;
-
-    std::unique_ptr<ProjectileTextBox> m_collisionEffect;
-    std::string explosion = "*explosion*";
-    std::string disarming = "plop";
-    
-    void    damage(Enemy* pOther);
     void    reset();
     void    updateMovement(float deltaTime);
     void    updateCollisions();
-    void    dying(float delatTime);
-    void    disarm();
-    void    explode();
+
 public:
-    AProjectile(Game* pGame, sf::Texture *a_texture);
-    ~AProjectile();
+    Terrain(Game* pGame, sf::Texture *a_texture);
+    ~Terrain();
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_speed, float a_angle);
+    void    activate(sf::Vector2f a_position, float a_lifetime, float a_speed, float a_angle);
     void    deactivate();
-    void    setFlying();
-    e_proj_states    getState() const { return (state); }
+    e_terr_states    getState() const { return (state); }
     float   getLifetime() const { return (lifetime); }
     sf::Sprite getSprite() const { return (m_sprite); }
 };

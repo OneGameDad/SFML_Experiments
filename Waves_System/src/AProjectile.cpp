@@ -96,17 +96,6 @@ void    AProjectile::updateCollisions()
             return;
         }
     }
-    for (auto& vampire: *m_pGame->getVampies())
-    {
-        if (collidesWith(vampire.get()))
-        {
-            damage(vampire.get());
-            explode();
-            m_pGame->getCamera()->addTrauma(0.5f);
-            m_pGame->getCamera()->requestShake();
-            return;
-        }
-    }
 }
 
 void    AProjectile::explode()
@@ -116,9 +105,9 @@ void    AProjectile::explode()
     state = DYING;
 }
 
-void    AProjectile::damage(Vampire* pOther)
+void    AProjectile::damage(Enemy* pOther)
 {
-    pOther->setIsKilled(true);
+    pOther->explode();
 }
 
 void    AProjectile::dying(float deltaTime)

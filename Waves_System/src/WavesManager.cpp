@@ -5,13 +5,17 @@ WavesManager::WavesManager(Game* pGame)
 {}
 
 WavesManager::~WavesManager()
-{}
+{
+    m_pCollectiblesManager = nullptr;
+    m_pEnemyManager = nullptr;
+    m_pTerrainManager = nullptr;
+}
 
 bool WavesManager::initialise()
 {
-    m_pCollectiblesManager = m_pGame->getProjectileManager();
-    m_pEnemyManager = m_pGame->getEnemyManager();
-    //TODO get Terrain Manager
+    m_pCollectiblesManager = m_pGame->getCollectiblesManagerPtr();
+    m_pEnemyManager = m_pGame->getEnemyManagerPtr();
+    m_pTerrainManager = m_pGame->getTerrainManagerPtr();
     return true;
 }
 
@@ -21,14 +25,14 @@ void WavesManager::update(float deltaTime)
 
     m_pCollectiblesManager->update(deltaTime);
     m_pEnemyManager->update(deltaTime);
-    //TODO add terrain manager update
+    m_pTerrainManager->update(deltaTime);
 }
 
 void WavesManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     m_pCollectiblesManager->draw(target, states);
     m_pEnemyManager->draw(target, states);
-    //TODO add terrian manager draw  
+    m_pTerrainManager->draw(target, states);
 }
 
 void WavesManager::spawnWave(sf::Vector2f a_position, float a_speed, float a_angle)
@@ -48,5 +52,5 @@ void WavesManager::spawnEnemies()
 
 void WavesManager::spawnCollectibles()
 {
-    
+
 }

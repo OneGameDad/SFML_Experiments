@@ -1,15 +1,6 @@
 #include "Game.h"
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
 
-#include "ResourceManager.h"
-#include "InputHandler.h"
-#include "Weapon.h"
-#include "Player.h"
-#include "Rectangle.h"
-#include "Vampire.h"
 
 Game::Game() :
     m_state(State::WAITING),
@@ -22,9 +13,10 @@ Game::Game() :
     projPool(std::make_unique<ProjectileManager>(this)),
     collPool(std::make_unique<CollectiblesManager>(this)),
     timeCtrl(std::make_unique<SlowMotion>(this)),
+    terrPool(std::make_unique<TerrainManager>(this)),
     wavesController(std::make_unique<WavesManager>(this))
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get(), timeCtrl.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), timeCtrl.get());
 }
 
 Game::~Game(){}
@@ -76,7 +68,6 @@ void Game::createBoundingBoxes()
 void Game::resetLevel()
 {
     GameTime::getInstance().restart();
-    m_pVampires.clear();
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
@@ -87,6 +78,7 @@ void Game::resetLevel()
     projPool->initialise();
     collPool->initialise();
     enemyPool->initialise();
+    terrPool->initialise();
     wavesController->initialise();
 }
 

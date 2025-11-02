@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Eye.h"
 
-GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera, Eye* pEye, SlowMotion* pSlowMotion) :
-    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera), m_pEye(pEye), m_pSlowMotion(pSlowMotion)
+GameInput::GameInput(Game* pGame, Player* pPlayer, SlowMotion* pSlowMotion) :
+    m_pGame(pGame), m_pPlayer(pPlayer), m_pSlowMotion(pSlowMotion)
 {}
 
 GameInput::~GameInput(){}
@@ -16,21 +16,6 @@ void GameInput::update(float deltaTime)
         m_pPlayer->move(m_inputData, deltaTime);
     }
 
-    if (m_inputData.m_space)
-    {
-        m_pPlayer->attack();
-    }
-
-    if (m_inputData.m_screenShake)
-    {
-        m_pCamera->requestShake();
-    }
-
-    if (m_inputData.m_googlyEye)
-    {
-        m_pEye->requestGoogly();
-    }
-    
     if (m_inputData.m_fireProjectile)
     {
         m_pPlayer->fire();
@@ -45,97 +30,73 @@ void GameInput::update(float deltaTime)
     {
         m_pSlowMotion->deactivate();
     }
+
 }
 
 void GameInput::onKeyPressed(sf::Keyboard::Key key)
 {
-    if (key == sf::Keyboard::Up)
+    switch (key)
     {
-        m_inputData.m_movingUp = true;
-    }
-    else if (key == sf::Keyboard::Down)
-    {
-        m_inputData.m_movingDown = true;
-    }
-    else if (key == sf::Keyboard::Left)
-    {
-        m_inputData.m_movingLeft = true;
-    }
-    else if (key == sf::Keyboard::Right)
-    {
-        m_inputData.m_movingRight = true;
-    }
-    else if (key == sf::Keyboard::Space)
-    {
-        if (m_inputData.m_spaceReleased)
+        case sf::Keyboard::Down:
         {
-            m_inputData.m_space = true;
+            m_inputData.m_movingDown = true;
+            break;
         }
-        m_inputData.m_spaceReleased = false;
-    }
-    else if (key == sf::Keyboard::Enter)
-    {
-        m_inputData.m_screenShake = true;
-    }
-    else if (key == sf::Keyboard::Tab)
-    {
-        m_inputData.m_googlyEye = true;
-    }
-    else if (key == sf::Keyboard::G)
-    {
-        m_inputData.m_fireProjectile = true;
-    }
-    else if (key == sf::Keyboard::C)
-    {
-        m_inputData.m_slowTime = true;
-    }
-    else if (key == sf::Keyboard::V)
-    {
-        m_inputData.m_speedTime = true;
+        case sf::Keyboard::G:
+        {
+            m_inputData.m_fireProjectile = true;
+            break;
+        }
+        case sf::Keyboard::C:
+        {
+            m_inputData.m_slowTime = true;
+            break;
+        }
+        case sf::Keyboard::V:
+        {
+            m_inputData.m_speedTime = true;
+            break;
+        }
+        case sf::Keyboard::Space:
+        {
+            m_inputData.m_jumpKeyReleasedInThisFrame = false;
+            break;
+        }
+        default:
+            break;
     }
 }
 
 void GameInput::onKeyReleased(sf::Keyboard::Key key)
 {
-    if (key == sf::Keyboard::Up)
+    switch (key)
     {
-        m_inputData.m_movingUp = false;
-    }
-    else if (key == sf::Keyboard::Down)
-    {
-        m_inputData.m_movingDown = false;
-    }
-    else if (key == sf::Keyboard::Left)
-    {
-        m_inputData.m_movingLeft = false;
-    }
-    else if (key == sf::Keyboard::Right)
-    {
-        m_inputData.m_movingRight = false;
-    }
-    else if (key == sf::Keyboard::Space)
-    {
-        m_inputData.m_space = false;
-        m_inputData.m_spaceReleased = true;
-    }
-    else if (key == sf::Keyboard::Enter)
-    {
-        m_inputData.m_screenShake = false;
-    }
-    else if (key == sf::Keyboard::Tab)
-    {
-        m_inputData.m_googlyEye = false;
-    }
-    else if (key == sf::Keyboard::G)
-    {
-        m_inputData.m_fireProjectile = false;
-    }
-    else if (key == sf::Keyboard::C)
-    {
-        m_inputData.m_slowTime = false;
-    }
-    else if (key == sf::Keyboard::V)
-    {
-        m_inputData.m_speedTime = false;
+        case sf::Keyboard::Down:
+        {
+            m_inputData.m_movingDown = false;
+            break;
+        }
+        case sf::Keyboard::G:
+        {
+            m_inputData.m_fireProjectile = false;
+            break;
+        }
+        case sf::Keyboard::C:
+        {
+            m_inputData.m_slowTime = false;
+            break;
+        }
+        case sf::Keyboard::V:
+        {
+            m_inputData.m_speedTime = false;
+            break;
+        }
+        case sf::Keyboard::Space:
+        {
+            m_inputData.m_jumpKeyReleasedInThisFrame = true;
+            break;
+        }
+        default:
+            break;
     }
 }

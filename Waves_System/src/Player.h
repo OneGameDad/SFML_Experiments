@@ -3,21 +3,20 @@
 #include "Rectangle.h"
 #include "ResourceManager.h"
 #include <memory>
-#include "Weapon.h"
 #include "InputHandler.h"
 #include "Constants.h"
 #include <vector>
 #include "Game.h"
 #include "WeaponTextBox.h"
 #include "Constants.h"
+#include <SFML/System/Vector2.hpp>
 
 struct InputData;
 
 class Game;
-class Weapon;
 class WeaponTextBox;
 
-#define COOLDOWN 3.5f
+
 
 enum eDirection
 {
@@ -41,8 +40,6 @@ public:
     void setIsDead(bool isDead) { m_isDead = isDead; }
     void takeDamage(float num);
 
-    Weapon* getWeapon() { return m_pWeapon.get(); }
-
     float getNormalizedHealth() const;
     void heal(float num);
     sf::Sprite getSprite() const;
@@ -52,12 +49,12 @@ public:
     void addEnergy(size_t num);
     void drainEnergy();
     float getNormalizedEnergy() const;
+
+    void jump();
 private:
     bool    m_isDead = false;
     eDirection m_direction = LEFT;
     Game*   m_pGame;
-    std::unique_ptr<Weapon> m_pWeapon;
-    std::unique_ptr<WeaponTextBox> m_pWeaponEffect;
 
     float currentHealth = 0.0f;
     const float maxHealth = 100.0f;
@@ -70,4 +67,14 @@ private:
     float currentEnergy = 0.0f;
     const float maxEnergy = 10.0f;
     const float slowMotionEnergyCostPerSecond = 2.0f;
+
+    bool onGround = true;
+    const float gravity = 1500.f;
+    const float maxYSpeed = 700.f;
+    const float forwardSpeed = 10.0f;
+    const float dropBoost = -8.0f;
+
+    void updateCollisions();
+    void setOnGround();
+    void setOffGround();
 };
