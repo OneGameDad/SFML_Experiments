@@ -10,13 +10,6 @@
 #include "Game.h"
 #include "Vampire.h"
 
-/* TODO:
-    Projectile spawning and setting velocity/direction/path
-    Add collidability to characters and objects
-    Collision events
-    Collision matrix
-*/
-
 enum e_enem_states
 {
     DISABLED,
@@ -45,7 +38,6 @@ protected:
 
     sf::Vector2f startPos = {0.0f, 0.0f};
 
-
     e_collidable collidable_type = ENEMY;
 
     std::unique_ptr<ProjectileTextBox> m_collisionEffect;
@@ -56,7 +48,6 @@ protected:
     void    updateMovement(float deltaTime);
     void    updateCollisions();
     void    dying(float delatTime);
-    void    disarm();
     void    explode();
     void    setBeyond();
 public:
@@ -65,7 +56,7 @@ public:
 
     void    update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void    activate(sf::Vector2f a_posiition, float a_lifetime, float a_speed, float a_angle);
+    void    activate(sf::Vector2f a_position, float a_lifetime, float a_speed, float a_angle);
     void    deactivate();
     void    setFlying();
     e_enem_states    getState() const { return (state); }

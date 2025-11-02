@@ -4,7 +4,7 @@
 #include <vector>
 #include <limits>
 #include <SFML/System/Vector2.hpp>
-#include "Projectilemanager.h"
+#include "CollectiblesManager.h"
 #include "EnemyManager.h"
 #include "Game.h"
 
@@ -15,7 +15,7 @@ class WavesManager  : public sf::Drawable
 {
 private:
     Game* m_pGame;
-    std::vector<std::unique_ptr<ProjectileManager>>* m_pProjectileManager;
+    std::vector<std::unique_ptr<CollectiblesManager>>* m_pCollectiblesManager;
     std::vector<std::unique_ptr<EnemyManager>>* m_pEnemyManager;
 //    std::vector<std::unique_ptr</*TODO*/>>* m_pTerrainManager;
     float m_WavesCooldown = 0.0f;

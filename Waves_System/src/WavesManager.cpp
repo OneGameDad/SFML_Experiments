@@ -9,7 +9,7 @@ WavesManager::~WavesManager()
 
 bool WavesManager::initialise()
 {
-    m_pProjectileManager = m_pGame->getProjectileManager();
+    m_pCollectiblesManager = m_pGame->getProjectileManager();
     m_pEnemyManager = m_pGame->getEnemyManager();
     //TODO get Terrain Manager
     return true;
@@ -19,14 +19,14 @@ void WavesManager::update(float deltaTime)
 {
     /*TODO wave spawn logic*/
 
-    m_pProjectileManager->update(deltaTime);
+    m_pCollectiblesManager->update(deltaTime);
     m_pEnemyManager->update(deltaTime);
     //TODO add terrain manager update
 }
 
 void WavesManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    m_pProjectileManager->draw(target, states);
+    m_pCollectiblesManager->draw(target, states);
     m_pEnemyManager->draw(target, states);
     //TODO add terrian manager draw  
 }

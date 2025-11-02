@@ -1,10 +1,10 @@
 #include "Enemy.h"
 
 Enemy::Enemy(Game* pGame, sf::Texture *a_texture)
-    : Rectangle(sf::Vector2f{10.0f, 10.0f}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
+    : Rectangle(sf::Vector2f{VampireWidth, VampireHeight}, startPos), m_pGame(pGame), m_collisionEffect(std::make_unique<ProjectileTextBox>(m_pGame->getFont(), this, END_EFFECT_DURATION))
 {
     m_sprite.setTexture(*a_texture);
-    m_sprite.setScale({0.025f, 0.025f});
+    m_sprite.setScale({2.0f, 2.0f});
     m_sprite.setColor(sf::Color::Magenta);
 }
 
@@ -27,7 +27,7 @@ void    Enemy::update(float deltaTime)
         updateCollisions();
         if (lifetime <= 0.0f)
         {
-            disarm();
+            deactivate();
         }
     }
     else if (state == DEAD)
@@ -41,24 +41,24 @@ void    Enemy::update(float deltaTime)
 
 void    Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if (state == SPAWNING || state == FLYING || state == RICHOCETING)
+    if (state == INITIATING || state == ENABLED || state == BEYOND)
     {
         target.draw(m_sprite, states);   
     }
-    else if (state == DYING)
+    else if (state == DEAD)
     {
         target.draw(*m_collisionEffect, states);
     }
 }
 
-void    Enemy::activate(sf::Vector2f a_position, float a_lifetime, float a_velocity, float a_direction)
+void    Enemy::activate(sf::Vector2f a_position, float a_lifetime, float a_speed, float a_angle)
 {
     reset();
     setPosition(a_position);
     m_sprite.setPosition(getPosition());
     lifetime = a_lifetime;
-    speed = a_velocity;
-    angle = a_direction;
+    speed = a_speed;
+    angle = a_angle;
     state = INITIATING;
 }
 
@@ -75,7 +75,7 @@ void    Enemy::reset()
     speed = 0.0f;
     angle = 0.0f;
     sf::Vector2f startPos = {0.0f, 0.0f};
-    deathTime = DYING_TIME;
+    deathTime = AFTER_TIME;
 }
 
 void    Enemy::updateMovement(float deltaTime)
@@ -130,13 +130,6 @@ void    Enemy::setFlying()
     {
         state = ENABLED;
     }
-}
-
-void    Enemy::disarm()
-{
-    m_collisionEffect->initialize();
-    m_collisionEffect->setString(disarming);
-    state = DEAD;
 }
 
 void    Enemy::setBeyond()
