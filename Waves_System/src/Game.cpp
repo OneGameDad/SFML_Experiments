@@ -18,11 +18,11 @@ Game::Game() :
     m_pEnergyBar(std::make_unique<EnergyBar>(this)),
     m_pCamera(std::make_unique<Camera>(this)),
     m_pEye(std::make_unique<Eye>(this)),
-    m_vampireCooldown(2.0f),
-    m_nextVampireCooldown(2.0f),
+    enemyPool(std::make_unique<EnemyManager>(this)),
     projPool(std::make_unique<ProjectileManager>(this)),
     collPool(std::make_unique<CollectiblesManager>(this)),
-    timeCtrl(std::make_unique<SlowMotion>(this))
+    timeCtrl(std::make_unique<SlowMotion>(this)),
+    wavesController(std::make_unique<WavesManager>(this))
 {
     m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get(), timeCtrl.get());
 }
@@ -39,11 +39,6 @@ bool Game::initialise(sf::RenderWindow& window)
     if (!m_font.loadFromFile(ResourceManager::getFilePath("Lavigne.ttf")))
     {
         std::cerr << "Unable to load font" << std::endl;
-        return false;
-    }
-    if (!m_vampTexture.loadFromFile(ResourceManager::getFilePath("vampire.png")))
-    {
-        std::cerr << "Unable to load texture" << std::endl;
         return false;
     }
     if (!m_playerTexture.loadFromFile(ResourceManager::getFilePath("player.png")))
@@ -91,6 +86,8 @@ void Game::resetLevel()
     m_tutorial->initialize({300.0f, 100.0f}, 24);
     projPool->initialise();
     collPool->initialise();
+    enemyPool->initialise();
+    wavesController->initialise();
 }
 
 void Game::update(float deltaTime)
@@ -118,15 +115,9 @@ void Game::update(float deltaTime)
             m_pCamera->update();
             m_pEye->update();
 
-            vampireSpawner(deltaTime);
-            for (auto& temp : m_pVampires)
-            {
-                temp->update(deltaTime);
-            }
-
-            projPool->update(deltaTime);
-            collPool->update(deltaTime);
             timeCtrl->update(); //Uses the GameTime internally
+            
+            wavesController->update(deltaTime); // Controls Enemies, projectiles & terrain
 
             if (m_pPlayer->isDead())
             {
@@ -136,18 +127,6 @@ void Game::update(float deltaTime)
             }
         }
         break;
-    }
-
-    int i = 0;
-    while (i < m_pVampires.size())
-    {
-        if (m_pVampires[i]->isKilled())
-        {
-            std::swap(m_pVampires[i], m_pVampires.back());
-            m_pVampires.pop_back();
-            continue;
-        }
-        i++;
     }
 }
 
@@ -160,13 +139,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     m_pPlayer->draw(target, states);
 
     //  Draw world.
-    for (auto& temp : m_pVampires)
-    {
-        temp->draw(target, states);
-    }
-
-    //Draw projectiles
-    projPool->draw(target, states);
+    wavesController->draw(target, states);
 
     //Draw collectibles
     collPool->draw(target, states);
@@ -177,10 +150,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     //Googly Eye
     m_pEye->draw(target, states);
-
-    
 }
-
 
 void Game::onKeyPressed(sf::Keyboard::Key key)
 {
@@ -200,37 +170,4 @@ Player* Game::getPlayer() const
 Camera* Game::getCamera() const
 {
     return (m_pCamera.get());
-}
-
-void Game::vampireSpawner(float deltaTime)
-{
-    if (m_vampireCooldown > 0.0f)
-    {
-        m_vampireCooldown -= deltaTime;
-        return;
-    }
-
-    float randomXPos = rand() % ScreenWidth;
-    float randomYPos = rand() % ScreenHeight;
-
-    float distToRight = (float) ScreenWidth - randomXPos;
-    float distToBottom = (float) ScreenHeight - randomYPos;
-
-    float xMinDist = randomXPos < distToRight ? -randomXPos : distToRight;
-    float yMinDist = randomYPos < distToBottom ? -randomYPos : distToBottom;
-
-    if (abs(xMinDist) < abs(yMinDist))
-        randomXPos += xMinDist;
-    else
-        randomYPos += yMinDist;
-
-    sf::Vector2f spawnPosition = sf::Vector2f(randomXPos, randomYPos);
-    m_pVampires.push_back(std::make_unique<Vampire>(this, spawnPosition));
-
-    m_spawnCount++;
-    if (m_spawnCount % 5 == 0)
-    {
-        m_nextVampireCooldown -= 0.1f;
-    }
-    m_vampireCooldown = m_nextVampireCooldown;
 }

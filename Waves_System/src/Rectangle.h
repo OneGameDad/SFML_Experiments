@@ -8,7 +8,7 @@ enum e_collidable
 {
     RECT,
     PLAYER,
-    VAMPIRE,
+    ENEMY,
     PROJECTILE,
     COLLECTIBLE,
     OTHER

@@ -17,6 +17,8 @@
 #include "CollectiblesManager.h"
 #include "SlowMotion.h"
 #include "EnergyBar.h"
+#include "EnemyManager.h"
+#include "WavesManager.h"
 
 class Player;
 class Game;
@@ -30,6 +32,8 @@ class ProjectileManager;
 class CollectiblesManager;
 class SlowMotion;
 class EnergyBar;
+class WavesManager;
+class EnemyManager;
 
 class Game : public sf::Drawable
 {
@@ -57,16 +61,14 @@ public:
     Player* getPlayer() const;
     Camera* getCamera() const;
     sf::Texture* getPlayerTexture() { return &m_playerTexture; }
-    sf::Texture* getVampireTexture() { return &m_vampTexture; }
     std::vector<std::unique_ptr<sf::Texture>>* getEyeTextures() { return (&m_eyeTextures); }
 
-    void vampireSpawner(float deltaTime);
 
     sf::Font& getFont() { return (m_font); }
-    std::vector<std::unique_ptr<Vampire>>* getVampies() { return (&m_pVampires); }
     std::vector<std::unique_ptr<BoundingBox>>* getBoundingBoxes() { return (&boundingBoxes); }
     ProjectileManager& getProjectileManager() { return (*projPool); } 
     CollectiblesManager& getCollectiblesManager() { return (*collPool); }
+    EnemyManager& getEnemyManager() { return (*EnemyPool); }
     
 private:
     std::unique_ptr<Player> m_pPlayer;
@@ -76,21 +78,15 @@ private:
     std::unique_ptr<Camera> m_pCamera;
     std::unique_ptr<Eye> m_pEye;
 
-    std::vector<std::unique_ptr<Vampire>> m_pVampires;
+    std::unique_ptr<EnemyManager> enemyPool;
 
     const float boundingBoxThickness = 10.0f;
     std::vector<std::unique_ptr<BoundingBox>> boundingBoxes;
 
     State m_state;
     std::unique_ptr<GameInput> m_pGameInput;
-
-    float m_vampireCooldown = 0.0f;
-    float m_nextVampireCooldown = 2.0f;
-    int m_spawnCount = 0;
-    float elapsed = 0.0f;
     
     sf::Font m_font;
-    sf::Texture m_vampTexture;
     sf::Texture m_playerTexture;
     std::vector<std::unique_ptr<sf::Texture>> m_eyeTextures;
     std::unique_ptr<StoryletBox> m_tutorial;
@@ -101,4 +97,6 @@ private:
     void    createBoundingBoxes();
 
     std::unique_ptr<SlowMotion> timeCtrl;
+
+    std::unique_ptr<WavesManager> wavesController;
 };

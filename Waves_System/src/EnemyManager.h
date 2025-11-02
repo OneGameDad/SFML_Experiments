@@ -3,29 +3,25 @@
 #include <memory>
 #include <vector>
 #include <limits>
-#include "AProjectile.h"
+#include "Enemy.h"
 #include "Game.h"
 
-class AProjectile;
+class Enemy;
 class Game;
 
-class ProjectileManager  : public sf::Drawable
+class EnemyManager  : public sf::Drawable
 {
 private:
     Game* m_pGame;
-    std::vector<std::unique_ptr<AProjectile>> pool;
-    float m_projectileCooldown = 0.0f;
-    float m_nextProjectileCooldown = 2.0f;
-    size_t m_spawnCount = 0;
-    float elapsed = 0.0f;
+    std::vector<std::unique_ptr<Enemy>> pool;
     static const size_t maxPoolSize = 50;
 
     sf::Texture texture;
 
-    size_t getUseableProjectile();
+    size_t getUseableEnemy();
 public:
-    ProjectileManager(Game* pGame);
-    ~ProjectileManager();
+    EnemyManager(Game* pGame);
+    ~EnemyManager();
 
     bool initialise();
     void update(float deltaTime);
