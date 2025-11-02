@@ -26,7 +26,10 @@ A simple test animation to replicate a googly eye, by replacing the texture of a
 The HUD Component is the base class for a simple HUD/UI system. It does not have the functionality of Imgui or other full sytems. But it provides a level of abstraction and control.
 
 #### Player Health Bar
-This is a HUD element that scales to the player's size, and always follows their position. It should also reduce in length to show how much health a player has remaining (needs further testing). This will be easily replicable for enemies and other characters.
+This is a HUD element that scales to the player's size, and always follows their position. It should also reduce in length to show how much health a player has remaining. This will be easily replicable for enemies and other characters.
+
+#### Energy Bar
+This is a HUD element derived from the Player Health Bar, but not a child class. It has all the same behavior, but is used to display the amount of energy the player has.
 
 #### TextBox
 This is a HUD element that does what it says in the box. Dad jokes aside. It's a replicable and controllable means of putting text on screen.
@@ -54,6 +57,18 @@ This is a manager that utlizes a vector for the pool. Upon initialization it con
 #### BoundingBox
 A simple derived class from the Rectangle Class provided by Supercell, it is meant to set limits for objects that check collisions.
 
+### Slow Motion
+This is a class created to enable better control of time by accessing GameTime and changing the scale used to calculate deltaTime. Includes functionality for activating and deactivating Slow Motion.
+
+### Collectible System
+These are objects that can be spawned and when the Player collides with them increase the energy the player has.
+
+#### ACollectibles
+This is derived from the AProjectile class, though it is not a child. Major difference is it does not move or harm the player.
+
+#### Collectibles Manager
+This is derived from the Projectile Manager class though is it is not a child.
+
 ## Roadmap
 
 - [x] 1) Get to grip with the basics
@@ -68,8 +83,12 @@ A simple derived class from the Rectangle Class provided by Supercell, it is mea
 - ~~[X] 10) Update Game to use ALevels~~
 - [X] 11) Storylet system (This is just to indulge my interests)
 - [X] 12) Projectile system - Moving objects that can collidge and damage other objects
-- [] 13) Map system - Terrain and the ability to move from one screen to another
+- ~~[] 13) Map system - Terrain and the ability to move from one screen to another~~
 - [X] 14) Reorganize Repo - Cleaned things up for ease of use and visibility
+- [X] 15) Slow Motion - add slow motion class for better control
+- [X] 16) Collectibles - add collectibles class and manager
+- [X] 17) Energy Bar - add an energy bar
+- [] 18) Wave system - for deploying enemies, projectiles and terrain.
 
 ## Removed Features
 These features have been removed for one reason or another

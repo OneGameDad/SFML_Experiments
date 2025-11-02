@@ -39,6 +39,7 @@ public:
 
     bool isDead() const { return m_isDead; }
     void setIsDead(bool isDead) { m_isDead = isDead; }
+    void takeDamage(float num);
 
     Weapon* getWeapon() { return m_pWeapon.get(); }
 
@@ -47,6 +48,9 @@ public:
 
     void fire();
 
+    void addEnergy(size_t num);
+    void drainEnergy();
+    float getNormalizedEnergy() const;
 private:
     bool    m_isDead = false;
     eDirection m_direction = LEFT;
@@ -60,5 +64,9 @@ private:
     bool    firedProjectile = false;
     float   fireCooldown = 3.5f;
     float   elapsed = 0.0f;
-    void    updateGun(float deltaTime);
+    void    updateGun(float deltaTimeUnScaled);
+    
+    float currentEnergy = 0.0f;
+    const float maxEnergy = 10.0f;
+    const float slowMotionEnergyCostPerSecond = 2.0f;
 };

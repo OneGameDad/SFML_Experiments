@@ -31,11 +31,17 @@ void Vampire::update(float deltaTime)
     }
 
     if (collidesWith(pPlayer))
-        pPlayer->setIsDead(true);
+        pPlayer->takeDamage(20);
 
     sf::Vector2f playerCenter = pPlayer->getCenter();
     sf::Vector2f direction = VecNormalized(playerCenter - getCenter());
     direction *= VampireSpeed * deltaTime;
     sf::Transformable::move(direction);
     m_sprite.setPosition(getPosition());
+}
+
+void Vampire::setIsKilled(bool isKilled)
+{
+    m_isKilled = isKilled;
+    m_pGame->getCollectiblesManager().spawn(getPosition(), 5.0f);
 }

@@ -15,13 +15,16 @@ Game::Game() :
     m_state(State::WAITING),
     m_pPlayer(std::make_unique<Player>(this, getFont())),
     m_pPlayerHealthBar(std::make_unique<PlayerHealthBar>(this)),
+    m_pEnergyBar(std::make_unique<EnergyBar>(this)),
     m_pCamera(std::make_unique<Camera>(this)),
     m_pEye(std::make_unique<Eye>(this)),
     m_vampireCooldown(2.0f),
     m_nextVampireCooldown(2.0f),
-    projPool(std::make_unique<ProjectileManager>(this))
+    projPool(std::make_unique<ProjectileManager>(this)),
+    collPool(std::make_unique<CollectiblesManager>(this)),
+    timeCtrl(std::make_unique<SlowMotion>(this))
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), m_pCamera.get(), m_pEye.get(), timeCtrl.get());
 }
 
 Game::~Game(){}
@@ -77,14 +80,17 @@ void Game::createBoundingBoxes()
 
 void Game::resetLevel()
 {
+    GameTime::getInstance().restart();
     m_pVampires.clear();
 
     m_pPlayer->initialise();
     m_pPlayerHealthBar->initialize();
+    m_pEnergyBar->initialize();
 
     m_pEye->initialize();
     m_tutorial->initialize({300.0f, 100.0f}, 24);
     projPool->initialise();
+    collPool->initialise();
 }
 
 void Game::update(float deltaTime)
@@ -105,9 +111,10 @@ void Game::update(float deltaTime)
             
         case State::ACTIVE:
         {
-            m_pGameInput->update(deltaTime);
-            m_pPlayer->update(deltaTime);
-            m_pPlayerHealthBar->update(deltaTime);
+            m_pGameInput->update(GameTime::getInstance().getDeltaTimeUnscaled());
+            m_pPlayer->update(GameTime::getInstance().getDeltaTimeUnscaled());
+            m_pPlayerHealthBar->update(GameTime::getInstance().getDeltaTimeUnscaled());
+            m_pEnergyBar->update(GameTime::getInstance().getDeltaTimeUnscaled());
             m_pCamera->update();
             m_pEye->update();
 
@@ -118,6 +125,8 @@ void Game::update(float deltaTime)
             }
 
             projPool->update(deltaTime);
+            collPool->update(deltaTime);
+            timeCtrl->update(); //Uses the GameTime internally
 
             if (m_pPlayer->isDead())
             {
@@ -159,8 +168,12 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     //Draw projectiles
     projPool->draw(target, states);
 
-    //Player Health Bar
+    //Draw collectibles
+    collPool->draw(target, states);
+
+    //Player Health & Energy Bar
     m_pPlayerHealthBar->draw(target, states);
+    m_pEnergyBar->draw(target, states);
 
     //Googly Eye
     m_pEye->draw(target, states);

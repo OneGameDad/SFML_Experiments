@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Eye.h"
 
-GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera, Eye* pEye) :
-    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera), m_pEye(pEye)
+GameInput::GameInput(Game* pGame, Player* pPlayer, Camera* pCamera, Eye* pEye, SlowMotion* pSlowMotion) :
+    m_pGame(pGame), m_pPlayer(pPlayer), m_pCamera(pCamera), m_pEye(pEye), m_pSlowMotion(pSlowMotion)
 {}
 
 GameInput::~GameInput(){}
@@ -34,6 +34,16 @@ void GameInput::update(float deltaTime)
     if (m_inputData.m_fireProjectile)
     {
         m_pPlayer->fire();
+    }
+    
+    if (m_inputData.m_slowTime)
+    {
+        m_pSlowMotion->activate();
+    }
+
+    if (m_inputData.m_speedTime)
+    {
+        m_pSlowMotion->deactivate();
     }
 }
 
@@ -75,6 +85,14 @@ void GameInput::onKeyPressed(sf::Keyboard::Key key)
     {
         m_inputData.m_fireProjectile = true;
     }
+    else if (key == sf::Keyboard::C)
+    {
+        m_inputData.m_slowTime = true;
+    }
+    else if (key == sf::Keyboard::V)
+    {
+        m_inputData.m_speedTime = true;
+    }
 }
 
 void GameInput::onKeyReleased(sf::Keyboard::Key key)
@@ -111,5 +129,13 @@ void GameInput::onKeyReleased(sf::Keyboard::Key key)
     else if (key == sf::Keyboard::G)
     {
         m_inputData.m_fireProjectile = false;
+    }
+    else if (key == sf::Keyboard::C)
+    {
+        m_inputData.m_slowTime = false;
+    }
+    else if (key == sf::Keyboard::V)
+    {
+        m_inputData.m_speedTime = false;
     }
 }

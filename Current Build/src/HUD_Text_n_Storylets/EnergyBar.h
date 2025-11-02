@@ -14,7 +14,7 @@
 class Player;
 class Game;
 
-class PlayerHealthBar: public HUDComponent
+class EnergyBar: public HUDComponent
 {
 private:
     Game*   m_pGame;
@@ -30,11 +30,10 @@ private:
 
     sf::Vector2f    adjustPosition();
 public:
-    explicit PlayerHealthBar(Game* pGame);
-    ~PlayerHealthBar();
+    explicit EnergyBar(Game* pGame);
+    ~EnergyBar();
     
     void    initialize() override;
-//    void    setQueryTarget(Player& thePlayer);
     void    update(float deltaTime) override;
     void    draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

@@ -1,6 +1,6 @@
-#include "PlayerHealthBar.h"
+#include "EnergyBar.h"
 
-PlayerHealthBar::PlayerHealthBar(Game *pGame)
+EnergyBar::EnergyBar(Game *pGame)
     : m_pGame(pGame), m_pPlayer(m_pGame->getPlayer())
 {
     try
@@ -13,9 +13,9 @@ PlayerHealthBar::PlayerHealthBar(Game *pGame)
     }
 }
 
-PlayerHealthBar::~PlayerHealthBar(){}
+EnergyBar::~EnergyBar(){}
 
-void    PlayerHealthBar::initialize()
+void    EnergyBar::initialize()
 {
     sf::Vector2f playerPos = m_pPlayer->getPosition();
     sf::Vector2f spritePos = m_pPlayer->getSprite().getPosition();
@@ -24,25 +24,25 @@ void    PlayerHealthBar::initialize()
     playerHeight = m_pPlayer->getSprite().getLocalBounds().height * playerScale;
     rectangle->setSize({playerHeight, maxHeight});
     rectangle->setOrigin({0.0f, 0.0f});
-    rectangle->setFillColor(sf::Color::Red);
+    rectangle->setFillColor(sf::Color::Yellow);
     rectangle->setPosition(getPosition());
     rectangle->setRotation(90);
 }
 
-sf::Vector2f PlayerHealthBar::adjustPosition()
+sf::Vector2f EnergyBar::adjustPosition()
 {
-    static const float offsetX = -20.0f;
+    static const float offsetX = -10.0f;
     static const float offsetY = 0.0f;
     sf::Vector2f pos = m_pPlayer->getPosition();
     sf::Vector2f adjustedPosition = {pos.x + offsetX, pos.y + offsetY};
     return (adjustedPosition);
 }
 
-void    PlayerHealthBar::update(float deltaTime)
+void    EnergyBar::update(float deltaTime)
 {
     (void)deltaTime; //Todo use to animate
-    float health = m_pPlayer->getNormalizedHealth();
-    float currentWidth = playerHeight * health;
+    float amount = m_pPlayer->getNormalizedEnergy();
+    float currentWidth = playerHeight * amount;
     
     rectangle->setSize({currentWidth, maxHeight});
     rectangle->setOrigin({0.0f, 0.f});
@@ -54,7 +54,7 @@ void    PlayerHealthBar::update(float deltaTime)
     sf::Vector2f barPos = rectangle->getPosition();
 }
 
-void    PlayerHealthBar::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void    EnergyBar::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(*rectangle, states);
 }

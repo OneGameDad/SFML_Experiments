@@ -35,4 +35,5 @@ public:
     virtual void    setTextOffsets(float x, float y);
     void            setDuration(float a_duration);
     void            setLineLength(size_t num);
+    bool            getIsActive() const { return (isActive); }
 };
