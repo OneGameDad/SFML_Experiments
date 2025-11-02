@@ -3,6 +3,7 @@
 ACollectible::ACollectible(Game* pGame, sf::Texture *a_texture)
     : Rectangle(sf::Vector2f{10.0f, 10.0f}, startPos), m_pGame(pGame)
 {
+    m_collectedEffect = std::make_unique<CollectibleTextBox>(m_pGame->getFont(), this, pluckDuration); 
     m_sprite.setTexture(*a_texture);
     m_sprite.setScale({1.0f, 1.0f});
     m_sprite.setColor(sf::Color::Cyan);
@@ -12,11 +13,17 @@ ACollectible::~ACollectible(){}
 
 void    ACollectible::update(float deltaTime)
 {
-    if (state == WAITING)
+    if (state == PLACED)
     {
         lifetime -= deltaTime;
         updateCollisions();
         if (lifetime <= 0.0f)
+            state = WAITING;
+    }
+    else if (state == COLLECTED)
+    {
+        m_collectedEffect->update(deltaTime);
+        if (!m_collectedEffect->getIsActive())
             state = WAITING;
     }
 }
@@ -27,6 +34,10 @@ void    ACollectible::draw(sf::RenderTarget& target, sf::RenderStates states) co
     if (state == PLACED)
     {
         target.draw(m_sprite, states);   
+    }
+    if (state == COLLECTED)
+    {
+        target.draw(*m_collectedEffect, states);
     }
 }
 
@@ -56,12 +67,21 @@ void    ACollectible::updateCollisions()
     Player* pPlayer = m_pGame->getPlayer();
     if (collidesWith(pPlayer))
     {
+        std::cout << "Collided with Player\n";
         beCollected(pPlayer);
+        setupTextBox();
         deactivate();
     }
 }
 
 void    ACollectible::beCollected(Player* pOther)
 {
-    pOther->addXP(2);
+    pOther->addXP(2);   
+}
+
+void    ACollectible::setupTextBox()
+{
+    state = COLLECTED;
+    m_collectedEffect->initialize();
+    m_collectedEffect->setString(collectionStr);
 }

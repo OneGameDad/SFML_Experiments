@@ -8,11 +8,13 @@
 #include "Rectangle.h"
 #include "Game.h"
 #include "Player.h"
+#include "CollectibleTextBox.h"
 
 enum e_coll_states
 {
     WAITING,
-    PLACED
+    PLACED,
+    COLLECTED
 };
 
 class Player;
@@ -26,12 +28,16 @@ protected:
 
     sf::Vector2f startPos = {0.0f, 0.0f};
 
+    std::unique_ptr<CollectibleTextBox> m_collectedEffect;
+    std::string collectionStr = "*PLUCK*";
+    const float pluckDuration = 2.0f;
 
     e_collidable collidable_type = COLLECTIBLE;
     
     void    beCollected(Player* pOther);
     void    reset();
     void    updateCollisions();
+    void    setupTextBox();
 
 public:
     ACollectible(Game* pGame, sf::Texture *a_texture);
