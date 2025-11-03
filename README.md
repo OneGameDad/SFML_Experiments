@@ -1,8 +1,11 @@
 # SFML_Experiments
-My learning experiments with SFML, C++ and CMake
+My learning experiments with SFML, C++ and CMake for the Supercell Challenge 2025
 
 ## Description
 These are a series of tools I'm creating in an effort to learn SFML, improve at C++, create a small game engine, program for video games, and prepare for the Supercell Internship Challenge Day at Hive Helsinki.
+
+## Note
+The Wave System and the additional files in there are incomplete due to lack of time before the start of the actual challenge, so they have not been moved into the current build. However I began working on tools necessary for creating an endless runner.
 
 ## Current Working Features
 These features are now based on core provided by Supercell for the Supercell Internship Challenge Days. Integration with them has been key to understanding the architecture they use. All of the tools now integrate with it, but ultimately need some tuning.
