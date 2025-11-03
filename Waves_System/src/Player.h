@@ -16,14 +16,6 @@ struct InputData;
 class Game;
 class WeaponTextBox;
 
-
-
-enum eDirection
-{
-    LEFT,
-    RIGHT
-};
-
 class Player : public Rectangle
 {
 public:
@@ -70,7 +62,7 @@ private:
 
     bool onGround = true;
     const float gravity = 1500.f;
-    const float maxYSpeed = 700.f;
+    const float maxYSpeed = 70.f;
     const float forwardSpeed = 10.0f;
     const float dropBoost = -8.0f;
 

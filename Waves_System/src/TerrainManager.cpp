@@ -12,7 +12,7 @@ TerrainManager::~TerrainManager()
 
 bool TerrainManager::initialise()
 {
-    texture.loadFromFile(ResourceManager::getFilePath("whole_square.png"));
+    texture.loadFromFile(ResourceManager::getFilePath("square_whole.png"));
     pool.reserve(maxPoolSize);
     for (size_t i = 0; i < maxPoolSize; i++)
     {

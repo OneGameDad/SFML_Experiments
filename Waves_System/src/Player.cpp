@@ -163,6 +163,13 @@ void Player::updateCollisions()
         else
             setOffGround();       
     }
+    for (auto& box: *m_pGame->getBoundingBoxes())
+    {
+        if (collidesWith(box.get()))
+        {
+            setIsDead(true);
+        }
+    }
 }
 
 void Player::setOnGround()

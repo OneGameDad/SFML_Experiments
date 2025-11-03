@@ -59,3 +59,20 @@ enum e_terr_states
     INVIS,
     VISIBLE
 };
+
+enum eDirection
+{
+    LEFT,
+    RIGHT
+};
+
+enum e_collidable
+{
+    RECT,
+    PLAYER,
+    ENEMY,
+    PROJECTILE,
+    COLLECTIBLE,
+    TERRAIN,
+    OTHER
+};

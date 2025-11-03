@@ -16,7 +16,7 @@ Game::Game() :
     terrPool(std::make_unique<TerrainManager>(this)),
     wavesController(std::make_unique<WavesManager>(this))
 {
-    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), timeCtrl.get());
+    m_pGameInput = std::make_unique<GameInput>(this, m_pPlayer.get(), timeCtrl.get());    
 }
 
 Game::~Game(){}
@@ -80,6 +80,8 @@ void Game::resetLevel()
     enemyPool->initialise();
     terrPool->initialise();
     wavesController->initialise();
+    
+    terrPool->spawn({ScreenWidth / 2, ScreenHeight + 50}, 100.0f, 0.0f, 0.0f);
 }
 
 void Game::update(float deltaTime)
@@ -142,6 +144,11 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     //Googly Eye
     m_pEye->draw(target, states);
+
+    for (auto& box: boundingBoxes)
+    {
+        box->draw(target, states);
+    }
 }
 
 void Game::onKeyPressed(sf::Keyboard::Key key)

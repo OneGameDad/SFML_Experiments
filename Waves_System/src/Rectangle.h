@@ -3,17 +3,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics.hpp>
-
-enum e_collidable
-{
-    RECT,
-    PLAYER,
-    ENEMY,
-    PROJECTILE,
-    COLLECTIBLE,
-    TERRAIN,
-    OTHER
-};
+#include "Constants.h"
 
 class Rectangle : public sf::Drawable, public sf::Transformable
 {
@@ -31,6 +21,8 @@ public:
 
     void setColor(sf::Color color) { m_color = color; }
     sf::Color getColor() const { return m_color; }
+
+    sf::Sprite* getSprite() { return (&m_sprite); }
 
 protected:
     sf::Sprite m_sprite;
